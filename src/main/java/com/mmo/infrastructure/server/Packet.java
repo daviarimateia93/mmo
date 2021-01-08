@@ -4,8 +4,6 @@ import java.util.UUID;
 
 public interface Packet {
 
-    UUID getId();
-
     String getAlias();
 
     byte[] toBytes();

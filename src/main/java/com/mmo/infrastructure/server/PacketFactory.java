@@ -26,7 +26,8 @@ public class PacketFactory {
     public <T extends Packet> PacketBuilder<T> getBuilder(UUID alias) {
         return Optional.ofNullable(builders.get(alias))
                 .map(builder -> this.<T>cast(builder))
-                .orElseThrow(() -> new PacketNotFoundException("PacketBuilder not registered for alias %s", alias));
+                .orElseThrow(
+                        () -> new PacketBuilderNotFoundException("PacketBuilder not registered for alias %s", alias));
     }
 
     public <T extends Packet> void register(Packet packet, PacketBuilder<T> builder) {
@@ -56,7 +57,7 @@ public class PacketFactory {
         try {
             return (PacketBuilder<T>) builder;
         } catch (Exception exception) {
-            throw new PacketCastException(exception, "Failed to cast builder");
+            throw new PacketBuilderCastException(exception, "Failed to cast builder");
         }
     }
 

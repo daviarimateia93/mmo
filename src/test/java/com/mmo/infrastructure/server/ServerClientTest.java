@@ -11,6 +11,8 @@ public class ServerClientTest {
 
     @Test
     public void successfully() throws InterruptedException {
+        PacketFactory.getInstance().register(TestPacket.ALIAS, TestPacket.builder());
+
         ClientWrapper clientConnected = new ClientWrapper();
         ClientWrapper clientDisconnected = new ClientWrapper();
 
@@ -48,8 +50,22 @@ public class ServerClientTest {
         assertThat(clientConnected.value, notNullValue());
         assertThat(client.isConnected(), equalTo(true));
 
-        // TODO send packet server, assert client receive
-        // TODO send packet client, assert client server receive
+        TestPacket serverPacket = TestPacket.builder().build("abc", 3);
+        clientConnected.value.send(serverPacket);
+
+        Thread.sleep(1000);
+
+        // asserting client received server packet
+        assertThat(onReceive.value, equalTo(serverPacket));
+
+        TestPacket clientPacket = TestPacket.builder().build("def", 4);
+        client.send(clientPacket);
+
+        Thread.sleep(1000);
+
+        // TODO
+        // asserting server received client packet
+        // assertThat(clientConnected.value.value, equalTo(serverPacket));
 
         client.disconnect();
 

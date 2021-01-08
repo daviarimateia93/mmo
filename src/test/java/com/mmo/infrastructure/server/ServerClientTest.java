@@ -15,11 +15,15 @@ public class ServerClientTest {
 
         ClientWrapper clientConnected = new ClientWrapper();
         ClientWrapper clientDisconnected = new ClientWrapper();
+        ClientPacketSubscriber serverClientSendSubscriber = new ClientPacketSubscriber();
+        ClientPacketSubscriber serverClientReceiveSubscriber = new ClientPacketSubscriber();
 
         Server server = Server.builder()
                 .port(5555)
                 .onClientConnect(clientConnected::setValue)
                 .onClientDisconnect(clientDisconnected::setValue)
+                .sendSubscriber(serverClientSendSubscriber)
+                .receiveSubscriber(serverClientReceiveSubscriber)
                 .build();
 
         new Thread() {
@@ -35,14 +39,14 @@ public class ServerClientTest {
         assertThat(clientConnected.value, nullValue());
         assertThat(clientDisconnected.value, nullValue());
 
-        PacketWrapper onSend = new PacketWrapper();
-        PacketWrapper onReceive = new PacketWrapper();
+        ClientPacketSubscriber clientSendSubscriber = new ClientPacketSubscriber();
+        ClientPacketSubscriber clientReceiveSubscriber = new ClientPacketSubscriber();
 
         Client client = Client.clientBuilder()
                 .host("localhost")
                 .port(5555)
-                .onSend(onSend::setValue)
-                .onReceive(onReceive::setValue)
+                .sendSubscriber(clientSendSubscriber)
+                .receiveSubscriber(clientReceiveSubscriber)
                 .clientBuild();
 
         Thread.sleep(1000);
@@ -56,16 +60,15 @@ public class ServerClientTest {
         Thread.sleep(1000);
 
         // asserting client received server packet
-        assertThat(onReceive.value, equalTo(serverPacket));
+        assertThat(clientReceiveSubscriber.packet, equalTo(serverPacket));
 
         TestPacket clientPacket = TestPacket.builder().build("def", 4);
         client.send(clientPacket);
 
         Thread.sleep(1000);
 
-        // TODO
         // asserting server received client packet
-        // assertThat(clientConnected.value.value, equalTo(serverPacket));
+        assertThat(serverClientReceiveSubscriber.packet, equalTo(clientPacket));
 
         client.disconnect();
 
@@ -79,13 +82,23 @@ public class ServerClientTest {
         assertThat(server.isRunning(), equalTo(false));
     }
 
-    @Data
-    private class ClientWrapper {
-        Client value;
+    private class ClientPacketSubscriber implements ClientPacketReceiveSubscriber, ClientPacketSendSubscriber {
+
+        Packet packet;
+
+        @Override
+        public void onReceive(Client client, Packet packet) {
+            this.packet = packet;
+        }
+
+        @Override
+        public void onSend(Client client, Packet packet) {
+            this.packet = packet;
+        }
     }
 
     @Data
-    private class PacketWrapper {
-        Packet value;
+    private class ClientWrapper {
+        Client value;
     }
 }

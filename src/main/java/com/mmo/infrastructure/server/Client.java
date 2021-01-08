@@ -26,8 +26,8 @@ public class Client {
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
     private final Consumer<Client> onDisconnect;
-    private final Consumer<Packet> onReceive;
-    private final Consumer<Packet> onSend;
+    private final ClientPacketSendSubscriber sendSubscriber;
+    private final ClientPacketReceiveSubscriber receiveSubscriber;
     private final BlockingQueue<Packet> sendingQueue = new LinkedBlockingQueue<>();
     private final ExecutorService sendingPool = Executors.newSingleThreadExecutor();
     private final ExecutorService receivingPool = Executors.newSingleThreadExecutor();
@@ -37,15 +37,15 @@ public class Client {
     private Client(
             @NonNull Socket socket,
             Consumer<Client> onDisconnect,
-            Consumer<Packet> onSend,
-            Consumer<Packet> onReceive) {
+            ClientPacketSendSubscriber sendSubscriber,
+            ClientPacketReceiveSubscriber receiveSubscriber) {
 
         this.socket = socket;
         this.inputStream = getDataInputStream();
         this.outputStream = getDataOutputStream();
         this.onDisconnect = onDisconnect;
-        this.onSend = onSend;
-        this.onReceive = onReceive;
+        this.sendSubscriber = sendSubscriber;
+        this.receiveSubscriber = receiveSubscriber;
         this.connected = true;
 
         startPools();
@@ -56,15 +56,15 @@ public class Client {
             @NonNull String host,
             @NonNull Integer port,
             Consumer<Client> onDisconnect,
-            Consumer<Packet> onSend,
-            Consumer<Packet> onReceive) {
+            ClientPacketSendSubscriber sendSubscriber,
+            ClientPacketReceiveSubscriber receiveSubscriber) {
 
         this.socket = connect(host, port);
         this.inputStream = getDataInputStream();
         this.outputStream = getDataOutputStream();
         this.onDisconnect = onDisconnect;
-        this.onSend = onSend;
-        this.onReceive = onReceive;
+        this.sendSubscriber = sendSubscriber;
+        this.receiveSubscriber = receiveSubscriber;
         this.connected = true;
 
         startPools();
@@ -82,12 +82,12 @@ public class Client {
         return Optional.ofNullable(onDisconnect);
     }
 
-    private Optional<Consumer<Packet>> getOnSend() {
-        return Optional.ofNullable(onSend);
+    private Optional<ClientPacketSendSubscriber> getSendSubscriber() {
+        return Optional.ofNullable(sendSubscriber);
     }
 
-    private Optional<Consumer<Packet>> getOnReceive() {
-        return Optional.ofNullable(onReceive);
+    private Optional<ClientPacketReceiveSubscriber> getReceiveSubscriber() {
+        return Optional.ofNullable(receiveSubscriber);
     }
 
     private DataInputStream getDataInputStream() {
@@ -170,7 +170,7 @@ public class Client {
         outputStream.writeInt(bytes.length);
         outputStream.write(bytes);
 
-        getOnSend().ifPresent(consumer -> consumer.accept(packet));
+        getSendSubscriber().ifPresent(subscriber -> subscriber.onSend(this, packet));
     }
 
     private void receivePacket() throws IOException {
@@ -185,6 +185,6 @@ public class Client {
 
         Packet packet = PacketFactory.getInstance().getPacket(alias, bytes);
 
-        getOnReceive().ifPresent(consumer -> consumer.accept(packet));
+        getReceiveSubscriber().ifPresent(subscriber -> subscriber.onReceive(this, packet));
     }
 }

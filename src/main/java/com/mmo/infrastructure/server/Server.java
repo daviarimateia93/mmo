@@ -19,6 +19,8 @@ public class Server {
     private final Set<Client> clients = new HashSet<>();
     private final Consumer<Client> onClientConnect;
     private final Consumer<Client> onClientDisconnect;
+    private final ClientPacketSendSubscriber sendSubscriber;
+    private final ClientPacketReceiveSubscriber receiveSubscriber;
     private ServerSocket serverSocket;
     private boolean running;
 
@@ -26,11 +28,15 @@ public class Server {
     private Server(
             @NonNull Integer port,
             @NonNull Consumer<Client> onClientConnect,
-            @NonNull Consumer<Client> onClientDisconnect) {
+            @NonNull Consumer<Client> onClientDisconnect,
+            @NonNull ClientPacketSendSubscriber sendSubscriber,
+            @NonNull ClientPacketReceiveSubscriber receiveSubscriber) {
 
         this.port = port;
         this.onClientConnect = onClientConnect;
         this.onClientDisconnect = onClientDisconnect;
+        this.sendSubscriber = sendSubscriber;
+        this.receiveSubscriber = receiveSubscriber;
     }
 
     public Integer getPort() {
@@ -82,6 +88,8 @@ public class Server {
         return Client.serverBuilder()
                 .socket(socket)
                 .onDisconnect(this::removeClient)
+                .sendSubscriber(sendSubscriber)
+                .receiveSubscriber(receiveSubscriber)
                 .serverBuild();
     }
 

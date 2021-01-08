@@ -79,10 +79,10 @@ public class Server {
     }
 
     private Client newClient(Socket socket) {
-        return Client.builder()
+        return Client.serverBuilder()
                 .socket(socket)
                 .onDisconnect(this::removeClient)
-                .build();
+                .serverBuild();
     }
 
     private void removeClient(Client client) {

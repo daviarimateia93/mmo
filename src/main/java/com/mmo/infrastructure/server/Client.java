@@ -28,12 +28,12 @@ public class Client {
     private final Consumer<Client> onDisconnect;
     private final Consumer<Packet> onReceive;
     private final Consumer<Packet> onSend;
-    private boolean connected;
     private final BlockingQueue<Packet> sendingQueue = new LinkedBlockingQueue<>();
     private final ExecutorService sendingPool = Executors.newSingleThreadExecutor();
     private final ExecutorService receivingPool = Executors.newSingleThreadExecutor();
+    private boolean connected;
 
-    @Builder
+    @Builder(builderMethodName = "serverBuilder", buildMethodName = "serverBuild")
     private Client(
             @NonNull Socket socket,
             Consumer<Client> onDisconnect,
@@ -51,7 +51,7 @@ public class Client {
         startPools();
     }
 
-    @Builder
+    @Builder(builderMethodName = "clientBuilder", buildMethodName = "clientBuild")
     private Client(
             @NonNull String host,
             @NonNull Integer port,
@@ -120,6 +120,7 @@ public class Client {
         } catch (Exception exception) {
             throw new ClientDisconnectException(exception, "Failed to close socket");
         } finally {
+            connected = false;
             getOnDisconnect().ifPresent(consumer -> consumer.accept(this));
         }
     }
@@ -164,18 +165,18 @@ public class Client {
         byte[] bytes = packet.toBytes();
         UUID alias = packet.getAliasAsUUID();
 
-        outputStream.writeInt(bytes.length);
         outputStream.writeLong(alias.getMostSignificantBits());
         outputStream.writeLong(alias.getLeastSignificantBits());
+        outputStream.writeInt(bytes.length);
         outputStream.write(bytes);
 
         getOnSend().ifPresent(consumer -> consumer.accept(packet));
     }
 
     private void receivePacket() throws IOException {
-        int size = inputStream.readInt();
         long high = inputStream.readLong();
         long low = inputStream.readLong();
+        int size = inputStream.readInt();
 
         UUID alias = new UUID(high, low);
 

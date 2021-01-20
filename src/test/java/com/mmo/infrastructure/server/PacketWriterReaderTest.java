@@ -3,6 +3,8 @@ package com.mmo.infrastructure.server;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 
 public class PacketWriterReaderTest {
@@ -18,6 +20,7 @@ public class PacketWriterReaderTest {
         long expectedValue7 = 1232131;
         short expectedValue8 = 88;
         String expectedValue9 = "ûTf stríng";
+        UUID expectedValue10 = UUID.randomUUID();
 
         int resultValue1;
         boolean resultValue2;
@@ -28,6 +31,7 @@ public class PacketWriterReaderTest {
         long resultValue7;
         short resultValue8;
         String resultValue9;
+        UUID resultValue10;
 
         byte[] bytes;
 
@@ -41,6 +45,7 @@ public class PacketWriterReaderTest {
             writer.writeLong(expectedValue7);
             writer.writeShort(expectedValue8);
             writer.writeUTF(expectedValue9);
+            writer.writeUUID(expectedValue10);
 
             bytes = writer.toBytes();
         }
@@ -55,6 +60,7 @@ public class PacketWriterReaderTest {
             resultValue7 = reader.readLong();
             resultValue8 = reader.readShort();
             resultValue9 = reader.readUTF();
+            resultValue10 = reader.readUUID();
         }
 
         assertThat(resultValue1, equalTo(expectedValue1));
@@ -66,5 +72,6 @@ public class PacketWriterReaderTest {
         assertThat(resultValue7, equalTo(expectedValue7));
         assertThat(resultValue8, equalTo(expectedValue8));
         assertThat(resultValue9, equalTo(expectedValue9));
+        assertThat(resultValue10, equalTo(expectedValue10));
     }
 }

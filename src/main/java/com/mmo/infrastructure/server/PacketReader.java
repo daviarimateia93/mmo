@@ -3,14 +3,15 @@ package com.mmo.infrastructure.server;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.DataInputStream;
+import java.util.UUID;
 
 public class PacketReader implements Closeable {
 
     private ByteArrayInputStream byteArrayInputStream;
     private DataInputStream dataInputStream;
 
-    public PacketReader(byte[] value) {
-        byteArrayInputStream = new ByteArrayInputStream(value);
+    public PacketReader(byte[] bytes) {
+        byteArrayInputStream = new ByteArrayInputStream(bytes);
         dataInputStream = new DataInputStream(byteArrayInputStream);
     }
 
@@ -58,6 +59,10 @@ public class PacketReader implements Closeable {
 
     public String readUTF() {
         return read(() -> dataInputStream.readUTF());
+    }
+
+    public UUID readUUID() {
+        return read(() -> new UUID(dataInputStream.readLong(), dataInputStream.readLong()));
     }
 
     private static <T> T read(Reader<T> reader) {

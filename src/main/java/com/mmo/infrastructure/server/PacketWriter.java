@@ -3,6 +3,7 @@ package com.mmo.infrastructure.server;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.DataOutputStream;
+import java.util.UUID;
 
 public class PacketWriter implements Closeable {
 
@@ -62,6 +63,11 @@ public class PacketWriter implements Closeable {
 
     public void writeUTF(String value) {
         write(() -> dataOutputStream.writeUTF(value));
+    }
+
+    public void writeUUID(UUID value) {
+        write(() -> dataOutputStream.writeLong(value.getMostSignificantBits()));
+        write(() -> dataOutputStream.writeLong(value.getLeastSignificantBits()));
     }
 
     private static void write(Writer writer) {

@@ -3,6 +3,7 @@ package com.mmo.core.map;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ public class MapTest {
         map.addEntity(entityC);
 
         MapEntity[] expected = { entityA, entityB, entityC };
-        Set<MapEntity> result = map.getEntities();
+        Collection<MapEntity> result = map.getEntities();
 
         assertThat(result, containsInAnyOrder(expected));
         assertThat(result.size(), equalTo(expected.length));
@@ -69,7 +70,7 @@ public class MapTest {
         map.removeEntity(entityA);
 
         MapEntity[] expected = { entityB };
-        Set<MapEntity> result = map.getEntities();
+        Collection<MapEntity> result = map.getEntities();
 
         assertThat(result, containsInAnyOrder(expected));
         assertThat(result.size(), equalTo(expected.length));

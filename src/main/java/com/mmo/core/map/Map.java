@@ -1,8 +1,10 @@
 package com.mmo.core.map;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.mmo.core.looper.LooperContext;
@@ -19,7 +21,7 @@ import lombok.ToString;
 @ToString
 public class Map implements LooperUpdater {
 
-    private final Set<MapEntity> entities = new HashSet<>();
+    private final ConcurrentHashMap<UUID, MapEntity> entities = new ConcurrentHashMap<>();
     private final String name;
     private final String description;
     private final Integer nearbyRatio;
@@ -35,21 +37,21 @@ public class Map implements LooperUpdater {
         this.nearbyRatio = nearbyRatio;
     }
 
-    public Set<MapEntity> getEntities() {
-        return Collections.unmodifiableSet(entities);
+    public Collection<MapEntity> getEntities() {
+        return Collections.unmodifiableCollection(entities.values());
     }
 
     @Override
     public void update(LooperContext context) {
-        entities.forEach(animate -> animate.update(context));
+        entities.values().forEach(animate -> animate.update(context));
     }
 
     public void addEntity(MapEntity entity) {
-        entities.add(entity);
+        entities.put(entity.getInstanceId(), entity);
     }
 
     public void removeEntity(MapEntity entity) {
-        entities.remove(entity);
+        entities.remove(entity.getInstanceId());
     }
 
     @SuppressWarnings("unchecked")
@@ -62,7 +64,7 @@ public class Map implements LooperUpdater {
     }
 
     public Set<MapEntity> getNearbyEntities(MapEntity baseEntity) {
-        return entities.stream()
+        return entities.values().stream()
                 .filter(entity -> isNearby(baseEntity, entity))
                 .collect(Collectors.toSet());
     }

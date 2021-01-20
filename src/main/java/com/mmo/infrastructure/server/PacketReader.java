@@ -3,7 +3,6 @@ package com.mmo.infrastructure.server;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.DataInputStream;
-import java.io.IOException;
 
 public class PacketReader implements Closeable {
 
@@ -16,9 +15,13 @@ public class PacketReader implements Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        byteArrayInputStream.close();
-        dataInputStream.close();
+    public void close() {
+        try {
+            byteArrayInputStream.close();
+            dataInputStream.close();
+        } catch (Exception exception) {
+            throw new PacketCloseException(exception, "Failed to close stream(s)");
+        }
     }
 
     public int read() {

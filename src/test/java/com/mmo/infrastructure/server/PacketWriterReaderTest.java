@@ -3,14 +3,12 @@ package com.mmo.infrastructure.server;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.Test;
 
 public class PacketWriterReaderTest {
 
     @Test
-    public void writeAndRead() throws IOException {
+    public void writeAndRead() {
         int expectedValue1 = 37;
         boolean expectedValue2 = true;
         char expectedValue3 = 'c';

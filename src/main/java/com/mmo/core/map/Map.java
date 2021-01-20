@@ -2,6 +2,7 @@ package com.mmo.core.map;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,6 +36,15 @@ public class Map implements LooperUpdater {
         this.name = name;
         this.description = description;
         this.nearbyRatio = nearbyRatio;
+    }
+
+    public MapEntity getEntity(UUID instanceId) {
+        return findEntity(instanceId)
+                .orElseThrow(() -> new MapEntityNotFoundException("Entity not found with instanceId %s", instanceId));
+    }
+
+    public Optional<MapEntity> findEntity(UUID instanceId) {
+        return Optional.ofNullable(entities.get(instanceId));
     }
 
     public Collection<MapEntity> getEntities() {

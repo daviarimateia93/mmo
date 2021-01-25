@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
+import com.mmo.core.security.TokenData;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -165,9 +167,9 @@ public class Client {
         byte[] bytes = packet.toBytes();
         UUID source = packet.getSource();
         UUID alias = packet.getAliasAsUUID();
+        String token = TokenData.create(source).getToken();
 
-        outputStream.writeLong(source.getMostSignificantBits());
-        outputStream.writeLong(source.getLeastSignificantBits());
+        outputStream.writeUTF(token);
         outputStream.writeLong(alias.getMostSignificantBits());
         outputStream.writeLong(alias.getLeastSignificantBits());
         outputStream.writeInt(bytes.length);
@@ -177,13 +179,18 @@ public class Client {
     }
 
     private void receivePacket() throws IOException {
-        long sourceHigh = inputStream.readLong();
-        long sourceLow = inputStream.readLong();
+        String token = inputStream.readUTF();
         long aliasHigh = inputStream.readLong();
         long aliasLow = inputStream.readLong();
         int size = inputStream.readInt();
 
-        UUID source = new UUID(sourceHigh, sourceLow);
+        TokenData tokenData = TokenData.parse(token);
+
+        if (tokenData.isExpired()) {
+            throw new ClientReadException("Token is expired %s", tokenData);
+        }
+
+        UUID source = tokenData.getSource();
         UUID alias = new UUID(aliasHigh, aliasLow);
 
         byte[] bytes = new byte[size];

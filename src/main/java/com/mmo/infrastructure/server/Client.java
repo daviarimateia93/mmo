@@ -179,7 +179,7 @@ public class Client {
         byte[] bytes = packet.toBytes();
         UUID source = packet.getSource();
         UUID alias = packet.getAliasAsUUID();
-        String token = TokenData.create(source).getToken();
+        String token = encryptor.encrypt(TokenData.create(source).getToken());
 
         outputStream.writeUTF(token);
         outputStream.writeLong(alias.getMostSignificantBits());
@@ -191,7 +191,7 @@ public class Client {
     }
 
     private void receivePacket() throws IOException {
-        String token = inputStream.readUTF();
+        String token = decryptor.decrypt(inputStream.readUTF());
         long aliasHigh = inputStream.readLong();
         long aliasLow = inputStream.readLong();
         int size = inputStream.readInt();

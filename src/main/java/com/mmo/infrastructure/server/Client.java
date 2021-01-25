@@ -163,8 +163,11 @@ public class Client {
 
     private void sendPacket(Packet packet) throws IOException {
         byte[] bytes = packet.toBytes();
+        UUID source = packet.getSource();
         UUID alias = packet.getAliasAsUUID();
 
+        outputStream.writeLong(source.getMostSignificantBits());
+        outputStream.writeLong(source.getLeastSignificantBits());
         outputStream.writeLong(alias.getMostSignificantBits());
         outputStream.writeLong(alias.getLeastSignificantBits());
         outputStream.writeInt(bytes.length);
@@ -174,16 +177,19 @@ public class Client {
     }
 
     private void receivePacket() throws IOException {
-        long high = inputStream.readLong();
-        long low = inputStream.readLong();
+        long sourceHigh = inputStream.readLong();
+        long sourceLow = inputStream.readLong();
+        long aliasHigh = inputStream.readLong();
+        long aliasLow = inputStream.readLong();
         int size = inputStream.readInt();
 
-        UUID alias = new UUID(high, low);
+        UUID source = new UUID(sourceHigh, sourceLow);
+        UUID alias = new UUID(aliasHigh, aliasLow);
 
         byte[] bytes = new byte[size];
         inputStream.readFully(bytes);
 
-        Packet packet = PacketFactory.getInstance().getPacket(alias, bytes);
+        Packet packet = PacketFactory.getInstance().getPacket(alias, source, bytes);
 
         getReceiveSubscriber().ifPresent(subscriber -> subscriber.onReceive(this, packet));
     }

@@ -38,18 +38,18 @@ public class PacketFactory {
         register(getAliasAsUUID(alias), builder);
     }
 
-    public <T extends Packet> T getPacket(String alias, byte[] bytes) {
-        return getPacket(getAliasAsUUID(alias), bytes);
+    public <T extends Packet> T getPacket(String alias, UUID source, byte[] bytes) {
+        return getPacket(getAliasAsUUID(alias), source, bytes);
     }
 
     public <T extends Packet> void register(UUID alias, PacketBuilder<T> builder) {
         builders.put(alias, builder);
     }
 
-    public <T extends Packet> T getPacket(UUID alias, byte[] bytes) {
+    public <T extends Packet> T getPacket(UUID alias, UUID source, byte[] bytes) {
         PacketBuilder<T> builder = this.<T>getBuilder(alias);
 
-        return builder.build(bytes);
+        return builder.build(source, bytes);
     }
 
     @SuppressWarnings("unchecked")

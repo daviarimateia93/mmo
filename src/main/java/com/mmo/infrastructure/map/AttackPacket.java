@@ -18,12 +18,12 @@ public class AttackPacket implements Packet {
 
     private static final String ALIAS = "ATTACK";
 
-    private final UUID sourceInstanceId;
-    private final UUID targetInstanceId;
+    private final UUID source;
+    private final UUID target;
 
-    private AttackPacket(UUID sourceInstanceId, UUID targetInstanceId) {
-        this.sourceInstanceId = sourceInstanceId;
-        this.targetInstanceId = targetInstanceId;
+    private AttackPacket(UUID source, UUID target) {
+        this.source = source;
+        this.target = target;
     }
 
     public static AttackPacketBuilder builder() {
@@ -38,8 +38,7 @@ public class AttackPacket implements Packet {
     @Override
     public byte[] toBytes() {
         try (PacketWriter writer = new PacketWriter()) {
-            writer.writeUUID(sourceInstanceId);
-            writer.writeUUID(targetInstanceId);
+            writer.writeUUID(target);
             return writer.toBytes();
         }
     }
@@ -47,11 +46,10 @@ public class AttackPacket implements Packet {
     public static class AttackPacketBuilder implements PacketBuilder<AttackPacket> {
 
         @Override
-        public AttackPacket build(byte[] bytes) {
+        public AttackPacket build(UUID source, byte[] bytes) {
             try (PacketReader reader = new PacketReader(bytes)) {
-                UUID sourceInstanceId = reader.readUUID();
-                UUID targetInstanceId = reader.readUUID();
-                return new AttackPacket(sourceInstanceId, targetInstanceId);
+                UUID target = reader.readUUID();
+                return new AttackPacket(source, target);
             }
         }
     }

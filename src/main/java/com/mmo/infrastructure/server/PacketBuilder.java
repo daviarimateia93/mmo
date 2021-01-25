@@ -1,6 +1,8 @@
 package com.mmo.infrastructure.server;
 
+import java.util.UUID;
+
 public interface PacketBuilder<T extends Packet> {
 
-    T build(byte[] bytes);
+    T build(UUID source, byte[] bytes);
 }

@@ -6,9 +6,11 @@ public interface Packet {
 
     String getAlias();
 
-    byte[] toBytes();
-
     default UUID getAliasAsUUID() {
         return UUID.nameUUIDFromBytes(getAlias().getBytes());
     }
+
+    UUID getSource();
+
+    byte[] toBytes();
 }

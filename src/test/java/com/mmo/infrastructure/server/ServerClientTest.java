@@ -3,6 +3,8 @@ package com.mmo.infrastructure.server;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 
 import lombok.Data;
@@ -51,10 +53,12 @@ public class ServerClientTest {
 
         Thread.sleep(1000);
 
+        UUID source = UUID.randomUUID();
+
         assertThat(clientConnected.value, notNullValue());
         assertThat(client.isConnected(), equalTo(true));
 
-        TestPacket serverPacket = TestPacket.builder().build("abc", 3);
+        TestPacket serverPacket = TestPacket.builder().build(source, "abc", 3);
         clientConnected.value.send(serverPacket);
 
         Thread.sleep(1000);
@@ -62,7 +66,7 @@ public class ServerClientTest {
         // asserting client received server packet
         assertThat(clientReceiveSubscriber.packet, equalTo(serverPacket));
 
-        TestPacket clientPacket = TestPacket.builder().build("def", 4);
+        TestPacket clientPacket = TestPacket.builder().build(source, "def", 4);
         client.send(clientPacket);
 
         Thread.sleep(1000);

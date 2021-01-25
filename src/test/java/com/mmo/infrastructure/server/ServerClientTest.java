@@ -7,6 +7,9 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
+import com.mmo.core.security.Decryptor;
+import com.mmo.core.security.Encryptor;
+
 import lombok.Data;
 
 public class ServerClientTest {
@@ -15,6 +18,16 @@ public class ServerClientTest {
     public void successfully() throws InterruptedException {
         PacketFactory.getInstance().register(TestPacket.ALIAS, TestPacket.builder());
 
+        String cipherKey = "Bar12345Bar12345";
+
+        Encryptor encryptor = Encryptor.builder()
+                .key(cipherKey)
+                .build();
+
+        Decryptor decryptor = Decryptor.builder()
+                .key(cipherKey)
+                .build();
+
         ClientWrapper clientConnected = new ClientWrapper();
         ClientWrapper clientDisconnected = new ClientWrapper();
         ClientPacketSubscriber serverClientSendSubscriber = new ClientPacketSubscriber();
@@ -22,6 +35,8 @@ public class ServerClientTest {
 
         Server server = Server.builder()
                 .port(5555)
+                .encryptor(encryptor)
+                .decryptor(decryptor)
                 .onClientConnect(clientConnected::setValue)
                 .onClientDisconnect(clientDisconnected::setValue)
                 .sendSubscriber(serverClientSendSubscriber)
@@ -47,6 +62,8 @@ public class ServerClientTest {
         Client client = Client.clientBuilder()
                 .host("localhost")
                 .port(5555)
+                .encryptor(encryptor)
+                .decryptor(decryptor)
                 .sendSubscriber(clientSendSubscriber)
                 .receiveSubscriber(clientReceiveSubscriber)
                 .clientBuild();

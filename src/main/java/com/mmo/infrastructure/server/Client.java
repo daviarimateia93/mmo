@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
+import com.mmo.core.security.Decryptor;
+import com.mmo.core.security.Encryptor;
 import com.mmo.core.security.TokenData;
 
 import lombok.Builder;
@@ -25,6 +27,8 @@ public class Client {
 
     private final UUID id = UUID.randomUUID();
     private final Socket socket;
+    private final Encryptor encryptor;
+    private final Decryptor decryptor;
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
     private final Consumer<Client> onDisconnect;
@@ -38,11 +42,15 @@ public class Client {
     @Builder(builderMethodName = "serverBuilder", buildMethodName = "serverBuild")
     private Client(
             @NonNull Socket socket,
+            @NonNull Encryptor encryptor,
+            @NonNull Decryptor decryptor,
             Consumer<Client> onDisconnect,
             ClientPacketSendSubscriber sendSubscriber,
             ClientPacketReceiveSubscriber receiveSubscriber) {
 
         this.socket = socket;
+        this.encryptor = encryptor;
+        this.decryptor = decryptor;
         this.inputStream = getDataInputStream();
         this.outputStream = getDataOutputStream();
         this.onDisconnect = onDisconnect;
@@ -57,11 +65,15 @@ public class Client {
     private Client(
             @NonNull String host,
             @NonNull Integer port,
+            @NonNull Encryptor encryptor,
+            @NonNull Decryptor decryptor,
             Consumer<Client> onDisconnect,
             ClientPacketSendSubscriber sendSubscriber,
             ClientPacketReceiveSubscriber receiveSubscriber) {
 
         this.socket = connect(host, port);
+        this.encryptor = encryptor;
+        this.decryptor = decryptor;
         this.inputStream = getDataInputStream();
         this.outputStream = getDataOutputStream();
         this.onDisconnect = onDisconnect;

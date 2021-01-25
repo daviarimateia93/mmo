@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import com.mmo.core.security.Decryptor;
+import com.mmo.core.security.Encryptor;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -16,6 +19,8 @@ import lombok.ToString;
 public class Server {
 
     private final Integer port;
+    private final Encryptor encryptor;
+    private final Decryptor decryptor;
     private final Set<Client> clients = new HashSet<>();
     private final Consumer<Client> onClientConnect;
     private final Consumer<Client> onClientDisconnect;
@@ -27,12 +32,16 @@ public class Server {
     @Builder
     private Server(
             @NonNull Integer port,
+            @NonNull Encryptor encryptor,
+            @NonNull Decryptor decryptor,
             @NonNull Consumer<Client> onClientConnect,
             @NonNull Consumer<Client> onClientDisconnect,
             @NonNull ClientPacketSendSubscriber sendSubscriber,
             @NonNull ClientPacketReceiveSubscriber receiveSubscriber) {
 
         this.port = port;
+        this.encryptor = encryptor;
+        this.decryptor = decryptor;
         this.onClientConnect = onClientConnect;
         this.onClientDisconnect = onClientDisconnect;
         this.sendSubscriber = sendSubscriber;
@@ -87,6 +96,8 @@ public class Server {
     private Client newClient(Socket socket) {
         return Client.serverBuilder()
                 .socket(socket)
+                .encryptor(encryptor)
+                .decryptor(decryptor)
                 .onDisconnect(this::removeClient)
                 .sendSubscriber(sendSubscriber)
                 .receiveSubscriber(receiveSubscriber)

@@ -10,15 +10,21 @@ public class MapServer {
 
     private static Logger logger = LoggerFactory.getLogger(MapServer.class);
 
-    public static void main(String... args) {
+    private final Map map;
+
+    private MapServer() {
         logger.info("Starting server");
 
-        Map map = Map.builder()
+        map = Map.builder()
                 .name("adventure_plains")
                 .description("Located at the southern end, these plains were quiet and peaceful.")
                 .nearbyRatio(10)
                 .build();
 
         Game.getInstance().run(map);
+    }
+
+    public static void main(String... args) {
+        new MapServer();
     }
 }

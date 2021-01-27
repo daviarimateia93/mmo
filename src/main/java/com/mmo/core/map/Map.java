@@ -38,9 +38,21 @@ public class Map implements LooperUpdater {
         this.nearbyRatio = nearbyRatio;
     }
 
+    public <T extends MapEntity> T getEntity(UUID instanceId, Class<T> type) {
+        return findEntity(instanceId, type)
+                .orElseThrow(() -> new MapEntityNotFoundException("Entity not found with instanceId %s", instanceId));
+    }
+
     public MapEntity getEntity(UUID instanceId) {
         return findEntity(instanceId)
                 .orElseThrow(() -> new MapEntityNotFoundException("Entity not found with instanceId %s", instanceId));
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends MapEntity> Optional<T> findEntity(UUID instanceId, Class<T> type) {
+        return findEntity(instanceId)
+                .filter(entity -> type.isAssignableFrom(entity.getClass()))
+                .map(entity -> (T) entity);
     }
 
     public Optional<MapEntity> findEntity(UUID instanceId) {

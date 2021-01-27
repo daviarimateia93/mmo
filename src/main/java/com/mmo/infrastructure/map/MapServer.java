@@ -1,5 +1,6 @@
 package com.mmo.infrastructure.map;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -10,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.mmo.core.game.Game;
 import com.mmo.core.map.Map;
+import com.mmo.core.map.MapEntity;
+import com.mmo.core.player.Player;
 import com.mmo.core.security.Decryptor;
 import com.mmo.core.security.Encryptor;
 import com.mmo.infrastructure.map.packet.HelloPacket;
@@ -26,6 +29,7 @@ public class MapServer {
     private static final Logger logger = LoggerFactory.getLogger(MapServer.class);
 
     private final ConcurrentHashMap<Client, UUID> clients = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Client> instanceIds = new ConcurrentHashMap<>();
     private final Map map;
     private final Server server;
 
@@ -42,6 +46,10 @@ public class MapServer {
         logger.info("Running game");
 
         Game.getInstance().run(map);
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     private Map loadMap() {
@@ -85,9 +93,15 @@ public class MapServer {
                 }, HELLO_PACKET_WAITING_DELAY_IN_MINUTES, TimeUnit.MINUTES);
     }
 
-    private void removeClient(Client client) {
+    private synchronized void addClient(Client client, UUID instanceId) {
+        clients.put(client, instanceId);
+        instanceIds.put(instanceId, client);
+    }
+
+    private synchronized void removeClient(Client client) {
         if (isConnected(client)) {
-            clients.remove(client);
+            UUID instanceId = clients.remove(client);
+            instanceIds.remove(instanceId);
             logger.info("Client has disconnected {}", client);
         }
     }
@@ -98,19 +112,18 @@ public class MapServer {
         boolean connected = isConnected(client);
 
         if (!connected && packet instanceof HelloPacket) {
-            clients.put(client, packet.getSource());
+            addClient(client, packet.getSource());
 
             HelloPacket.builder().build(SERVER_SOURCE, new byte[0]);
             return;
         }
 
         if (!connected) {
-            logger.info("Client did not send HelloPacket, it will disconnect", client);
-            client.disconnect();
+            disconnect(client);
             return;
         }
 
-        PacketHandlerDelegator.getInstance().delegate(map, packet);
+        PacketHandlerDelegator.getInstance().delegate(this, packet);
     }
 
     private void onSend(Client client, Packet packet) {
@@ -122,8 +135,27 @@ public class MapServer {
     }
 
     private void disconnect(Client client) {
-        logger.info("Client {} did not send HelloPacket, it will disconnect", client);
+        logger.info("Client did not send HelloPacket, it will disconnect", client);
         client.disconnect();
+    }
+
+    public void send(Packet packet, UUID target) {
+        Player player = map.getEntity(target, Player.class);
+        send(packet, Set.of(player));
+    }
+
+    public void sendNearby(Packet packet) {
+        MapEntity entity = map.getEntity(packet.getSource());
+        Set<Player> players = map.getNearbyEntities(entity, Player.class);
+        send(packet, players);
+    }
+
+    private void send(Packet packet, Set<? extends MapEntity> targets) {
+        targets.parallelStream()
+                .map(MapEntity::getInstanceId)
+                .map(instanceIds::get)
+                .filter(this::isConnected)
+                .forEach(client -> client.send(packet));
     }
 
     public static void main(String... args) {

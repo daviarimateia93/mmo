@@ -46,8 +46,8 @@ public class MapTest {
 
         assertThat(result, containsInAnyOrder(expected));
         assertThat(result.size(), equalTo(expected.length));
-
         assertThat(map.getEntity(entityA.getInstanceId()), equalTo(entityA));
+        assertThat(map.getEntity(entityA.getInstanceId(), Entity.class), equalTo(entityA));
     }
 
     @Test
@@ -77,8 +77,8 @@ public class MapTest {
 
         assertThat(result, containsInAnyOrder(expected));
         assertThat(result.size(), equalTo(expected.length));
-
         assertThat(map.findEntity(entityA.getInstanceId()), equalTo(Optional.empty()));
+        assertThat(map.findEntity(entityA.getInstanceId(), Entity.class), equalTo(Optional.empty()));
     }
 
     @Test

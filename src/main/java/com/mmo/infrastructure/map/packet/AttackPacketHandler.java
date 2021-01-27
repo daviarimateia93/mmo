@@ -12,7 +12,5 @@ public class AttackPacketHandler implements PacketHandler<AttackPacket> {
         Animate target = server.getMap().getEntity(packet.getTarget(), Animate.class);
 
         source.attack(target);
-
-        server.sendNearby(packet);
     }
 }

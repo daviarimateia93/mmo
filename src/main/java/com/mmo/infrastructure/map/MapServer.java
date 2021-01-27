@@ -14,12 +14,10 @@ import com.mmo.core.security.Decryptor;
 import com.mmo.core.security.Encryptor;
 import com.mmo.infrastructure.map.packet.HelloPacket;
 import com.mmo.infrastructure.server.Client;
-import com.mmo.infrastructure.server.ClientPacketReceiveSubscriber;
-import com.mmo.infrastructure.server.ClientPacketSendSubscriber;
 import com.mmo.infrastructure.server.Packet;
 import com.mmo.infrastructure.server.Server;
 
-public class MapServer implements ClientPacketSendSubscriber, ClientPacketReceiveSubscriber {
+public class MapServer {
 
     private static final UUID SERVER_SOURCE = UUID.fromString("39bb6712-db5c-4cae-9e67-143c3a97115d");
     private static final int SERVER_PORT = 5555;
@@ -69,8 +67,8 @@ public class MapServer implements ClientPacketSendSubscriber, ClientPacketReceiv
                 .decryptor(decryptor)
                 .onClientConnect(this::confirmClientConnected)
                 .onClientDisconnect(this::removeClient)
-                .sendSubscriber(this)
-                .receiveSubscriber(this)
+                .sendSubscriber(this::onSend)
+                .receiveSubscriber(this::onReceive)
                 .build();
     }
 
@@ -94,8 +92,7 @@ public class MapServer implements ClientPacketSendSubscriber, ClientPacketReceiv
         }
     }
 
-    @Override
-    public void onReceive(Client client, Packet packet) {
+    private void onReceive(Client client, Packet packet) {
         logger.info("Received packet {} from client {}", packet, client);
 
         boolean connected = isConnected(client);
@@ -116,8 +113,7 @@ public class MapServer implements ClientPacketSendSubscriber, ClientPacketReceiv
         PacketHandlerDelegator.getInstance().delegate(map, packet);
     }
 
-    @Override
-    public void onSend(Client client, Packet packet) {
+    private void onSend(Client client, Packet packet) {
         logger.info("Sent packet {} to client {}", packet, client);
     }
 

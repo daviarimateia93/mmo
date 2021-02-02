@@ -20,7 +20,7 @@ public class HelloPacket implements Packet {
 
     private final UUID source;
 
-    private HelloPacket(UUID source) {
+    protected HelloPacket(UUID source) {
         this.source = source;
     }
 

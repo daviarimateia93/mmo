@@ -21,7 +21,7 @@ public class AttackPacket implements Packet {
     private final UUID source;
     private final UUID target;
 
-    private AttackPacket(UUID source, UUID target) {
+    protected AttackPacket(UUID source, UUID target) {
         this.source = source;
         this.target = target;
     }

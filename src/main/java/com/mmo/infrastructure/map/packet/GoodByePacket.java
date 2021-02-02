@@ -20,7 +20,7 @@ public class GoodByePacket implements Packet {
 
     private final UUID source;
 
-    private GoodByePacket(UUID source) {
+    protected GoodByePacket(UUID source) {
         this.source = source;
     }
 

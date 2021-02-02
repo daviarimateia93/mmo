@@ -23,6 +23,7 @@ import com.mmo.infrastructure.server.Server;
 
 public class MapServer {
 
+    @SuppressWarnings("unused")
     private static final UUID SERVER_SOURCE = UUID.fromString("39bb6712-db5c-4cae-9e67-143c3a97115d");
     private static final int SERVER_PORT = 5555;
     private static final String SERVER_CIPHER_KEY = "Bar12345Bar12345";
@@ -101,12 +102,11 @@ public class MapServer {
 
     private synchronized void removeClient(Client client) {
         if (isConnected(client)) {
-            // TODO
-            GoodByePacket.builder().build(SERVER_SOURCE, new byte[0]);
-
             UUID instanceId = clients.remove(client);
             instanceIds.remove(instanceId);
             logger.info("Client has disconnected {}", client);
+
+            sendNearby(GoodByePacket.builder().build(instanceId, new byte[0]));
         }
     }
 
@@ -118,8 +118,7 @@ public class MapServer {
         if (!connected && packet instanceof HelloPacket) {
             addClient(client, packet.getSource());
 
-            // TODO
-            HelloPacket.builder().build(SERVER_SOURCE, new byte[0]);
+            sendNearby(HelloPacket.builder().build(packet.getSource(), new byte[0]));
             return;
         }
 

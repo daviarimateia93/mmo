@@ -83,7 +83,7 @@ public class MapServer {
     }
 
     private void confirmClientConnected(Client client) {
-        logger.info("Client has connected {}, waiting for HelloPacket", client);
+        logger.info("Client bound {}, waiting for HelloPacket", client);
 
         Executors.newSingleThreadScheduledExecutor()
                 .schedule(() -> {
@@ -104,6 +104,7 @@ public class MapServer {
         if (isConnected(client)) {
             UUID instanceId = clients.remove(client);
             instanceIds.remove(instanceId);
+
             logger.info("Client has disconnected {}", client);
 
             sendNearby(GoodByePacket.builder().build(instanceId, new byte[0]));
@@ -118,11 +119,15 @@ public class MapServer {
         if (!connected && packet instanceof HelloPacket) {
             addClient(client, packet.getSource());
 
+            logger.info("Client has sent HelloPacket, it is now connected");
+
             sendNearby(HelloPacket.builder().build(packet.getSource(), new byte[0]));
             return;
         }
 
         if (!connected) {
+            logger.info("Client is not connected, forcing disconnect");
+
             disconnect(client);
             return;
         }

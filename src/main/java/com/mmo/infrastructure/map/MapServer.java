@@ -15,6 +15,7 @@ import com.mmo.core.map.MapEntity;
 import com.mmo.core.player.Player;
 import com.mmo.core.security.Decryptor;
 import com.mmo.core.security.Encryptor;
+import com.mmo.infrastructure.map.packet.GoodByePacket;
 import com.mmo.infrastructure.map.packet.HelloPacket;
 import com.mmo.infrastructure.server.Client;
 import com.mmo.infrastructure.server.Packet;
@@ -100,6 +101,9 @@ public class MapServer {
 
     private synchronized void removeClient(Client client) {
         if (isConnected(client)) {
+            // TODO
+            GoodByePacket.builder().build(SERVER_SOURCE, new byte[0]);
+
             UUID instanceId = clients.remove(client);
             instanceIds.remove(instanceId);
             logger.info("Client has disconnected {}", client);
@@ -114,6 +118,7 @@ public class MapServer {
         if (!connected && packet instanceof HelloPacket) {
             addClient(client, packet.getSource());
 
+            // TODO
             HelloPacket.builder().build(SERVER_SOURCE, new byte[0]);
             return;
         }

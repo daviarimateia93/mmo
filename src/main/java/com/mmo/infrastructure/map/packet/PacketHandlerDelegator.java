@@ -1,11 +1,10 @@
-package com.mmo.infrastructure.map;
+package com.mmo.infrastructure.map.packet;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mmo.infrastructure.map.packet.AttackPacket;
-import com.mmo.infrastructure.map.packet.AttackPacketHandler;
+import com.mmo.infrastructure.map.MapServer;
 import com.mmo.infrastructure.server.Packet;
 
 import lombok.EqualsAndHashCode;
@@ -28,7 +27,7 @@ public class PacketHandlerDelegator {
     }
 
     private PacketHandlerDelegator() {
-        bind(AttackPacket.class, new AttackPacketHandler());
+
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -40,7 +39,7 @@ public class PacketHandlerDelegator {
         handler.handle(server, packet);
     }
 
-    private void bind(Class<? extends Packet> type, PacketHandler<?> handler) {
+    public <T extends Packet> void bind(Class<T> type, PacketHandler<T> handler) {
         handlers.put(type, handler);
     }
 }

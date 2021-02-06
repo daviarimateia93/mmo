@@ -22,6 +22,7 @@ public class AnimateTest {
                 Position.builder()
                         .x(10L)
                         .y(15L)
+                        .z(10L)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -43,6 +44,7 @@ public class AnimateTest {
                 Position.builder()
                         .x(20L)
                         .y(25L)
+                        .z(10L)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -87,6 +89,7 @@ public class AnimateTest {
                 Position.builder()
                         .x(10L)
                         .y(15L)
+                        .z(10L)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -107,6 +110,7 @@ public class AnimateTest {
         Position expected = Position.builder()
                 .x(20L)
                 .y(25L)
+                .z(15L)
                 .build();
 
         animate.move(expected);

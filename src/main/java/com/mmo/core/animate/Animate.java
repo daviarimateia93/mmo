@@ -107,6 +107,16 @@ public abstract class Animate implements MapEntity {
             current.decrementY(distance);
         }
 
+        if (current.getZ() < target.getZ()) {
+            long difference = target.getZ() - current.getZ();
+            long distance = speed > difference ? difference : speed;
+            current.incrementZ(distance);
+        } else {
+            long difference = current.getZ() - target.getZ();
+            long distance = speed > difference ? difference : speed;
+            current.decrementZ(distance);
+        }
+
         if (hasFinishedMoving(current, target)) {
             lastMoveStartTime = null;
         }

@@ -12,12 +12,29 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10L)
                 .y(10L)
+                .z(10L)
                 .build();
 
         position.incrementX(10);
 
         assertThat(position.getX(), equalTo(20L));
         assertThat(position.getY(), equalTo(10L));
+        assertThat(position.getZ(), equalTo(10L));
+    }
+
+    @Test
+    public void incrementZ() {
+        Position position = Position.builder()
+                .x(10L)
+                .y(10L)
+                .z(10L)
+                .build();
+
+        position.incrementZ(10);
+
+        assertThat(position.getX(), equalTo(10L));
+        assertThat(position.getY(), equalTo(10L));
+        assertThat(position.getZ(), equalTo(20L));
     }
 
     @Test
@@ -25,12 +42,14 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10L)
                 .y(10L)
+                .z(10L)
                 .build();
 
         position.incrementY(10);
 
         assertThat(position.getX(), equalTo(10L));
         assertThat(position.getY(), equalTo(20L));
+        assertThat(position.getZ(), equalTo(10L));
     }
 
     @Test
@@ -38,12 +57,14 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10L)
                 .y(10L)
+                .z(10L)
                 .build();
 
         position.decrementX(10);
 
         assertThat(position.getX(), equalTo(0L));
         assertThat(position.getY(), equalTo(10L));
+        assertThat(position.getZ(), equalTo(10L));
     }
 
     @Test
@@ -51,12 +72,29 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10L)
                 .y(10L)
+                .z(10L)
                 .build();
 
         position.decrementY(10);
 
         assertThat(position.getX(), equalTo(10L));
         assertThat(position.getY(), equalTo(0L));
+        assertThat(position.getZ(), equalTo(10L));
+    }
+
+    @Test
+    public void decrementZ() {
+        Position position = Position.builder()
+                .x(10L)
+                .y(10L)
+                .z(10L)
+                .build();
+
+        position.decrementZ(10);
+
+        assertThat(position.getX(), equalTo(10L));
+        assertThat(position.getY(), equalTo(10L));
+        assertThat(position.getZ(), equalTo(0L));
     }
 
     @Test
@@ -64,11 +102,13 @@ public class PositionTest {
         Position basePosition = Position.builder()
                 .x(10L)
                 .y(10L)
+                .z(10L)
                 .build();
 
         Position testingPosition = Position.builder()
                 .x(20L)
                 .y(15L)
+                .z(15L)
                 .build();
 
         boolean expected = true;
@@ -82,11 +122,13 @@ public class PositionTest {
         Position basePosition = Position.builder()
                 .x(10L)
                 .y(10L)
+                .z(10L)
                 .build();
 
         Position testingPosition = Position.builder()
                 .x(20L)
                 .y(15L)
+                .z(15L)
                 .build();
 
         boolean expected = false;

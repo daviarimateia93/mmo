@@ -1,6 +1,6 @@
 package com.mmo.core.property;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,13 +22,13 @@ public class PropertyModifier implements MapInstance {
     private final PropertyModifierAction action;
     private final Integer value;
     private final boolean persisted;
-    private final ZonedDateTime expiration;
+    private final OffsetDateTime expiration;
 
     @Builder
     public PropertyModifier(
             @NonNull PropertyModifierAction action,
             @NonNull Integer value,
-            ZonedDateTime expiration,
+            OffsetDateTime expiration,
             boolean persisted) {
 
         if (Objects.nonNull(expiration) && !persisted) {
@@ -41,7 +41,7 @@ public class PropertyModifier implements MapInstance {
         this.persisted = persisted;
     }
 
-    public Optional<ZonedDateTime> getExpiration() {
+    public Optional<OffsetDateTime> getExpiration() {
         return Optional.ofNullable(expiration);
     }
 
@@ -50,6 +50,6 @@ public class PropertyModifier implements MapInstance {
             return false;
         }
 
-        return expiration.isBefore(ZonedDateTime.now());
+        return expiration.isBefore(OffsetDateTime.now());
     }
 }

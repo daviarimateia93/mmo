@@ -3,7 +3,7 @@ package com.mmo.core.attribute;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +41,7 @@ public class AttributesTest {
                 .action(PropertyModifierAction.DECREMENT)
                 .attribute(Attribute.HP)
                 .value(5)
-                .expiration(ZonedDateTime.now().plusSeconds(2))
+                .expiration(OffsetDateTime.now().plusSeconds(2))
                 .persisted(true)
                 .build();
 

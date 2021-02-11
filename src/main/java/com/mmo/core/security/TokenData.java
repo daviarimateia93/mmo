@@ -1,6 +1,6 @@
 package com.mmo.core.security;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import lombok.AccessLevel;
@@ -18,14 +18,14 @@ public class TokenData {
     private static final int TOKEN_EXPIRATION_MINUTES = 15;
 
     private final UUID source;
-    private final ZonedDateTime creation;
-    private final ZonedDateTime expiration;
+    private final OffsetDateTime creation;
+    private final OffsetDateTime expiration;
 
     @Builder(access = AccessLevel.PROTECTED)
     private TokenData(
             @NonNull UUID source,
-            @NonNull ZonedDateTime creation,
-            @NonNull ZonedDateTime expiration) {
+            @NonNull OffsetDateTime creation,
+            @NonNull OffsetDateTime expiration) {
 
         this.source = source;
         this.creation = creation;
@@ -33,7 +33,7 @@ public class TokenData {
     }
 
     public boolean isExpired() {
-        return expiration.isBefore(ZonedDateTime.now());
+        return expiration.isBefore(OffsetDateTime.now());
     }
 
     public String getToken() {
@@ -45,13 +45,13 @@ public class TokenData {
 
         return TokenData.builder()
                 .source(UUID.fromString(parts[0]))
-                .creation(ZonedDateTime.parse(parts[1]))
-                .expiration(ZonedDateTime.parse(parts[2]))
+                .creation(OffsetDateTime.parse(parts[1]))
+                .expiration(OffsetDateTime.parse(parts[2]))
                 .build();
     }
 
     public static TokenData create(UUID source) {
-        ZonedDateTime now = ZonedDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now();
 
         return TokenData.builder()
                 .source(source)

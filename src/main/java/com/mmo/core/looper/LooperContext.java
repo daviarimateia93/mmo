@@ -2,7 +2,7 @@ package com.mmo.core.looper;
 
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -24,11 +24,11 @@ public class LooperContext {
 
     }
 
-    public ZonedDateTime getTickDateTime() {
+    public OffsetDateTime getTickDateTime() {
         Instant instant = Instant.ofEpochMilli(tick);
         ZoneId zoneId = ZoneId.systemDefault();
 
-        return ZonedDateTime.ofInstant(instant, zoneId);
+        return OffsetDateTime.ofInstant(instant, zoneId);
     }
 
     public Long getMillisDuration() {

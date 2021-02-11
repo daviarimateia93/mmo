@@ -3,7 +3,7 @@ package com.mmo.core.security;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,8 @@ public class TokenDataTest {
     @Test
     public void parse() {
         UUID source = UUID.randomUUID();
-        ZonedDateTime creation = ZonedDateTime.now();
-        ZonedDateTime expiration = creation.plusDays(1);
+        OffsetDateTime creation = OffsetDateTime.now();
+        OffsetDateTime expiration = creation.plusDays(1);
 
         String token = String.format("%s@%s@%s", source, creation, expiration);
 

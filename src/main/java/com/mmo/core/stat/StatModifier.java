@@ -1,6 +1,6 @@
 package com.mmo.core.stat;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 
 import com.mmo.core.property.PropertyModifier;
 import com.mmo.core.property.PropertyModifierAction;
@@ -18,7 +18,7 @@ public class StatModifier {
     private PropertyModifierAction action;
     private Stat stat;
     private Integer value;
-    private ZonedDateTime expiration;
+    private OffsetDateTime expiration;
     private boolean persisted;
 
     @Builder
@@ -26,7 +26,7 @@ public class StatModifier {
             PropertyModifierAction action,
             Stat stat,
             Integer value,
-            ZonedDateTime expiration,
+            OffsetDateTime expiration,
             boolean persisted) {
 
         this.action = action;

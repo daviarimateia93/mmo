@@ -31,7 +31,7 @@ public class PacketHandlerDelegator {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void delegate(MapServer server, Packet packet) {
+    public void delegate(MapServer server, Packet packet) throws PacketHandlerNotBindedException {
         PacketHandler handler = Optional.ofNullable(handlers.get(packet.getClass()))
                 .orElseThrow(
                         () -> new PacketHandlerNotBindedException("There is no packet handler for packet %s", packet));

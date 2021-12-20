@@ -13,7 +13,9 @@ public class GoodByePacketTest {
     public void serializeAndDeserialize() {
         UUID source = UUID.randomUUID();
 
-        GoodByePacket expected = new GoodByePacket(source);
+        GoodByePacket expected = GoodByePacket.builder()
+                .source(source)
+                .build();
 
         GoodByePacket result = GoodByePacket.binaryBuilder()
                 .build(source, expected.toBytes());

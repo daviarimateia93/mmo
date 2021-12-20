@@ -7,20 +7,27 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-public class HelloPacketTest {
+import com.mmo.core.map.Position;
+
+public class MovePacketTest {
 
     @Test
     public void serializeAndDeserialize() {
         UUID source = UUID.randomUUID();
 
-        HelloPacket expected = HelloPacket.builder()
+        MovePacket expected = MovePacket.builder()
                 .source(source)
+                .target(Position.builder()
+                        .x(10L)
+                        .y(15L)
+                        .z(20L)
+                        .build())
                 .build();
 
-        HelloPacket result = HelloPacket.binaryBuilder()
+        MovePacket result = MovePacket.binaryBuilder()
                 .build(source, expected.toBytes());
 
         assertThat(result, equalTo(expected));
-        assertThat(result.getAlias(), equalTo("HELLO"));
+        assertThat(result.getAlias(), equalTo("MOVE"));
     }
 }

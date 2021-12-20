@@ -12,9 +12,11 @@ public class AttackPacketTest {
     @Test
     public void serializeAndDeserialize() {
         UUID source = UUID.randomUUID();
-        UUID target = UUID.randomUUID();
 
-        AttackPacket expected = new AttackPacket(source, target);
+        AttackPacket expected = AttackPacket.builder()
+                .source(source)
+                .target(UUID.randomUUID())
+                .build();
 
         AttackPacket result = AttackPacket.binaryBuilder()
                 .build(source, expected.toBytes());

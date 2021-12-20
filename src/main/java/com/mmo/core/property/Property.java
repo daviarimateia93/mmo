@@ -38,7 +38,7 @@ public class Property implements LooperUpdater {
         return finalValue;
     }
 
-    public void modify(PropertyModifier modifier) {
+    public void modify(PropertyModifier modifier) throws PropertyModifierIllegalException {
         if (modifier.isPersisted()) {
             modifiers.add(modifier);
         }
@@ -101,7 +101,7 @@ public class Property implements LooperUpdater {
     }
 
     @Override
-    public void update(LooperContext context) {
+    public void update(LooperContext context) throws PropertyModifierIllegalException {
         releaveExpiredModifiers();
     }
 }

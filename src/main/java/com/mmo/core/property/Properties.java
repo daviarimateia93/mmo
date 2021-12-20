@@ -29,7 +29,7 @@ public class Properties implements Iterable<Property> {
         return Optional.ofNullable(values.get(name));
     }
 
-    public Property getRequired(String name) {
+    public Property getRequired(String name) throws PropertyNotFoundException {
         return get(name).orElseThrow(() -> new PropertyNotFoundException(name));
     }
 

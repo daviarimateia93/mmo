@@ -38,7 +38,7 @@ public class Game {
         return map;
     }
 
-    public void run(Map map) {
+    public void run(Map map) throws GameAlreadyRunningException {
         if (isRunning()) {
             throw new GameAlreadyRunningException("Game is already running");
         }
@@ -48,7 +48,7 @@ public class Game {
         looper.run();
     }
 
-    public void stop() {
+    public void stop() throws GameNotRunningException {
         if (!isRunning()) {
             throw new GameNotRunningException("Game is not running");
         }

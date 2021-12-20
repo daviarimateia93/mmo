@@ -1,4 +1,4 @@
-package com.mmo.core;
+package com.mmo.core.utils;
 
 public abstract class RuntimeException extends java.lang.RuntimeException {
 

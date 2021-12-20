@@ -1,6 +1,6 @@
 package com.mmo.infrastructure.security;
 
-import com.mmo.core.RuntimeException;
+import com.mmo.core.utils.RuntimeException;
 
 public abstract class CipherException extends RuntimeException {
 

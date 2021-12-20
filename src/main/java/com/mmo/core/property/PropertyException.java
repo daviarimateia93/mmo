@@ -1,6 +1,6 @@
 package com.mmo.core.property;
 
-import com.mmo.core.RuntimeException;
+import com.mmo.core.utils.RuntimeException;
 
 public abstract class PropertyException extends RuntimeException {
 

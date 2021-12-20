@@ -1,4 +1,4 @@
-package com.mmo.core.security;
+package com.mmo.infrastructure.security;
 
 import com.mmo.core.RuntimeException;
 

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import com.mmo.core.security.Decryptor;
 import com.mmo.core.security.Encryptor;
+import com.mmo.infrastructure.security.AESDecryptor;
+import com.mmo.infrastructure.security.AESEncryptor;
 
 import lombok.Data;
 
@@ -20,11 +22,11 @@ public class ServerClientTest {
 
         String cipherKey = "Bar12345Bar12345";
 
-        Encryptor encryptor = Encryptor.builder()
+        Encryptor encryptor = AESEncryptor.builder()
                 .key(cipherKey)
                 .build();
 
-        Decryptor decryptor = Decryptor.builder()
+        Decryptor decryptor = AESDecryptor.builder()
                 .key(cipherKey)
                 .build();
 

@@ -18,6 +18,8 @@ import com.mmo.core.security.Encryptor;
 import com.mmo.infrastructure.map.packet.GoodByePacket;
 import com.mmo.infrastructure.map.packet.HelloPacket;
 import com.mmo.infrastructure.map.packet.PacketHandlerDelegator;
+import com.mmo.infrastructure.security.AESDecryptor;
+import com.mmo.infrastructure.security.AESEncryptor;
 import com.mmo.infrastructure.server.Client;
 import com.mmo.infrastructure.server.Packet;
 import com.mmo.infrastructure.server.Server;
@@ -64,11 +66,11 @@ public class MapServer {
     }
 
     private Server createServer() {
-        Encryptor encryptor = Encryptor.builder()
+        Encryptor encryptor = AESEncryptor.builder()
                 .key(SERVER_CIPHER_KEY)
                 .build();
 
-        Decryptor decryptor = Decryptor.builder()
+        Decryptor decryptor = AESDecryptor.builder()
                 .key(SERVER_CIPHER_KEY)
                 .build();
 

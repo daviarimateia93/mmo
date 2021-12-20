@@ -1,4 +1,4 @@
-package com.mmo.core.security;
+package com.mmo.infrastructure.security;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -6,11 +6,11 @@ import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class EncryptorDecryptorTest {
+public class AESEncryptorDecryptorTest {
 
     private static String key;
-    private static Encryptor encryptor;
-    private static Decryptor decryptor;
+    private static AESEncryptor encryptor;
+    private static AESDecryptor decryptor;
     private static String decryptedText;
     private static String encryptedText;
 
@@ -20,11 +20,11 @@ public class EncryptorDecryptorTest {
         decryptedText = "my cool string";
         encryptedText = "2tWOHxmfUw0LfGHCJ67UpQ==";
 
-        encryptor = Encryptor.builder()
+        encryptor = AESEncryptor.builder()
                 .key(key)
                 .build();
 
-        decryptor = Decryptor.builder()
+        decryptor = AESDecryptor.builder()
                 .key(key)
                 .build();
     }

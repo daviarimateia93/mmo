@@ -3,10 +3,11 @@ package com.mmo.infrastructure.map.packet;
 import java.util.UUID;
 
 import com.mmo.infrastructure.server.Packet;
-import com.mmo.infrastructure.server.PacketBuilder;
+import com.mmo.infrastructure.server.PacketBinaryBuilder;
 import com.mmo.infrastructure.server.PacketReader;
 import com.mmo.infrastructure.server.PacketWriter;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -21,13 +22,14 @@ public class AttackPacket implements Packet {
     private final UUID source;
     private final UUID target;
 
+    @Builder
     protected AttackPacket(UUID source, UUID target) {
         this.source = source;
         this.target = target;
     }
 
-    public static AttackPacketBuilder builder() {
-        return new AttackPacketBuilder();
+    public static AttackPacketBinaryBuilder binaryBuilder() {
+        return new AttackPacketBinaryBuilder();
     }
 
     @Override
@@ -43,13 +45,15 @@ public class AttackPacket implements Packet {
         }
     }
 
-    public static class AttackPacketBuilder implements PacketBuilder<AttackPacket> {
+    public static class AttackPacketBinaryBuilder implements PacketBinaryBuilder<AttackPacket> {
 
         @Override
         public AttackPacket build(UUID source, byte[] bytes) {
             try (PacketReader reader = new PacketReader(bytes)) {
-                UUID target = reader.readUUID();
-                return new AttackPacket(source, target);
+                return builder()
+                        .source(source)
+                        .target(reader.readUUID())
+                        .build();
             }
         }
     }

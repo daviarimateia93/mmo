@@ -3,10 +3,11 @@ package com.mmo.infrastructure.map.packet;
 import java.util.UUID;
 
 import com.mmo.infrastructure.server.Packet;
-import com.mmo.infrastructure.server.PacketBuilder;
+import com.mmo.infrastructure.server.PacketBinaryBuilder;
 import com.mmo.infrastructure.server.PacketReader;
 import com.mmo.infrastructure.server.PacketWriter;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -20,12 +21,13 @@ public class HelloPacket implements Packet {
 
     private final UUID source;
 
+    @Builder
     protected HelloPacket(UUID source) {
         this.source = source;
     }
 
-    public static HelloPacketBuilder builder() {
-        return new HelloPacketBuilder();
+    public static HelloPacketBinaryBuilder binaryBuilder() {
+        return new HelloPacketBinaryBuilder();
     }
 
     @Override
@@ -40,12 +42,14 @@ public class HelloPacket implements Packet {
         }
     }
 
-    public static class HelloPacketBuilder implements PacketBuilder<HelloPacket> {
+    public static class HelloPacketBinaryBuilder implements PacketBinaryBuilder<HelloPacket> {
 
         @Override
         public HelloPacket build(UUID source, byte[] bytes) {
             try (PacketReader reader = new PacketReader(bytes)) {
-                return new HelloPacket(source);
+                return builder()
+                        .source(source)
+                        .build();
             }
         }
     }

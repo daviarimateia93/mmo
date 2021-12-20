@@ -16,7 +16,7 @@ public class AttackPacketTest {
 
         AttackPacket expected = new AttackPacket(source, target);
 
-        AttackPacket result = AttackPacket.builder()
+        AttackPacket result = AttackPacket.binaryBuilder()
                 .build(source, expected.toBytes());
 
         assertThat(result, equalTo(expected));

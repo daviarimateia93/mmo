@@ -15,7 +15,7 @@ public class GoodByePacketTest {
 
         GoodByePacket expected = new GoodByePacket(source);
 
-        GoodByePacket result = GoodByePacket.builder()
+        GoodByePacket result = GoodByePacket.binaryBuilder()
                 .build(source, expected.toBytes());
 
         assertThat(result, equalTo(expected));

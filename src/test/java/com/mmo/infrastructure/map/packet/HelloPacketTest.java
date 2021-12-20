@@ -15,7 +15,7 @@ public class HelloPacketTest {
 
         HelloPacket expected = new HelloPacket(source);
 
-        HelloPacket result = HelloPacket.builder()
+        HelloPacket result = HelloPacket.binaryBuilder()
                 .build(source, expected.toBytes());
 
         assertThat(result, equalTo(expected));

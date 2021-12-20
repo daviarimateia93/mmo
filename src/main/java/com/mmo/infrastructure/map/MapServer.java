@@ -110,7 +110,9 @@ public class MapServer {
 
             logger.info("Client has disconnected {}", client);
 
-            sendNearby(GoodByePacket.builder().build(instanceId, new byte[0]));
+            sendNearby(GoodByePacket.builder()
+                    .source(instanceId)
+                    .build());
         }
     }
 
@@ -124,7 +126,9 @@ public class MapServer {
 
             logger.info("Client has sent HelloPacket, it is now connected");
 
-            sendNearby(HelloPacket.builder().build(packet.getSource(), new byte[0]));
+            sendNearby(HelloPacket.builder()
+                    .source(packet.getSource())
+                    .build());
             return;
         }
 

@@ -37,7 +37,7 @@ public class TestPacket implements Packet {
         return new TestPacketBuilder();
     }
 
-    public static class TestPacketBuilder implements PacketBuilder<TestPacket> {
+    public static class TestPacketBuilder implements PacketBinaryBuilder<TestPacket> {
 
         public TestPacket build(UUID source, String property1, Integer property2) {
             return new TestPacket(source, property1, property2);

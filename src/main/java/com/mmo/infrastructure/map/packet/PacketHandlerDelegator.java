@@ -32,11 +32,14 @@ public class PacketHandlerDelegator {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void delegate(MapServer server, Packet packet) throws PacketHandlerNotBindedException {
-        PacketHandler handler = Optional.ofNullable(handlers.get(packet.getClass()))
-                .orElseThrow(
-                        () -> new PacketHandlerNotBindedException("There is no packet handler for packet %s", packet));
+        PacketHandler handler = get(packet).orElseThrow(
+                () -> new PacketHandlerNotBindedException("There is no packet handler for packet %s", packet));
 
         handler.handle(server, packet);
+    }
+
+    private Optional<PacketHandler<?>> get(Packet packet) {
+        return Optional.ofNullable(handlers.get(packet.getClass()));
     }
 
     public <T extends Packet> void bind(Class<T> type, PacketHandler<T> handler) {

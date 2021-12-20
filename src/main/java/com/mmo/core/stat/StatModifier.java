@@ -15,11 +15,11 @@ import lombok.ToString;
 @ToString
 public class StatModifier {
 
-    private PropertyModifierAction action;
-    private Stat stat;
-    private Integer value;
-    private OffsetDateTime expiration;
-    private boolean persisted;
+    private final PropertyModifierAction action;
+    private final Stat stat;
+    private final Integer value;
+    private final OffsetDateTime expiration;
+    private final boolean persisted;
 
     @Builder
     private StatModifier(

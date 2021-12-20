@@ -20,7 +20,7 @@ public class PacketWriter implements Closeable {
     }
 
     @Override
-    public void close() {
+    public void close() throws PacketCloseException {
         try {
             byteArrayOutputStream.close();
             dataOutputStream.close();

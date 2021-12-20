@@ -16,7 +16,7 @@ public class PacketReader implements Closeable {
     }
 
     @Override
-    public void close() {
+    public void close() throws PacketCloseException {
         try {
             byteArrayInputStream.close();
             dataInputStream.close();

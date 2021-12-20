@@ -128,7 +128,7 @@ public class Client {
         }
     }
 
-    public void disconnect() {
+    public void disconnect() throws ClientDisconnectException {
         try {
             socket.close();
         } catch (Exception exception) {

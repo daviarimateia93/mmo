@@ -23,7 +23,9 @@ public class PacketFactory {
 
     }
 
-    public <T extends Packet> PacketBuilder<T> getBuilder(UUID alias) {
+    public <T extends Packet> PacketBuilder<T> getBuilder(UUID alias)
+            throws PacketBuilderCastException, PacketBuilderNotFoundException {
+        
         return Optional.ofNullable(builders.get(alias))
                 .map(builder -> this.<T>cast(builder))
                 .orElseThrow(

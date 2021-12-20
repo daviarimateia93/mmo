@@ -56,7 +56,7 @@ public class Server {
         return running;
     }
 
-    public void run() {
+    public void run() throws ServerStartException, ServerListeningException {
         try {
             serverSocket = new ServerSocket(port);
             running = true;
@@ -66,7 +66,7 @@ public class Server {
         }
     }
 
-    public void stop() {
+    public void stop() throws ServerStopException {
         try {
             serverSocket.close();
         } catch (Exception exception) {

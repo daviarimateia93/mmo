@@ -15,6 +15,7 @@ import com.mmo.core.map.MapEntity;
 import com.mmo.core.player.Player;
 import com.mmo.core.security.Decryptor;
 import com.mmo.core.security.Encryptor;
+import com.mmo.infrastructure.config.ConfigProvider;
 import com.mmo.infrastructure.map.packet.AttackPacket;
 import com.mmo.infrastructure.map.packet.GoodByePacket;
 import com.mmo.infrastructure.map.packet.HelloPacket;
@@ -29,12 +30,11 @@ import com.mmo.infrastructure.server.Server;
 
 public class MapServer {
 
-    private static final int HELLO_PACKET_WAITING_DELAY_IN_MINUTES = 5;
-    private static final Logger logger = LoggerFactory.getLogger(MapServer.class);
+    private static final String CONFIG_MAP_SERVER_HELLO_PACKET_WAITING_DELAY_IN_MINUTES = "map.server.hello.packet.waiting.delay.in.minutes";
+    private static final String CONFIG_MAP_SERVER_PORT = "map.server.port";
+    private static final String CONFIG_MAP_SERVER_CIPHER_KEY = "map.server.cipher.key";
 
-    protected static final String SERVER_HOST = "localhost";
-    protected static final int SERVER_PORT = 5555;
-    protected static final String SERVER_CIPHER_KEY = "Bar12345Bar12345";
+    private static final Logger logger = LoggerFactory.getLogger(MapServer.class);
 
     private final ConcurrentHashMap<Client, UUID> clients = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Client> instanceIds = new ConcurrentHashMap<>();
@@ -75,15 +75,15 @@ public class MapServer {
 
     private Server createServer() {
         Encryptor encryptor = AESEncryptor.builder()
-                .key(SERVER_CIPHER_KEY)
+                .key(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_CIPHER_KEY))
                 .build();
 
         Decryptor decryptor = AESDecryptor.builder()
-                .key(SERVER_CIPHER_KEY)
+                .key(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_CIPHER_KEY))
                 .build();
 
         return Server.builder()
-                .port(SERVER_PORT)
+                .port(ConfigProvider.getInstance().getInteger(CONFIG_MAP_SERVER_PORT))
                 .encryptor(encryptor)
                 .decryptor(decryptor)
                 .onClientConnect(this::confirmClientConnected)
@@ -103,7 +103,9 @@ public class MapServer {
                     } else {
                         disconnect(client);
                     }
-                }, HELLO_PACKET_WAITING_DELAY_IN_MINUTES, TimeUnit.MINUTES);
+                },
+                        ConfigProvider.getInstance().getLong(CONFIG_MAP_SERVER_HELLO_PACKET_WAITING_DELAY_IN_MINUTES),
+                        TimeUnit.MINUTES);
     }
 
     private synchronized void addClient(Client client, UUID instanceId) {
@@ -184,7 +186,7 @@ public class MapServer {
 
     protected static void registerPackets() {
         logger.info("Registering packets");
-        
+
         PacketFactory packetFactory = PacketFactory.getInstance();
         packetFactory.register(HelloPacket.ALIAS, HelloPacket.binaryBuilder());
         packetFactory.register(GoodByePacket.ALIAS, GoodByePacket.binaryBuilder());

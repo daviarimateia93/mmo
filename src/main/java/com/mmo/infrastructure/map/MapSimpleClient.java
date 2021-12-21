@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.mmo.core.security.Decryptor;
 import com.mmo.core.security.Encryptor;
+import com.mmo.infrastructure.config.ConfigProvider;
 import com.mmo.infrastructure.map.packet.HelloPacket;
 import com.mmo.infrastructure.security.AESDecryptor;
 import com.mmo.infrastructure.security.AESEncryptor;
@@ -11,6 +12,10 @@ import com.mmo.infrastructure.server.Client;
 import com.mmo.infrastructure.server.Packet;
 
 public class MapSimpleClient {
+
+    private static final String CONFIG_MAP_SERVER_HOST = "map.server.host";
+    private static final String CONFIG_MAP_SERVER_PORT = "map.server.port";
+    private static final String CONFIG_MAP_SERVER_CIPHER_KEY = "map.server.cipher.key";
 
     private final Client client;
 
@@ -24,16 +29,16 @@ public class MapSimpleClient {
 
     private Client createClient() {
         Encryptor encryptor = AESEncryptor.builder()
-                .key(MapServer.SERVER_CIPHER_KEY)
+                .key(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_CIPHER_KEY))
                 .build();
 
         Decryptor decryptor = AESDecryptor.builder()
-                .key(MapServer.SERVER_CIPHER_KEY)
+                .key(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_CIPHER_KEY))
                 .build();
 
         Client client = Client.clientBuilder()
-                .host(MapServer.SERVER_HOST)
-                .port(MapServer.SERVER_PORT)
+                .host(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_HOST))
+                .port(ConfigProvider.getInstance().getInteger(CONFIG_MAP_SERVER_PORT))
                 .encryptor(encryptor)
                 .decryptor(decryptor)
                 .sendSubscriber(this::onSend)
@@ -53,7 +58,7 @@ public class MapSimpleClient {
 
     public static void main(String... args) {
         MapServer.registerPackets();
-        
+
         new MapSimpleClient();
     }
 }

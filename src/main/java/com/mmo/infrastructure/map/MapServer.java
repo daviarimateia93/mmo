@@ -15,13 +15,16 @@ import com.mmo.core.map.MapEntity;
 import com.mmo.core.player.Player;
 import com.mmo.core.security.Decryptor;
 import com.mmo.core.security.Encryptor;
+import com.mmo.infrastructure.map.packet.AttackPacket;
 import com.mmo.infrastructure.map.packet.GoodByePacket;
 import com.mmo.infrastructure.map.packet.HelloPacket;
+import com.mmo.infrastructure.map.packet.MovePacket;
 import com.mmo.infrastructure.map.packet.PacketHandlerDelegator;
 import com.mmo.infrastructure.security.AESDecryptor;
 import com.mmo.infrastructure.security.AESEncryptor;
 import com.mmo.infrastructure.server.Client;
 import com.mmo.infrastructure.server.Packet;
+import com.mmo.infrastructure.server.PacketFactory;
 import com.mmo.infrastructure.server.Server;
 
 public class MapServer {
@@ -29,8 +32,9 @@ public class MapServer {
     private static final int HELLO_PACKET_WAITING_DELAY_IN_MINUTES = 5;
     private static final Logger logger = LoggerFactory.getLogger(MapServer.class);
 
+    protected static final String SERVER_HOST = "localhost";
     protected static final int SERVER_PORT = 5555;
-    protected static final String SERVER_CIPHER_KEY = "B@R112345Bar!@54321";
+    protected static final String SERVER_CIPHER_KEY = "Bar12345Bar12345";
 
     private final ConcurrentHashMap<Client, UUID> clients = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Client> instanceIds = new ConcurrentHashMap<>();
@@ -178,7 +182,19 @@ public class MapServer {
                 .forEach(client -> client.send(packet));
     }
 
+    protected static void registerPackets() {
+        logger.info("Registering packets");
+    }
+
     public static void main(String... args) {
+        registerPackets();
+
+        PacketFactory packetFactory = PacketFactory.getInstance();
+        packetFactory.register(HelloPacket.ALIAS, HelloPacket.binaryBuilder());
+        packetFactory.register(GoodByePacket.ALIAS, GoodByePacket.binaryBuilder());
+        packetFactory.register(AttackPacket.ALIAS, AttackPacket.binaryBuilder());
+        packetFactory.register(MovePacket.ALIAS, MovePacket.binaryBuilder());
+
         new MapServer();
     }
 }

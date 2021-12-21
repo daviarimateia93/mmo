@@ -19,7 +19,7 @@ import lombok.ToString;
 @ToString
 public class MovePacket implements Packet {
 
-    private static final String ALIAS = "MOVE";
+    public static final String ALIAS = "MOVE";
 
     private final UUID source;
     private final Position target;

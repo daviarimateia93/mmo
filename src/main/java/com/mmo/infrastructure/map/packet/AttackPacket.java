@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class AttackPacket implements Packet {
 
-    private static final String ALIAS = "ATTACK";
+    public static final String ALIAS = "ATTACK";
 
     private final UUID source;
     private final UUID target;

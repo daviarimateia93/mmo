@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class HelloPacket implements Packet {
 
-    private static final String ALIAS = "HELLO";
+    public static final String ALIAS = "HELLO";
 
     private final UUID source;
 

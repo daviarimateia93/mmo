@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class GoodByePacket implements Packet {
 
-    private static final String ALIAS = "GOOD_BYE";
+    public static final String ALIAS = "GOOD_BYE";
 
     private final UUID source;
 

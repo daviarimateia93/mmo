@@ -143,28 +143,30 @@ public class MapServer {
 
         if (connected) {
             PacketHandlerDelegator.getInstance().delegate(this, packet);
-            return;
-        }
 
-        if (!connected && packet instanceof HelloPacket) {
-            PacketHandlerDelegator.getInstance().delegate(this, packet);
+            if (packet instanceof GoodByePacket) {
+                logger.info("Client has sent GoodByePacket, it will disconnect");
 
-            addClient(client, packet.getSource());
+                removeClient(client);
 
-            logger.info("Client has sent HelloPacket, it is now connected");
+                client.disconnect();
+            }
+        } else {
+            if (packet instanceof HelloPacket) {
+                PacketHandlerDelegator.getInstance().delegate(this, packet);
 
-            sendNearby(HelloPacket.builder()
-                    .source(packet.getSource())
-                    .build());
-            return;
-        }
+                addClient(client, packet.getSource());
 
-        if (!connected) {
-            logger.info("Client is not connected, forcing disconnect");
+                logger.info("Client has sent HelloPacket, it is now connected");
 
-            client.disconnect();
+                sendNearby(HelloPacket.builder()
+                        .source(packet.getSource())
+                        .build());
+            } else {
+                logger.info("Client is not connected, forcing disconnect");
 
-            return;
+                client.disconnect();
+            }
         }
     }
 

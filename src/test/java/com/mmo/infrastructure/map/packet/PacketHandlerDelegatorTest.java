@@ -24,7 +24,11 @@ public class PacketHandlerDelegatorTest {
         int property2 = 3;
 
         server = mock(MapServer.class);
-        packet = TestPacket.builder().build(source, property1, property2);
+        packet = TestPacket.builder()
+                .source(source)
+                .property1(property1)
+                .property2(property2)
+                .build();
     }
 
     @Test

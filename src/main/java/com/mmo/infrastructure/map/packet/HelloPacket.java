@@ -22,7 +22,7 @@ public class HelloPacket implements Packet {
     private final UUID source;
 
     @Builder
-    protected HelloPacket(UUID source) {
+    private HelloPacket(UUID source) {
         this.source = source;
     }
 

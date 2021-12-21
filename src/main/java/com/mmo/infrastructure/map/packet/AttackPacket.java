@@ -23,7 +23,7 @@ public class AttackPacket implements Packet {
     private final UUID target;
 
     @Builder
-    protected AttackPacket(UUID source, UUID target) {
+    private AttackPacket(UUID source, UUID target) {
         this.source = source;
         this.target = target;
     }

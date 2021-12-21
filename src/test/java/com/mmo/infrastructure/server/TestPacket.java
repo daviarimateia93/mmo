@@ -2,8 +2,10 @@ package com.mmo.infrastructure.server;
 
 import java.util.UUID;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 @Getter
@@ -17,7 +19,12 @@ public class TestPacket implements Packet {
     private final String property1;
     private final Integer property2;
 
-    private TestPacket(UUID source, String property1, Integer property2) {
+    @Builder
+    private TestPacket(
+            @NonNull UUID source,
+            @NonNull String property1,
+            @NonNull Integer property2) {
+
         this.source = source;
         this.property1 = property1;
         this.property2 = property2;
@@ -33,15 +40,11 @@ public class TestPacket implements Packet {
         return String.format("%s%d", property1, property2).getBytes();
     }
 
-    public static TestPacketBuilder builder() {
-        return new TestPacketBuilder();
+    public static TestPacketBinaryBuilder binaryBuilder() {
+        return new TestPacketBinaryBuilder();
     }
 
-    public static class TestPacketBuilder implements PacketBinaryBuilder<TestPacket> {
-
-        public TestPacket build(UUID source, String property1, Integer property2) {
-            return new TestPacket(source, property1, property2);
-        }
+    public static class TestPacketBinaryBuilder implements PacketBinaryBuilder<TestPacket> {
 
         @Override
         public TestPacket build(UUID source, byte[] bytes) {
@@ -50,7 +53,11 @@ public class TestPacket implements Packet {
             String property1 = string.substring(0, string.length() - 1);
             int property2 = Integer.valueOf(string.substring(string.length() - 1));
 
-            return new TestPacket(source, property1, property2);
+            return TestPacket.builder()
+                    .source(source)
+                    .property1(property1)
+                    .property2(property2)
+                    .build();
         }
     }
 }

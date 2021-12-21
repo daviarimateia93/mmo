@@ -18,7 +18,7 @@ public class ServerClientTest {
 
     @Test
     public void successfully() throws InterruptedException {
-        PacketFactory.getInstance().register(TestPacket.ALIAS, TestPacket.builder());
+        PacketFactory.getInstance().register(TestPacket.ALIAS, TestPacket.binaryBuilder());
 
         String cipherKey = "Bar12345Bar12345";
 
@@ -77,7 +77,12 @@ public class ServerClientTest {
         assertThat(clientConnected.value, notNullValue());
         assertThat(client.isConnected(), equalTo(true));
 
-        TestPacket serverPacket = TestPacket.builder().build(source, "abc", 3);
+        TestPacket serverPacket = TestPacket.builder()
+                .source(source)
+                .property1("abc")
+                .property2(3)
+                .build();
+
         clientConnected.value.send(serverPacket);
 
         Thread.sleep(1000);
@@ -85,7 +90,12 @@ public class ServerClientTest {
         // asserting client received server packet
         assertThat(clientReceiveSubscriber.packet, equalTo(serverPacket));
 
-        TestPacket clientPacket = TestPacket.builder().build(source, "def", 4);
+        TestPacket clientPacket = TestPacket.builder()
+                .source(source)
+                .property1("def")
+                .property2(4)
+                .build();
+
         client.send(clientPacket);
 
         Thread.sleep(1000);

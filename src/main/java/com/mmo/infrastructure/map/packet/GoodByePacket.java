@@ -22,7 +22,7 @@ public class GoodByePacket implements Packet {
     private final UUID source;
 
     @Builder
-    protected GoodByePacket(UUID source) {
+    private GoodByePacket(UUID source) {
         this.source = source;
     }
 

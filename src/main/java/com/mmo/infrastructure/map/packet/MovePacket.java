@@ -24,7 +24,7 @@ public class MovePacket implements Packet {
     private final Position target;
 
     @Builder
-    protected MovePacket(UUID source, Position target) {
+    private MovePacket(UUID source, Position target) {
         this.source = source;
         this.target = target;
     }

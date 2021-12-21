@@ -20,6 +20,8 @@ import com.mmo.infrastructure.map.packet.AttackPacket;
 import com.mmo.infrastructure.map.packet.GoodByePacket;
 import com.mmo.infrastructure.map.packet.HelloPacket;
 import com.mmo.infrastructure.map.packet.MovePacket;
+import com.mmo.infrastructure.map.server.handler.AttackPacketHandler;
+import com.mmo.infrastructure.map.server.handler.MovePacketHandler;
 import com.mmo.infrastructure.map.server.handler.PacketHandlerDelegator;
 import com.mmo.infrastructure.security.AESDecryptor;
 import com.mmo.infrastructure.security.AESEncryptor;
@@ -190,6 +192,9 @@ public class MapServer {
                 .bind(GoodByePacket.ALIAS, GoodByePacket.binaryBuilder())
                 .bind(AttackPacket.ALIAS, AttackPacket.binaryBuilder())
                 .bind(MovePacket.ALIAS, MovePacket.binaryBuilder());
+
+        PacketHandlerDelegator.getInstance().bind(AttackPacket.class, new AttackPacketHandler());
+        PacketHandlerDelegator.getInstance().bind(MovePacket.class, new MovePacketHandler());
 
         new MapServer();
     }

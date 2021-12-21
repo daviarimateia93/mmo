@@ -26,12 +26,11 @@ import com.mmo.infrastructure.server.Server;
 
 public class MapServer {
 
-    @SuppressWarnings("unused")
-    private static final UUID SERVER_SOURCE = UUID.fromString("39bb6712-db5c-4cae-9e67-143c3a97115d");
-    private static final int SERVER_PORT = 5555;
-    private static final String SERVER_CIPHER_KEY = "Bar12345Bar12345";
     private static final int HELLO_PACKET_WAITING_DELAY_IN_MINUTES = 5;
     private static final Logger logger = LoggerFactory.getLogger(MapServer.class);
+
+    protected static final int SERVER_PORT = 5555;
+    protected static final String SERVER_CIPHER_KEY = "B@R112345Bar!@54321";
 
     private final ConcurrentHashMap<Client, UUID> clients = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Client> instanceIds = new ConcurrentHashMap<>();

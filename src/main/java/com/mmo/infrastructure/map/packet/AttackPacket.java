@@ -10,6 +10,7 @@ import com.mmo.infrastructure.server.PacketWriter;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 @Getter
@@ -23,7 +24,7 @@ public class AttackPacket implements Packet {
     private final UUID target;
 
     @Builder
-    private AttackPacket(UUID source, UUID target) {
+    private AttackPacket(@NonNull UUID source, @NonNull UUID target) {
         this.source = source;
         this.target = target;
     }

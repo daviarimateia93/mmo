@@ -10,6 +10,7 @@ import com.mmo.infrastructure.server.PacketWriter;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 @Getter
@@ -22,7 +23,7 @@ public class HelloPacket implements Packet {
     private final UUID source;
 
     @Builder
-    private HelloPacket(UUID source) {
+    private HelloPacket(@NonNull UUID source) {
         this.source = source;
     }
 

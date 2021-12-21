@@ -11,6 +11,7 @@ import com.mmo.infrastructure.server.PacketWriter;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 @Getter
@@ -24,7 +25,7 @@ public class MovePacket implements Packet {
     private final Position target;
 
     @Builder
-    private MovePacket(UUID source, Position target) {
+    private MovePacket(@NonNull UUID source, @NonNull Position target) {
         this.source = source;
         this.target = target;
     }

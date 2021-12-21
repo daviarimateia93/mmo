@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map.packet;
+package com.mmo.infrastructure.map.server.handler;
 
 import static org.mockito.Mockito.*;
 
@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import com.mmo.core.animate.Animate;
 import com.mmo.core.map.Map;
-import com.mmo.infrastructure.map.MapServer;
+import com.mmo.infrastructure.map.packet.AttackPacket;
+import com.mmo.infrastructure.map.server.MapServer;
 
 public class AttackPacketHandlerTest {
 

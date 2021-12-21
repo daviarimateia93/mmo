@@ -1,10 +1,10 @@
-package com.mmo.infrastructure.map.packet;
+package com.mmo.infrastructure.map.server.handler;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mmo.infrastructure.map.MapServer;
+import com.mmo.infrastructure.map.server.MapServer;
 import com.mmo.infrastructure.server.Packet;
 
 import lombok.EqualsAndHashCode;

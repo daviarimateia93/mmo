@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map;
+package com.mmo.infrastructure.map.server;
 
 import com.mmo.core.utils.RuntimeException;
 

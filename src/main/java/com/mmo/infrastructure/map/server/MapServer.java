@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map;
+package com.mmo.infrastructure.map.server;
 
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import com.mmo.infrastructure.map.packet.AttackPacket;
 import com.mmo.infrastructure.map.packet.GoodByePacket;
 import com.mmo.infrastructure.map.packet.HelloPacket;
 import com.mmo.infrastructure.map.packet.MovePacket;
-import com.mmo.infrastructure.map.packet.PacketHandlerDelegator;
+import com.mmo.infrastructure.map.server.handler.PacketHandlerDelegator;
 import com.mmo.infrastructure.security.AESDecryptor;
 import com.mmo.infrastructure.security.AESEncryptor;
 import com.mmo.infrastructure.server.Client;

@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map.packet;
+package com.mmo.infrastructure.map.server.handler;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -9,7 +9,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.mmo.infrastructure.map.MapServer;
+import com.mmo.infrastructure.map.server.MapServer;
 import com.mmo.infrastructure.server.TestPacket;
 
 public class PacketHandlerDelegatorTest {

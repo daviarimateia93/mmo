@@ -1,6 +1,6 @@
-package com.mmo.infrastructure.map.packet;
+package com.mmo.infrastructure.map.server.handler;
 
-import com.mmo.infrastructure.map.MapServerException;
+import com.mmo.infrastructure.map.server.MapServerException;
 
 public class PacketHandlerNotBindedException extends MapServerException {
 

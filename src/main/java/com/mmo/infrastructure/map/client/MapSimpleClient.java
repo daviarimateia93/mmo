@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map;
+package com.mmo.infrastructure.map.client;
 
 import java.util.UUID;
 
@@ -57,7 +57,7 @@ public class MapSimpleClient {
     }
 
     public static void main(String... args) {
-        MapServer.registerPackets();
+        // TODO register packets
 
         new MapSimpleClient();
     }

@@ -1,6 +1,6 @@
-package com.mmo.infrastructure.map.packet;
+package com.mmo.infrastructure.map.server.handler;
 
-import com.mmo.infrastructure.map.MapServer;
+import com.mmo.infrastructure.map.server.MapServer;
 import com.mmo.infrastructure.server.TestPacket;
 
 import lombok.EqualsAndHashCode;

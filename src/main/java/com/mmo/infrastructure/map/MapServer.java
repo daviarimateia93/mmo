@@ -43,14 +43,19 @@ public class MapServer {
 
         map = loadMap();
 
+        logger.info("Running game");
+
+        runGame();
+
         logger.info("Starting server");
 
         server = createServer();
         server.run();
+    }
 
-        logger.info("Running game");
-
-        Game.getInstance().run(map);
+    private void runGame() {
+        Executors.newSingleThreadScheduledExecutor()
+                .execute(() -> Game.getInstance().run(map));
     }
 
     public Map getMap() {

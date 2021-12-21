@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class PacketFactoryTest {
 
     @Test
-    public void registerAndGetBuilderByUUID() {
+    public void bindAndGetBuilderByUUID() {
         UUID source = UUID.randomUUID();
         String property1 = "hahha";
         Integer property2 = 7;
@@ -21,7 +21,7 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketFactory.getInstance().register(expected.getAliasAsUUID(), TestPacket.binaryBuilder());
+        PacketFactory.getInstance().bind(expected.getAliasAsUUID(), TestPacket.binaryBuilder());
 
         Packet result1 = PacketFactory.getInstance().getPacket(
                 expected.getAliasAsUUID(),
@@ -38,7 +38,7 @@ public class PacketFactoryTest {
     }
 
     @Test
-    public void registerAndGetBuilderByString() {
+    public void bindAndGetBuilderByString() {
         UUID source = UUID.randomUUID();
         String property1 = "hehhe";
         Integer property2 = 8;
@@ -49,7 +49,7 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketFactory.getInstance().register(expected.getAlias(), TestPacket.binaryBuilder());
+        PacketFactory.getInstance().bind(expected.getAlias(), TestPacket.binaryBuilder());
 
         Packet result1 = PacketFactory.getInstance().getPacket(
                 expected.getAliasAsUUID(),
@@ -66,7 +66,7 @@ public class PacketFactoryTest {
     }
 
     @Test
-    public void registerAndGetBuilderByPacket() {
+    public void bindAndGetBuilderByPacket() {
         UUID source = UUID.randomUUID();
         String property1 = "hihihi";
         Integer property2 = 9;
@@ -77,7 +77,7 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketFactory.getInstance().register(expected, TestPacket.binaryBuilder());
+        PacketFactory.getInstance().bind(expected, TestPacket.binaryBuilder());
 
         Packet result1 = PacketFactory.getInstance().getPacket(
                 expected.getAliasAsUUID(),

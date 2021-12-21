@@ -24,28 +24,29 @@ public class PacketFactory {
     }
 
     public <T extends Packet> PacketBinaryBuilder<T> getBuilder(UUID alias)
-            throws PacketBuilderCastException, PacketBuilderNotFoundException {
-        
+            throws PacketBuilderCastException, PacketBuilderNotBindedException {
+
         return Optional.ofNullable(builders.get(alias))
                 .map(builder -> this.<T>cast(builder))
                 .orElseThrow(
-                        () -> new PacketBuilderNotFoundException("PacketBuilder not registered for alias %s", alias));
+                        () -> new PacketBuilderNotBindedException("PacketBuilder not binded for alias %s", alias));
     }
 
-    public <T extends Packet> void register(Packet packet, PacketBinaryBuilder<T> builder) {
-        register(packet.getAliasAsUUID(), builder);
+    public <T extends Packet> PacketFactory bind(Packet packet, PacketBinaryBuilder<T> builder) {
+        return bind(packet.getAliasAsUUID(), builder);
     }
 
-    public <T extends Packet> void register(String alias, PacketBinaryBuilder<T> builder) {
-        register(getAliasAsUUID(alias), builder);
+    public <T extends Packet> PacketFactory bind(String alias, PacketBinaryBuilder<T> builder) {
+        return bind(getAliasAsUUID(alias), builder);
+    }
+
+    public <T extends Packet> PacketFactory bind(UUID alias, PacketBinaryBuilder<T> builder) {
+        builders.put(alias, builder);
+        return this;
     }
 
     public <T extends Packet> T getPacket(String alias, UUID source, byte[] bytes) {
         return getPacket(getAliasAsUUID(alias), source, bytes);
-    }
-
-    public <T extends Packet> void register(UUID alias, PacketBinaryBuilder<T> builder) {
-        builders.put(alias, builder);
     }
 
     public <T extends Packet> T getPacket(UUID alias, UUID source, byte[] bytes) {

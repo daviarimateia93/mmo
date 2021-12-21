@@ -126,6 +126,10 @@ public class MapServer {
         }
     }
 
+    private void onSend(Client client, Packet packet) {
+        logger.info("Sent packet {} to client {}", packet, client);
+    }
+
     private void onReceive(Client client, Packet packet) {
         logger.info("Received packet {} from client {}", packet, client);
 
@@ -150,10 +154,6 @@ public class MapServer {
         }
 
         PacketHandlerDelegator.getInstance().delegate(this, packet);
-    }
-
-    private void onSend(Client client, Packet packet) {
-        logger.info("Sent packet {} to client {}", packet, client);
     }
 
     private boolean isConnected(Client client) {
@@ -184,18 +184,12 @@ public class MapServer {
                 .forEach(client -> client.send(packet));
     }
 
-    protected static void registerPackets() {
-        logger.info("Registering packets");
-
-        PacketFactory packetFactory = PacketFactory.getInstance();
-        packetFactory.register(HelloPacket.ALIAS, HelloPacket.binaryBuilder());
-        packetFactory.register(GoodByePacket.ALIAS, GoodByePacket.binaryBuilder());
-        packetFactory.register(AttackPacket.ALIAS, AttackPacket.binaryBuilder());
-        packetFactory.register(MovePacket.ALIAS, MovePacket.binaryBuilder());
-    }
-
     public static void main(String... args) {
-        registerPackets();
+        PacketFactory.getInstance()
+                .bind(HelloPacket.ALIAS, HelloPacket.binaryBuilder())
+                .bind(GoodByePacket.ALIAS, GoodByePacket.binaryBuilder())
+                .bind(AttackPacket.ALIAS, AttackPacket.binaryBuilder())
+                .bind(MovePacket.ALIAS, MovePacket.binaryBuilder());
 
         new MapServer();
     }

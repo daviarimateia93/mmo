@@ -18,7 +18,7 @@ public class ServerClientTest {
 
     @Test
     public void successfully() throws InterruptedException {
-        PacketFactory.getInstance().register(TestPacket.ALIAS, TestPacket.binaryBuilder());
+        PacketFactory.getInstance().bind(TestPacket.ALIAS, TestPacket.binaryBuilder());
 
         String cipherKey = "Bar12345Bar12345";
 

@@ -184,16 +184,16 @@ public class MapServer {
 
     protected static void registerPackets() {
         logger.info("Registering packets");
-    }
-
-    public static void main(String... args) {
-        registerPackets();
-
+        
         PacketFactory packetFactory = PacketFactory.getInstance();
         packetFactory.register(HelloPacket.ALIAS, HelloPacket.binaryBuilder());
         packetFactory.register(GoodByePacket.ALIAS, GoodByePacket.binaryBuilder());
         packetFactory.register(AttackPacket.ALIAS, AttackPacket.binaryBuilder());
         packetFactory.register(MovePacket.ALIAS, MovePacket.binaryBuilder());
+    }
+
+    public static void main(String... args) {
+        registerPackets();
 
         new MapServer();
     }

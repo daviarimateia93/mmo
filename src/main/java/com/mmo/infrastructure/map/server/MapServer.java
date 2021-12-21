@@ -25,8 +25,6 @@ import com.mmo.infrastructure.map.packet.GoodByePacket;
 import com.mmo.infrastructure.map.packet.HelloPacket;
 import com.mmo.infrastructure.map.packet.MovePacket;
 import com.mmo.infrastructure.map.server.handler.AttackPacketHandler;
-import com.mmo.infrastructure.map.server.handler.GoodByePacketHandler;
-import com.mmo.infrastructure.map.server.handler.HelloPacketHandler;
 import com.mmo.infrastructure.map.server.handler.MovePacketHandler;
 import com.mmo.infrastructure.map.server.handler.PacketHandlerDelegator;
 import com.mmo.infrastructure.security.AESDecryptor;
@@ -183,17 +181,15 @@ public class MapServer {
         boolean connected = isConnected(client);
 
         if (connected) {
-            PacketHandlerDelegator.getInstance().delegate(this, packet);
-
             if (packet instanceof GoodByePacket) {
                 logger.info("Client has sent GoodByePacket, it will disconnect");
 
                 client.disconnect();
+            } else {
+                PacketHandlerDelegator.getInstance().delegate(this, packet);
             }
         } else {
             if (packet instanceof HelloPacket) {
-                PacketHandlerDelegator.getInstance().delegate(this, packet);
-
                 addClient(client, packet.getSource());
 
                 logger.info("Client has sent HelloPacket, it is now connected");
@@ -239,8 +235,6 @@ public class MapServer {
                 .bind(AttackPacket.ALIAS, AttackPacket.binaryBuilder())
                 .bind(MovePacket.ALIAS, MovePacket.binaryBuilder());
 
-        PacketHandlerDelegator.getInstance().bind(HelloPacket.class, new HelloPacketHandler());
-        PacketHandlerDelegator.getInstance().bind(GoodByePacket.class, new GoodByePacketHandler());
         PacketHandlerDelegator.getInstance().bind(AttackPacket.class, new AttackPacketHandler());
         PacketHandlerDelegator.getInstance().bind(MovePacket.class, new MovePacketHandler());
 

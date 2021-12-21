@@ -21,6 +21,8 @@ import com.mmo.infrastructure.map.packet.GoodByePacket;
 import com.mmo.infrastructure.map.packet.HelloPacket;
 import com.mmo.infrastructure.map.packet.MovePacket;
 import com.mmo.infrastructure.map.server.handler.AttackPacketHandler;
+import com.mmo.infrastructure.map.server.handler.GoodByePacketHandler;
+import com.mmo.infrastructure.map.server.handler.HelloPacketHandler;
 import com.mmo.infrastructure.map.server.handler.MovePacketHandler;
 import com.mmo.infrastructure.map.server.handler.PacketHandlerDelegator;
 import com.mmo.infrastructure.security.AESDecryptor;
@@ -103,7 +105,9 @@ public class MapServer {
                     if (isConnected(client)) {
                         logger.info("Client sent HelloPacket");
                     } else {
-                        disconnect(client);
+                        logger.info("Client did not send HelloPacket, it will disconnect", client);
+
+                        client.disconnect();
                     }
                 },
                         ConfigProvider.getInstance().getLong(CONFIG_MAP_SERVER_HELLO_PACKET_WAITING_DELAY_IN_MINUTES),
@@ -137,7 +141,14 @@ public class MapServer {
 
         boolean connected = isConnected(client);
 
+        if (connected) {
+            PacketHandlerDelegator.getInstance().delegate(this, packet);
+            return;
+        }
+
         if (!connected && packet instanceof HelloPacket) {
+            PacketHandlerDelegator.getInstance().delegate(this, packet);
+
             addClient(client, packet.getSource());
 
             logger.info("Client has sent HelloPacket, it is now connected");
@@ -151,20 +162,14 @@ public class MapServer {
         if (!connected) {
             logger.info("Client is not connected, forcing disconnect");
 
-            disconnect(client);
+            client.disconnect();
+
             return;
         }
-
-        PacketHandlerDelegator.getInstance().delegate(this, packet);
     }
 
     private boolean isConnected(Client client) {
         return clients.containsKey(client);
-    }
-
-    private void disconnect(Client client) {
-        logger.info("Client did not send HelloPacket, it will disconnect", client);
-        client.disconnect();
     }
 
     public void send(Packet packet, UUID target) {
@@ -193,6 +198,8 @@ public class MapServer {
                 .bind(AttackPacket.ALIAS, AttackPacket.binaryBuilder())
                 .bind(MovePacket.ALIAS, MovePacket.binaryBuilder());
 
+        PacketHandlerDelegator.getInstance().bind(HelloPacket.class, new HelloPacketHandler());
+        PacketHandlerDelegator.getInstance().bind(GoodByePacket.class, new GoodByePacketHandler());
         PacketHandlerDelegator.getInstance().bind(AttackPacket.class, new AttackPacketHandler());
         PacketHandlerDelegator.getInstance().bind(MovePacket.class, new MovePacketHandler());
 

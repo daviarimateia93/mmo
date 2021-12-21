@@ -73,7 +73,11 @@ public class Map implements LooperUpdater {
     }
 
     public void removeEntity(MapEntity entity) {
-        entities.remove(entity.getInstanceId());
+        removeEntity(entity.getInstanceId());
+    }
+
+    public void removeEntity(UUID instanceId) {
+        entities.remove(instanceId);
     }
 
     @SuppressWarnings("unchecked")

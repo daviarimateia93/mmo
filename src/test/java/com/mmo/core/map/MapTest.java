@@ -67,6 +67,12 @@ public class MapTest {
                 .z(10L)
                 .build());
 
+        Entity entityC = new Entity(Position.builder()
+                .x(12L)
+                .y(16L)
+                .z(12L)
+                .build());
+
         Map map = Map.builder()
                 .name("name")
                 .description("description")
@@ -75,7 +81,9 @@ public class MapTest {
 
         map.addEntity(entityA);
         map.addEntity(entityB);
+        map.addEntity(entityC);
         map.removeEntity(entityA);
+        map.removeEntity(entityC.getInstanceId());
 
         MapEntity[] expected = { entityB };
         Collection<MapEntity> result = map.getEntities();
@@ -84,6 +92,8 @@ public class MapTest {
         assertThat(result.size(), equalTo(expected.length));
         assertThat(map.findEntity(entityA.getInstanceId()), equalTo(Optional.empty()));
         assertThat(map.findEntity(entityA.getInstanceId(), Entity.class), equalTo(Optional.empty()));
+        assertThat(map.findEntity(entityC.getInstanceId()), equalTo(Optional.empty()));
+        assertThat(map.findEntity(entityC.getInstanceId(), Entity.class), equalTo(Optional.empty()));
     }
 
     @Test

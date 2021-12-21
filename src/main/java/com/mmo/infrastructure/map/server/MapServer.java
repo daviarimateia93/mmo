@@ -1,5 +1,6 @@
 package com.mmo.infrastructure.map.server;
 
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,12 +10,15 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mmo.core.attribute.Attributes;
 import com.mmo.core.game.Game;
 import com.mmo.core.map.Map;
 import com.mmo.core.map.MapEntity;
+import com.mmo.core.map.Position;
 import com.mmo.core.player.Player;
 import com.mmo.core.security.Decryptor;
 import com.mmo.core.security.Encryptor;
+import com.mmo.core.stat.Stats;
 import com.mmo.infrastructure.config.ConfigProvider;
 import com.mmo.infrastructure.map.packet.AttackPacket;
 import com.mmo.infrastructure.map.packet.GoodByePacket;
@@ -115,14 +119,51 @@ public class MapServer {
     }
 
     private synchronized void addClient(Client client, UUID instanceId) {
+        Random random = new Random();
+
+        Player player = Player.builder()
+                .instanceId(instanceId)
+                .name("PlayerName-" + UUID.randomUUID())
+                .position(Position.builder()
+                        .x(random.ints(0, 1000).asLongStream().findFirst().getAsLong())
+                        .y(random.ints(0, 1000).asLongStream().findFirst().getAsLong())
+                        .z(random.ints(0, 1000).asLongStream().findFirst().getAsLong())
+                        .build())
+                .stats(Stats.builder()
+                        .strength(10)
+                        .dexterity(10)
+                        .intelligence(10)
+                        .concentration(10)
+                        .sense(10)
+                        .charm(10)
+                        .build())
+                .attributes(Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(42)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(38)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build())
+                .build();
+
         clients.put(client, instanceId);
         instanceIds.put(instanceId, client);
+        map.addEntity(player);
     }
 
     private synchronized void removeClient(Client client) {
         if (isConnected(client)) {
             UUID instanceId = clients.remove(client);
             instanceIds.remove(instanceId);
+            map.removeEntity(instanceId);
 
             logger.info("Client has disconnected {}", client);
 

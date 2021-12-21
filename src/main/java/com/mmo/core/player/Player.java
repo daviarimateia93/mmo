@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class Player extends Animate {
 
-    private final UUID instanceId = UUID.randomUUID();
+    private final UUID instanceId;
     private final String name;
     private final Position position;
     private final Stats stats;
@@ -26,11 +26,13 @@ public class Player extends Animate {
 
     @Builder
     private Player(
+            @NonNull UUID instanceId,
             @NonNull String name,
             @NonNull Position position,
             @NonNull Stats stats,
             @NonNull Attributes attributes) {
 
+        this.instanceId = instanceId;
         this.name = name;
         this.position = position;
         this.stats = stats;

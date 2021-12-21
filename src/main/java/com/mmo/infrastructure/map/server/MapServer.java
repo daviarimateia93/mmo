@@ -188,8 +188,6 @@ public class MapServer {
             if (packet instanceof GoodByePacket) {
                 logger.info("Client has sent GoodByePacket, it will disconnect");
 
-                removeClient(client);
-
                 client.disconnect();
             }
         } else {

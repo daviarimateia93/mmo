@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map.client;
+package com.mmo.infrastructure.map;
 
 import java.util.UUID;
 

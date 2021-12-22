@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map.server;
+package com.mmo.infrastructure.map;
 
 import java.util.Optional;
 import java.util.Random;

@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.core.packet.Packet;
+import com.mmo.infrastructure.server.packet.PacketGateway;
 
 public class PacketFactoryTest {
 

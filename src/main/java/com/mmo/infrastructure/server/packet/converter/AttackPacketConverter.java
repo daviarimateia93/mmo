@@ -1,11 +1,11 @@
-package com.mmo.infrastructure.map.packet;
+package com.mmo.infrastructure.server.packet.converter;
 
 import java.util.UUID;
 
 import com.mmo.core.packet.AttackPacket;
-import com.mmo.infrastructure.server.PacketConverter;
-import com.mmo.infrastructure.server.PacketReader;
-import com.mmo.infrastructure.server.PacketWriter;
+import com.mmo.infrastructure.server.packet.PacketConverter;
+import com.mmo.infrastructure.server.packet.PacketReader;
+import com.mmo.infrastructure.server.packet.PacketWriter;
 
 public class AttackPacketConverter implements PacketConverter<AttackPacket> {
 

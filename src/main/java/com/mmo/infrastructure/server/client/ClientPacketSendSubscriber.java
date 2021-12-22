@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.server;
+package com.mmo.infrastructure.server.client;
 
 import com.mmo.core.packet.Packet;
 

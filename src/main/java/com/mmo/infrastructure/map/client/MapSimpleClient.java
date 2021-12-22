@@ -11,16 +11,16 @@ import com.mmo.core.packet.HelloPacket;
 import com.mmo.core.packet.MovePacket;
 import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.config.ConfigProvider;
-import com.mmo.infrastructure.map.packet.AttackPacketConverter;
-import com.mmo.infrastructure.map.packet.GoodByePacketConverter;
-import com.mmo.infrastructure.map.packet.HelloPacketConverter;
-import com.mmo.infrastructure.map.packet.MovePacketConverter;
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
 import com.mmo.infrastructure.security.aes.AESDecryptor;
 import com.mmo.infrastructure.security.aes.AESEncryptor;
-import com.mmo.infrastructure.server.Client;
-import com.mmo.infrastructure.server.PacketGateway;
+import com.mmo.infrastructure.server.client.Client;
+import com.mmo.infrastructure.server.packet.PacketGateway;
+import com.mmo.infrastructure.server.packet.converter.AttackPacketConverter;
+import com.mmo.infrastructure.server.packet.converter.GoodByePacketConverter;
+import com.mmo.infrastructure.server.packet.converter.HelloPacketConverter;
+import com.mmo.infrastructure.server.packet.converter.MovePacketConverter;
 
 public class MapSimpleClient {
 

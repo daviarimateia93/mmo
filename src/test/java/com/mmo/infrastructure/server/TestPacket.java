@@ -3,6 +3,7 @@ package com.mmo.infrastructure.server;
 import java.util.UUID;
 
 import com.mmo.core.packet.Packet;
+import com.mmo.infrastructure.server.packet.PacketConverter;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

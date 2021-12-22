@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.core.packet.AttackPacket;
+import com.mmo.infrastructure.server.packet.converter.AttackPacketConverter;
 
 public class AttackPacketConverterTest {
 

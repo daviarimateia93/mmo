@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.server;
+package com.mmo.infrastructure.server.packet;
 
 import com.mmo.core.utils.RuntimeException;
 

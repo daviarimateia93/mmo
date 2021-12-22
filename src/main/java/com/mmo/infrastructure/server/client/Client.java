@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.server;
+package com.mmo.infrastructure.server.client;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -15,6 +15,7 @@ import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
 import com.mmo.infrastructure.security.TokenData;
+import com.mmo.infrastructure.server.packet.PacketGateway;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

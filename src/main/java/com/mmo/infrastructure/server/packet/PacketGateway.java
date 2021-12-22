@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.server;
+package com.mmo.infrastructure.server.packet;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.server;
+package com.mmo.infrastructure.server.packet;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;

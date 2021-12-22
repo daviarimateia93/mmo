@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.server;
+package com.mmo.infrastructure.server.client;
 
 public class ClientReadException extends ClientException {
 

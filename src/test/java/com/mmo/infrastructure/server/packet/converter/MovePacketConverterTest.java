@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map.packet;
+package com.mmo.infrastructure.server.packet.converter;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import com.mmo.core.map.Position;
 import com.mmo.core.packet.MovePacket;
-import com.mmo.infrastructure.server.packet.converter.MovePacketConverter;
 
 public class MovePacketConverterTest {
 

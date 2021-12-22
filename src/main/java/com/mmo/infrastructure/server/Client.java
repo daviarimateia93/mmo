@@ -32,7 +32,7 @@ public class Client {
     private final Decryptor decryptor;
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
-    private final Consumer<Client> onDisconnect;
+    private final Consumer<Client> disconnectConsumer;
     private final ClientPacketSendSubscriber sendSubscriber;
     private final ClientPacketReceiveSubscriber receiveSubscriber;
     private final BlockingQueue<Packet> sendingQueue = new LinkedBlockingQueue<>();
@@ -45,7 +45,7 @@ public class Client {
             @NonNull Socket socket,
             @NonNull Encryptor encryptor,
             @NonNull Decryptor decryptor,
-            Consumer<Client> onDisconnect,
+            Consumer<Client> disconnectConsumer,
             ClientPacketSendSubscriber sendSubscriber,
             ClientPacketReceiveSubscriber receiveSubscriber) {
 
@@ -54,7 +54,7 @@ public class Client {
         this.decryptor = decryptor;
         this.inputStream = getDataInputStream();
         this.outputStream = getDataOutputStream();
-        this.onDisconnect = onDisconnect;
+        this.disconnectConsumer = disconnectConsumer;
         this.sendSubscriber = sendSubscriber;
         this.receiveSubscriber = receiveSubscriber;
         this.connected = true;
@@ -68,7 +68,7 @@ public class Client {
             @NonNull Integer port,
             @NonNull Encryptor encryptor,
             @NonNull Decryptor decryptor,
-            Consumer<Client> onDisconnect,
+            Consumer<Client> disconnectConsumer,
             ClientPacketSendSubscriber sendSubscriber,
             ClientPacketReceiveSubscriber receiveSubscriber) {
 
@@ -77,7 +77,7 @@ public class Client {
         this.decryptor = decryptor;
         this.inputStream = getDataInputStream();
         this.outputStream = getDataOutputStream();
-        this.onDisconnect = onDisconnect;
+        this.disconnectConsumer = disconnectConsumer;
         this.sendSubscriber = sendSubscriber;
         this.receiveSubscriber = receiveSubscriber;
         this.connected = true;
@@ -94,7 +94,7 @@ public class Client {
     }
 
     private Optional<Consumer<Client>> getOnDisconnect() {
-        return Optional.ofNullable(onDisconnect);
+        return Optional.ofNullable(disconnectConsumer);
     }
 
     private Optional<ClientPacketSendSubscriber> getSendSubscriber() {

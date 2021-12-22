@@ -96,8 +96,8 @@ public class MapServer {
                 .port(ConfigProvider.getInstance().getInteger(CONFIG_MAP_SERVER_PORT))
                 .encryptor(encryptor)
                 .decryptor(decryptor)
-                .onClientConnect(this::confirmClientConnected)
-                .onClientDisconnect(this::removeClient)
+                .connectConsumer(this::confirmClientConnected)
+                .disconnectConsumer(this::removeClient)
                 .sendSubscriber(this::onSend)
                 .receiveSubscriber(this::onReceive)
                 .build();

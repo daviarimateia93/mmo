@@ -22,8 +22,8 @@ public class Server {
     private final Encryptor encryptor;
     private final Decryptor decryptor;
     private final Set<Client> clients = new HashSet<>();
-    private final Consumer<Client> onClientConnect;
-    private final Consumer<Client> onClientDisconnect;
+    private final Consumer<Client> connectConsumer;
+    private final Consumer<Client> disconnectConsumer;
     private final ClientPacketSendSubscriber sendSubscriber;
     private final ClientPacketReceiveSubscriber receiveSubscriber;
     private ServerSocket serverSocket;
@@ -34,16 +34,16 @@ public class Server {
             @NonNull Integer port,
             @NonNull Encryptor encryptor,
             @NonNull Decryptor decryptor,
-            @NonNull Consumer<Client> onClientConnect,
-            @NonNull Consumer<Client> onClientDisconnect,
+            @NonNull Consumer<Client> connectConsumer,
+            @NonNull Consumer<Client> disconnectConsumer,
             @NonNull ClientPacketSendSubscriber sendSubscriber,
             @NonNull ClientPacketReceiveSubscriber receiveSubscriber) {
 
         this.port = port;
         this.encryptor = encryptor;
         this.decryptor = decryptor;
-        this.onClientConnect = onClientConnect;
-        this.onClientDisconnect = onClientDisconnect;
+        this.connectConsumer = connectConsumer;
+        this.disconnectConsumer = disconnectConsumer;
         this.sendSubscriber = sendSubscriber;
         this.receiveSubscriber = receiveSubscriber;
     }
@@ -84,7 +84,7 @@ public class Server {
             while ((socket = serverSocket.accept()) != null) {
                 Client client = newClient(socket);
                 clients.add(client);
-                onClientConnect.accept(client);
+                connectConsumer.accept(client);
             }
         } catch (Exception exception) {
             throw new ServerListeningException(exception, "Server stoped listening");
@@ -98,7 +98,7 @@ public class Server {
                 .socket(socket)
                 .encryptor(encryptor)
                 .decryptor(decryptor)
-                .onDisconnect(this::removeClient)
+                .disconnectConsumer(this::removeClient)
                 .sendSubscriber(sendSubscriber)
                 .receiveSubscriber(receiveSubscriber)
                 .serverBuild();
@@ -106,6 +106,6 @@ public class Server {
 
     private void removeClient(Client client) {
         clients.remove(client);
-        onClientDisconnect.accept(client);
+        disconnectConsumer.accept(client);
     }
 }

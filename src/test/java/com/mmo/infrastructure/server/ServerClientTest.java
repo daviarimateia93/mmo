@@ -40,8 +40,8 @@ public class ServerClientTest {
                 .port(5555)
                 .encryptor(encryptor)
                 .decryptor(decryptor)
-                .onClientConnect(clientConnected::setValue)
-                .onClientDisconnect(clientDisconnected::setValue)
+                .connectConsumer(clientConnected::setValue)
+                .disconnectConsumer(clientDisconnected::setValue)
                 .sendSubscriber(serverClientSendSubscriber)
                 .receiveSubscriber(serverClientReceiveSubscriber)
                 .build();

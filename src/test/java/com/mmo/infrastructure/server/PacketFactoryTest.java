@@ -18,7 +18,7 @@ public class PacketFactoryTest {
         String property1 = "hahha";
         Integer property2 = 7;
 
-        Packet expected = TestPacket.builder()
+        TestPacket expected = TestPacket.builder()
                 .source(source)
                 .property1(property1)
                 .property2(property2)
@@ -48,7 +48,7 @@ public class PacketFactoryTest {
         String property1 = "hehhe";
         Integer property2 = 8;
 
-        Packet expected = TestPacket.builder()
+        TestPacket expected = TestPacket.builder()
                 .source(source)
                 .property1(property1)
                 .property2(property2)
@@ -78,7 +78,7 @@ public class PacketFactoryTest {
         String property1 = "hihihi";
         Integer property2 = 9;
 
-        Packet expected = TestPacket.builder()
+        TestPacket expected = TestPacket.builder()
                 .source(source)
                 .property1(property1)
                 .property2(property2)

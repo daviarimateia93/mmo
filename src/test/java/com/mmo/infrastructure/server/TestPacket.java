@@ -2,7 +2,7 @@ package com.mmo.infrastructure.server;
 
 import java.util.UUID;
 
-import com.mmo.core.packet.Packet;
+import com.mmo.core.packet.NetworkPacket;
 import com.mmo.infrastructure.server.packet.PacketConverter;
 
 import lombok.Builder;
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class TestPacket implements Packet {
+public class TestPacket implements NetworkPacket {
 
     public final static String ALIAS = "test";
 

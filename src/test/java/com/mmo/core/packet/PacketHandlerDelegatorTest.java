@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map.server.handler;
+package com.mmo.core.packet;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -9,12 +9,12 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.mmo.infrastructure.map.server.MapServer;
+import com.mmo.core.map.Map;
 import com.mmo.infrastructure.server.TestPacket;
 
 public class PacketHandlerDelegatorTest {
 
-    private static MapServer server;
+    private static Map map;
     private static TestPacket packet;
 
     @BeforeAll
@@ -23,7 +23,7 @@ public class PacketHandlerDelegatorTest {
         String property1 = "prop";
         int property2 = 3;
 
-        server = mock(MapServer.class);
+        map = mock(Map.class);
         packet = TestPacket.builder()
                 .source(source)
                 .property1(property1)
@@ -37,9 +37,9 @@ public class PacketHandlerDelegatorTest {
 
         PacketHandlerDelegator delegator = PacketHandlerDelegator.getInstance();
         delegator.bind(TestPacket.class, handler);
-        delegator.delegate(server, packet);
+        delegator.delegate(map, packet);
 
-        assertThat(handler.getServer(), equalTo(server));
+        assertThat(handler.getMap(), equalTo(map));
         assertThat(handler.getPacket(), equalTo(packet));
     }
 }

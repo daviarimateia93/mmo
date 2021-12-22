@@ -13,7 +13,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class MovePacket implements Packet {
+public class MovePacket implements NetworkPacket {
 
     public static final String ALIAS = "MOVE";
 

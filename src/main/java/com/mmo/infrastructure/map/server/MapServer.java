@@ -20,13 +20,14 @@ import com.mmo.core.packet.AttackPacket;
 import com.mmo.core.packet.GoodByePacket;
 import com.mmo.core.packet.HelloPacket;
 import com.mmo.core.packet.MovePacket;
+import com.mmo.core.packet.NetworkPacket;
 import com.mmo.core.packet.Packet;
+import com.mmo.core.packet.PacketHandlerDelegator;
 import com.mmo.core.player.Player;
 import com.mmo.core.stat.Stats;
 import com.mmo.infrastructure.config.ConfigProvider;
-import com.mmo.infrastructure.map.server.handler.AttackPacketHandler;
-import com.mmo.infrastructure.map.server.handler.MovePacketHandler;
-import com.mmo.infrastructure.map.server.handler.PacketHandlerDelegator;
+import com.mmo.infrastructure.packet.AttackPacketHandler;
+import com.mmo.infrastructure.packet.MovePacketHandler;
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
 import com.mmo.infrastructure.security.aes.AESDecryptor;
@@ -192,7 +193,7 @@ public class MapServer {
 
                 client.disconnect();
             } else {
-                PacketHandlerDelegator.getInstance().delegate(this, packet);
+                PacketHandlerDelegator.getInstance().delegate(map, packet);
             }
         } else {
             if (packet instanceof HelloPacket) {
@@ -216,21 +217,24 @@ public class MapServer {
     }
 
     private void send(Packet packet, Optional<UUID> target) {
-        target.ifPresentOrElse(value -> send(packet, value), () -> send(packet));
+        if (packet instanceof NetworkPacket) {
+            NetworkPacket networkPacket = (NetworkPacket) packet;
+            target.ifPresentOrElse(value -> send(networkPacket, value), () -> send(networkPacket));
+        }
     }
 
-    public void send(Packet packet, UUID target) {
+    public void send(NetworkPacket packet, UUID target) {
         Player player = map.getEntity(target, Player.class);
         send(packet, Set.of(player));
     }
 
-    public void send(Packet packet) {
+    public void send(NetworkPacket packet) {
         MapEntity entity = map.getEntity(packet.getSource());
         Set<Player> players = map.getNearbyEntities(entity, Player.class);
         send(packet, players);
     }
 
-    private void send(Packet packet, Set<? extends MapEntity> targets) {
+    private void send(NetworkPacket packet, Set<? extends MapEntity> targets) {
         targets.parallelStream()
                 .map(MapEntity::getInstanceId)
                 .map(instanceIds::get)

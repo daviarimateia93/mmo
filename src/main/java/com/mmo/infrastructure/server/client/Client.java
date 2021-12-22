@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.mmo.core.packet.NetworkPacket;
 import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
@@ -35,7 +36,7 @@ public class Client {
     private final ClientDisconnectSubscriber disconnectSubscriber;
     private final ClientPacketSendSubscriber sendSubscriber;
     private final ClientPacketReceiveSubscriber receiveSubscriber;
-    private final BlockingQueue<Packet> sendingQueue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<NetworkPacket> sendingQueue = new LinkedBlockingQueue<>();
     private final ExecutorService sendingPool = Executors.newSingleThreadExecutor();
     private final ExecutorService receivingPool = Executors.newSingleThreadExecutor();
     private boolean connected;
@@ -140,7 +141,7 @@ public class Client {
         }
     }
 
-    public void send(Packet packet) {
+    public void send(NetworkPacket packet) {
         sendingQueue.add(packet);
     }
 
@@ -151,7 +152,7 @@ public class Client {
     }
 
     private void send() {
-        Packet packet;
+        NetworkPacket packet;
 
         try {
             while ((packet = sendingQueue.take()) != null) {
@@ -176,7 +177,7 @@ public class Client {
         }
     }
 
-    private void sendPacket(Packet packet) throws IOException {
+    private void sendPacket(NetworkPacket packet) throws IOException {
         byte[] bytes = PacketGateway.getInstance().out(packet);
         UUID source = packet.getSource();
         UUID alias = packet.getAliasAsUUID();

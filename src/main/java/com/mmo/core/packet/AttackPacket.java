@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class AttackPacket implements Packet {
+public class AttackPacket implements NetworkPacket {
 
     public static final String ALIAS = "ATTACK";
 

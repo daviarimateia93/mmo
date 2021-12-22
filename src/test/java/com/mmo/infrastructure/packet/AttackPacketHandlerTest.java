@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map.server.handler;
+package com.mmo.infrastructure.packet;
 
 import static org.mockito.Mockito.*;
 
@@ -10,11 +10,9 @@ import org.junit.jupiter.api.Test;
 import com.mmo.core.animate.Animate;
 import com.mmo.core.map.Map;
 import com.mmo.core.packet.AttackPacket;
-import com.mmo.infrastructure.map.server.MapServer;
 
 public class AttackPacketHandlerTest {
 
-    private static MapServer server;
     private static Map map;
     private static AttackPacket packet;
     private static AttackPacketHandler packetHandler;
@@ -23,7 +21,6 @@ public class AttackPacketHandlerTest {
 
     @BeforeAll
     public static void setup() {
-        server = mock(MapServer.class);
         map = mock(Map.class);
         packet = AttackPacket.builder()
                 .source(UUID.randomUUID())
@@ -35,14 +32,13 @@ public class AttackPacketHandlerTest {
         source = mock(Animate.class);
         target = mock(Animate.class);
 
-        when(server.getMap()).thenReturn(map);
         when(map.getEntity(packet.getSource(), Animate.class)).thenReturn(source);
         when(map.getEntity(packet.getTarget(), Animate.class)).thenReturn(target);
     }
 
     @Test
     public void handle() {
-        packetHandler.handle(server, packet);
+        packetHandler.handle(map, packet);
 
         verify(source).attack(target);
     }

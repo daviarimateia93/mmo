@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.map.server.handler;
+package com.mmo.core.packet;
 
 import com.mmo.infrastructure.map.server.MapServerException;
 

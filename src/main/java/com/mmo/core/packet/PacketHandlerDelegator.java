@@ -1,11 +1,10 @@
-package com.mmo.infrastructure.map.server.handler;
+package com.mmo.core.packet;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mmo.core.packet.Packet;
-import com.mmo.infrastructure.map.server.MapServer;
+import com.mmo.core.map.Map;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -31,11 +30,11 @@ public class PacketHandlerDelegator {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void delegate(MapServer server, Packet packet) throws PacketHandlerNotBindedException {
+    public void delegate(Map map, Packet packet) throws PacketHandlerNotBindedException {
         PacketHandler handler = get(packet).orElseThrow(
                 () -> new PacketHandlerNotBindedException("There is no packet handler for packet %s", packet));
 
-        handler.handle(server, packet);
+        handler.handle(map, packet);
     }
 
     private Optional<PacketHandler<?>> get(Packet packet) {

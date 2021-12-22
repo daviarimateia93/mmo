@@ -10,7 +10,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.function.Consumer;
 
 import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.security.Decryptor;
@@ -32,7 +31,7 @@ public class Client {
     private final Decryptor decryptor;
     private final DataInputStream inputStream;
     private final DataOutputStream outputStream;
-    private final Consumer<Client> disconnectConsumer;
+    private final ClientDisconnectSubscriber disconnectSubscriber;
     private final ClientPacketSendSubscriber sendSubscriber;
     private final ClientPacketReceiveSubscriber receiveSubscriber;
     private final BlockingQueue<Packet> sendingQueue = new LinkedBlockingQueue<>();
@@ -45,7 +44,7 @@ public class Client {
             @NonNull Socket socket,
             @NonNull Encryptor encryptor,
             @NonNull Decryptor decryptor,
-            Consumer<Client> disconnectConsumer,
+            ClientDisconnectSubscriber disconnectSubscriber,
             ClientPacketSendSubscriber sendSubscriber,
             ClientPacketReceiveSubscriber receiveSubscriber) {
 
@@ -54,7 +53,7 @@ public class Client {
         this.decryptor = decryptor;
         this.inputStream = getDataInputStream();
         this.outputStream = getDataOutputStream();
-        this.disconnectConsumer = disconnectConsumer;
+        this.disconnectSubscriber = disconnectSubscriber;
         this.sendSubscriber = sendSubscriber;
         this.receiveSubscriber = receiveSubscriber;
         this.connected = true;
@@ -68,7 +67,7 @@ public class Client {
             @NonNull Integer port,
             @NonNull Encryptor encryptor,
             @NonNull Decryptor decryptor,
-            Consumer<Client> disconnectConsumer,
+            ClientDisconnectSubscriber disconnectSubscriber,
             ClientPacketSendSubscriber sendSubscriber,
             ClientPacketReceiveSubscriber receiveSubscriber) {
 
@@ -77,7 +76,7 @@ public class Client {
         this.decryptor = decryptor;
         this.inputStream = getDataInputStream();
         this.outputStream = getDataOutputStream();
-        this.disconnectConsumer = disconnectConsumer;
+        this.disconnectSubscriber = disconnectSubscriber;
         this.sendSubscriber = sendSubscriber;
         this.receiveSubscriber = receiveSubscriber;
         this.connected = true;
@@ -93,8 +92,8 @@ public class Client {
         return connected;
     }
 
-    private Optional<Consumer<Client>> getOnDisconnect() {
-        return Optional.ofNullable(disconnectConsumer);
+    private Optional<ClientDisconnectSubscriber> getDisconnectSubscriber() {
+        return Optional.ofNullable(disconnectSubscriber);
     }
 
     private Optional<ClientPacketSendSubscriber> getSendSubscriber() {
@@ -136,7 +135,7 @@ public class Client {
             throw new ClientDisconnectException(exception, "Failed to close socket");
         } finally {
             connected = false;
-            getOnDisconnect().ifPresent(consumer -> consumer.accept(this));
+            getDisconnectSubscriber().ifPresent(subscriber -> subscriber.onDisconnect(this));
         }
     }
 

@@ -4,7 +4,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
@@ -22,8 +21,8 @@ public class Server {
     private final Encryptor encryptor;
     private final Decryptor decryptor;
     private final Set<Client> clients = new HashSet<>();
-    private final Consumer<Client> connectConsumer;
-    private final Consumer<Client> disconnectConsumer;
+    private final ClientConnectSubscriber connectSubscriber;
+    private final ClientDisconnectSubscriber disconnectSubscriber;
     private final ClientPacketSendSubscriber sendSubscriber;
     private final ClientPacketReceiveSubscriber receiveSubscriber;
     private ServerSocket serverSocket;
@@ -34,16 +33,16 @@ public class Server {
             @NonNull Integer port,
             @NonNull Encryptor encryptor,
             @NonNull Decryptor decryptor,
-            @NonNull Consumer<Client> connectConsumer,
-            @NonNull Consumer<Client> disconnectConsumer,
+            @NonNull ClientConnectSubscriber connectSubscriber,
+            @NonNull ClientDisconnectSubscriber disconnectSubscriber,
             @NonNull ClientPacketSendSubscriber sendSubscriber,
             @NonNull ClientPacketReceiveSubscriber receiveSubscriber) {
 
         this.port = port;
         this.encryptor = encryptor;
         this.decryptor = decryptor;
-        this.connectConsumer = connectConsumer;
-        this.disconnectConsumer = disconnectConsumer;
+        this.connectSubscriber = connectSubscriber;
+        this.disconnectSubscriber = disconnectSubscriber;
         this.sendSubscriber = sendSubscriber;
         this.receiveSubscriber = receiveSubscriber;
     }
@@ -84,7 +83,7 @@ public class Server {
             while ((socket = serverSocket.accept()) != null) {
                 Client client = newClient(socket);
                 clients.add(client);
-                connectConsumer.accept(client);
+                connectSubscriber.onConnect(client);
             }
         } catch (Exception exception) {
             throw new ServerListeningException(exception, "Server stoped listening");
@@ -98,7 +97,7 @@ public class Server {
                 .socket(socket)
                 .encryptor(encryptor)
                 .decryptor(decryptor)
-                .disconnectConsumer(this::removeClient)
+                .disconnectSubscriber(this::removeClient)
                 .sendSubscriber(sendSubscriber)
                 .receiveSubscriber(receiveSubscriber)
                 .serverBuild();
@@ -106,6 +105,6 @@ public class Server {
 
     private void removeClient(Client client) {
         clients.remove(client);
-        disconnectConsumer.accept(client);
+        disconnectSubscriber.onDisconnect(client);
     }
 }

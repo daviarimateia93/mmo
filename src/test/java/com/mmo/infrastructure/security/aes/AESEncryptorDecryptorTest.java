@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.security;
+package com.mmo.infrastructure.security.aes;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;

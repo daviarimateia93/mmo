@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import com.mmo.core.security.Decryptor;
-import com.mmo.core.security.Encryptor;
+import com.mmo.infrastructure.security.Decryptor;
+import com.mmo.infrastructure.security.Encryptor;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

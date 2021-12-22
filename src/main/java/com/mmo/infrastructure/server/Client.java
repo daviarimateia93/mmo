@@ -12,9 +12,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
-import com.mmo.core.security.Decryptor;
-import com.mmo.core.security.Encryptor;
-import com.mmo.core.security.TokenData;
+import com.mmo.infrastructure.security.Decryptor;
+import com.mmo.infrastructure.security.Encryptor;
+import com.mmo.infrastructure.security.TokenData;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

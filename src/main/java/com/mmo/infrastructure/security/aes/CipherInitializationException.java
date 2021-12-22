@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.security;
+package com.mmo.infrastructure.security.aes;
 
 public class CipherInitializationException extends CipherException {
 

@@ -1,6 +1,6 @@
-package com.mmo.core.security;
+package com.mmo.infrastructure.security;
 
-import com.mmo.infrastructure.security.CipherException;
+import com.mmo.infrastructure.security.aes.CipherException;
 
 public class EncryptionException extends CipherException {
 

@@ -1,4 +1,4 @@
-package com.mmo.core.security;
+package com.mmo.infrastructure.security;
 
 public interface Decryptor {
 

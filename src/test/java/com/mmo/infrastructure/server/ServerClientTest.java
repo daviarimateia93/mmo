@@ -7,10 +7,10 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-import com.mmo.core.security.Decryptor;
-import com.mmo.core.security.Encryptor;
-import com.mmo.infrastructure.security.AESDecryptor;
-import com.mmo.infrastructure.security.AESEncryptor;
+import com.mmo.infrastructure.security.Decryptor;
+import com.mmo.infrastructure.security.Encryptor;
+import com.mmo.infrastructure.security.aes.AESDecryptor;
+import com.mmo.infrastructure.security.aes.AESEncryptor;
 
 import lombok.Data;
 

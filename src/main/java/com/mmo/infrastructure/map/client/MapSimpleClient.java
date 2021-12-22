@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mmo.core.map.Position;
 import com.mmo.core.packet.AttackPacket;
 import com.mmo.core.packet.GoodByePacket;
 import com.mmo.core.packet.HelloPacket;
@@ -31,12 +32,14 @@ public class MapSimpleClient {
     private static final Logger logger = LoggerFactory.getLogger(MapSimpleClient.class);
 
     private final Client client;
+    private final UUID source;
 
     public MapSimpleClient() {
+        source = UUID.randomUUID();
         client = createClient();
 
         client.send(HelloPacket.builder()
-                .source(UUID.randomUUID())
+                .source(source)
                 .build());
     }
 
@@ -67,6 +70,17 @@ public class MapSimpleClient {
 
     private void onReceive(Client client, Packet packet) {
         logger.info("Received packet {} from client {}", packet, client);
+
+        if (packet instanceof HelloPacket) {
+            client.send(MovePacket.builder()
+                    .source(source)
+                    .target(Position.builder()
+                            .x(200L)
+                            .y(100L)
+                            .z(0L)
+                            .build())
+                    .build());
+        }
     }
 
     public static void main(String... args) {

@@ -1,5 +1,6 @@
 package com.mmo.infrastructure.map.server;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -80,6 +81,7 @@ public class MapServer {
                 .name("adventure_plains")
                 .description("Located at the southern end, these plains were quiet and peaceful.")
                 .nearbyRatio(10)
+                .packetSubscribers(Set.of(this::send))
                 .build();
     }
 
@@ -211,6 +213,10 @@ public class MapServer {
 
     private boolean isConnected(Client client) {
         return clients.containsKey(client);
+    }
+
+    private void send(Packet packet, Optional<UUID> target) {
+        target.ifPresentOrElse(value -> send(packet, value), () -> sendNearby(packet));
     }
 
     public void send(Packet packet, UUID target) {

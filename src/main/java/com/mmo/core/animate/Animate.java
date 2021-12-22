@@ -3,6 +3,9 @@ package com.mmo.core.animate;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mmo.core.attribute.Attribute;
 import com.mmo.core.attribute.AttributeModifier;
 import com.mmo.core.attribute.Attributes;
@@ -14,6 +17,8 @@ import com.mmo.core.property.PropertyModifierAction;
 public abstract class Animate implements MapEntity {
 
     private static final int MOVE_UPDATE_RATIO_IN_MILLIS = 300;
+
+    private static final Logger logger = LoggerFactory.getLogger(Animate.class);
 
     private Long lastAttackStartTime;
     private Long lastMoveStartTime;
@@ -73,6 +78,8 @@ public abstract class Animate implements MapEntity {
         if (!target.isAlive()) {
             lastAttackStartTime = null;
         }
+
+        logger.trace("Animate {} has attacked {} with damage of {}", getInstanceId(), target.getInstanceId(), damage);
     }
 
     public void move(Position target) {
@@ -120,6 +127,8 @@ public abstract class Animate implements MapEntity {
         if (hasFinishedMoving(current, target)) {
             lastMoveStartTime = null;
         }
+
+        logger.trace("Animate {} has moved to {}", getInstanceId(), getPosition());
     }
 
     private boolean hasFinishedMoving(Position current, Position target) {

@@ -171,7 +171,7 @@ public class MapServer {
 
             logger.info("Client has disconnected {}", client);
 
-            sendNearby(GoodByePacket.builder()
+            send(GoodByePacket.builder()
                     .source(instanceId)
                     .build());
         }
@@ -200,7 +200,7 @@ public class MapServer {
 
                 logger.info("Client has sent HelloPacket, it is now connected");
 
-                sendNearby(HelloPacket.builder()
+                send(HelloPacket.builder()
                         .source(packet.getSource())
                         .build());
             } else {
@@ -216,7 +216,7 @@ public class MapServer {
     }
 
     private void send(Packet packet, Optional<UUID> target) {
-        target.ifPresentOrElse(value -> send(packet, value), () -> sendNearby(packet));
+        target.ifPresentOrElse(value -> send(packet, value), () -> send(packet));
     }
 
     public void send(Packet packet, UUID target) {
@@ -224,7 +224,7 @@ public class MapServer {
         send(packet, Set.of(player));
     }
 
-    public void sendNearby(Packet packet) {
+    public void send(Packet packet) {
         MapEntity entity = map.getEntity(packet.getSource());
         Set<Player> players = map.getNearbyEntities(entity, Player.class);
         send(packet, players);

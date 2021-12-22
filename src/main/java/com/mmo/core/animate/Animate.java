@@ -2,6 +2,7 @@ package com.mmo.core.animate;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import com.mmo.core.attribute.Attribute;
 import com.mmo.core.attribute.AttributeModifier;
 import com.mmo.core.attribute.Attributes;
+import com.mmo.core.game.Game;
 import com.mmo.core.looper.LooperContext;
 import com.mmo.core.map.MapEntity;
 import com.mmo.core.map.Position;
+import com.mmo.core.packet.Packet;
 import com.mmo.core.property.PropertyModifierAction;
 
 public abstract class Animate implements MapEntity {
@@ -190,5 +193,13 @@ public abstract class Animate implements MapEntity {
 
     private void clearTargetAnimate() {
         targetAnimate = null;
+    }
+
+    protected void sendPacket(Packet packet) {
+        Game.getInstance().getMap().sendPacket(packet);
+    }
+
+    protected void sendPacket(Packet packet, UUID target) {
+        Game.getInstance().getMap().sendPacket(packet, target);
     }
 }

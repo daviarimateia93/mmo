@@ -23,6 +23,7 @@ import com.mmo.core.packet.MovePacket;
 import com.mmo.core.packet.NetworkPacket;
 import com.mmo.core.packet.Packet;
 import com.mmo.core.packet.PacketHandlerDelegator;
+import com.mmo.core.packet.PersistencePacket;
 import com.mmo.core.player.Player;
 import com.mmo.core.stat.Stats;
 import com.mmo.infrastructure.config.ConfigProvider;
@@ -82,7 +83,7 @@ public class MapServer {
                 .name("adventure_plains")
                 .description("Located at the southern end, these plains were quiet and peaceful.")
                 .nearbyRatio(10)
-                .packetSubscribers(Set.of(this::send))
+                .packetSubscribers(Set.of(this::persist, this::send))
                 .build();
     }
 
@@ -214,6 +215,12 @@ public class MapServer {
 
     private boolean isConnected(Client client) {
         return clients.containsKey(client);
+    }
+
+    private void persist(Packet packet, Optional<UUID> target) {
+        if (packet instanceof PersistencePacket) {
+            PacketHandlerDelegator.getInstance().delegate(map, packet);
+        }
     }
 
     private void send(Packet packet, Optional<UUID> target) {

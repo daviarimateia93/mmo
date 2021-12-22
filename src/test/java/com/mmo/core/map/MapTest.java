@@ -11,6 +11,10 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.core.looper.LooperContext;
+import com.mmo.core.packet.Packet;
+import com.mmo.infrastructure.server.TestPacket;
+
+import lombok.Data;
 
 public class MapTest {
 
@@ -177,6 +181,54 @@ public class MapTest {
         assertThat(result.size(), equalTo(expected.length));
     }
 
+    @Test
+    public void sendPacket() {
+        PacketSubscriber packetSubscriber = new PacketSubscriber();
+
+        Map map = Map.builder()
+                .name("name")
+                .description("description")
+                .nearbyRatio(5)
+                .packetSubscribers(Set.of(packetSubscriber))
+                .build();
+
+        TestPacket expected = TestPacket.builder()
+                .source(UUID.randomUUID())
+                .property1("property1")
+                .property2(87)
+                .build();
+
+        map.sendPacket(expected);
+
+        assertThat(packetSubscriber.getPacket(), is(expected));
+        assertThat(packetSubscriber.getTarget(), is(Optional.empty()));
+    }
+
+    @Test
+    public void sendPacketWithTarget() {
+        PacketSubscriber packetSubscriber = new PacketSubscriber();
+
+        Map map = Map.builder()
+                .name("name")
+                .description("description")
+                .nearbyRatio(5)
+                .packetSubscribers(Set.of(packetSubscriber))
+                .build();
+
+        TestPacket expectedPacket = TestPacket.builder()
+                .source(UUID.randomUUID())
+                .property1("property1")
+                .property2(87)
+                .build();
+
+        UUID expectedTarget = UUID.randomUUID();
+
+        map.sendPacket(expectedPacket, expectedTarget);
+
+        assertThat(packetSubscriber.getPacket(), is(expectedPacket));
+        assertThat(packetSubscriber.getTarget(), is(Optional.of(expectedTarget)));
+    }
+
     private class Entity implements MapEntity {
 
         UUID instanceId = UUID.randomUUID();
@@ -212,6 +264,19 @@ public class MapTest {
 
         public SubEntity(Position position) {
             super(position);
+        }
+    }
+
+    @Data
+    private class PacketSubscriber implements MapPacketSubscriber {
+
+        Packet packet;
+        Optional<UUID> target;
+
+        @Override
+        public void onPacket(Packet packet, Optional<UUID> target) {
+            this.packet = packet;
+            this.target = target;
         }
     }
 }

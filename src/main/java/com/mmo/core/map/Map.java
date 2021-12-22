@@ -2,6 +2,8 @@ package com.mmo.core.map;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -10,7 +12,9 @@ import java.util.stream.Collectors;
 
 import com.mmo.core.looper.LooperContext;
 import com.mmo.core.looper.LooperUpdater;
+import com.mmo.core.packet.Packet;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,15 +31,23 @@ public class Map implements LooperUpdater {
     private final String description;
     private final Integer nearbyRatio;
 
+    @Getter(AccessLevel.NONE)
+    private final Set<MapPacketSubscriber> packetSubscribers = new LinkedHashSet<>();
+
     @Builder
     private Map(
             @NonNull String name,
             @NonNull String description,
-            @NonNull Integer nearbyRatio) {
+            @NonNull Integer nearbyRatio,
+            Collection<MapPacketSubscriber> packetSubscribers) {
 
         this.name = name;
         this.description = description;
         this.nearbyRatio = nearbyRatio;
+
+        if (Objects.nonNull(packetSubscribers)) {
+            this.packetSubscribers.addAll(packetSubscribers);
+        }
     }
 
     public <T extends MapEntity> T getEntity(UUID instanceId, Class<T> type) throws MapEntityNotFoundException {
@@ -93,6 +105,14 @@ public class Map implements LooperUpdater {
         return entities.values().stream()
                 .filter(entity -> isNearby(baseEntity, entity))
                 .collect(Collectors.toSet());
+    }
+
+    public void sendPacket(Packet packet) {
+        packetSubscribers.forEach(subscriber -> subscriber.onPacket(packet, Optional.empty()));
+    }
+
+    public void sendPacket(Packet packet, UUID target) {
+        packetSubscribers.forEach(subscriber -> subscriber.onPacket(packet, Optional.ofNullable(target)));
     }
 
     private boolean isNearby(MapEntity baseEntity, MapEntity testingEntity) {

@@ -7,5 +7,5 @@ public interface PlayerRepository {
 
     Optional<Player> findByInstanceId(UUID instanceId);
 
-    void save(Player player);
+    void persist(Player player);
 }

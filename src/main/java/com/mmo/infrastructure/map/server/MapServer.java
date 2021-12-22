@@ -220,6 +220,8 @@ public class MapServer {
         if (packet instanceof NetworkPacket) {
             NetworkPacket networkPacket = (NetworkPacket) packet;
             target.ifPresentOrElse(value -> send(networkPacket, value), () -> send(networkPacket));
+        } else {
+            PacketHandlerDelegator.getInstance().delegate(map, packet);
         }
     }
 

@@ -5,18 +5,22 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mmo.core.packet.AttackPacket;
+import com.mmo.core.packet.GoodByePacket;
+import com.mmo.core.packet.HelloPacket;
+import com.mmo.core.packet.MovePacket;
+import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.config.ConfigProvider;
-import com.mmo.infrastructure.map.packet.AttackPacket;
-import com.mmo.infrastructure.map.packet.GoodByePacket;
-import com.mmo.infrastructure.map.packet.HelloPacket;
-import com.mmo.infrastructure.map.packet.MovePacket;
+import com.mmo.infrastructure.map.packet.AttackPacketConverter;
+import com.mmo.infrastructure.map.packet.GoodByePacketConverter;
+import com.mmo.infrastructure.map.packet.HelloPacketConverter;
+import com.mmo.infrastructure.map.packet.MovePacketConverter;
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
 import com.mmo.infrastructure.security.aes.AESDecryptor;
 import com.mmo.infrastructure.security.aes.AESEncryptor;
 import com.mmo.infrastructure.server.Client;
-import com.mmo.infrastructure.server.Packet;
-import com.mmo.infrastructure.server.PacketFactory;
+import com.mmo.infrastructure.server.PacketGateway;
 
 public class MapSimpleClient {
 
@@ -66,11 +70,11 @@ public class MapSimpleClient {
     }
 
     public static void main(String... args) {
-        PacketFactory.getInstance()
-                .bind(HelloPacket.ALIAS, HelloPacket.binaryBuilder())
-                .bind(GoodByePacket.ALIAS, GoodByePacket.binaryBuilder())
-                .bind(AttackPacket.ALIAS, AttackPacket.binaryBuilder())
-                .bind(MovePacket.ALIAS, MovePacket.binaryBuilder());
+        PacketGateway.getInstance()
+                .bind(HelloPacket.ALIAS, new HelloPacketConverter())
+                .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
+                .bind(AttackPacket.ALIAS, new AttackPacketConverter())
+                .bind(MovePacket.ALIAS, new MovePacketConverter());
 
         new MapSimpleClient();
     }

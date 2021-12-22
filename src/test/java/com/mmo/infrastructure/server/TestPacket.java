@@ -2,6 +2,8 @@ package com.mmo.infrastructure.server;
 
 import java.util.UUID;
 
+import com.mmo.core.packet.Packet;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -35,19 +37,14 @@ public class TestPacket implements Packet {
         return ALIAS;
     }
 
-    @Override
-    public byte[] toBytes() {
-        return String.format("%s%d", property1, property2).getBytes();
+    public static TestPacketConverter converter() {
+        return new TestPacketConverter();
     }
 
-    public static TestPacketBinaryBuilder binaryBuilder() {
-        return new TestPacketBinaryBuilder();
-    }
-
-    public static class TestPacketBinaryBuilder implements PacketBinaryBuilder<TestPacket> {
+    public static class TestPacketConverter implements PacketConverter<TestPacket> {
 
         @Override
-        public TestPacket build(UUID source, byte[] bytes) {
+        public TestPacket fromBytes(UUID source, byte[] bytes) {
             String string = new String(bytes);
 
             String property1 = string.substring(0, string.length() - 1);
@@ -58,6 +55,11 @@ public class TestPacket implements Packet {
                     .property1(property1)
                     .property2(property2)
                     .build();
+        }
+
+        @Override
+        public byte[] toBytes(TestPacket packet) {
+            return String.format("%s%d", packet.getProperty1(), packet.getProperty2()).getBytes();
         }
     }
 }

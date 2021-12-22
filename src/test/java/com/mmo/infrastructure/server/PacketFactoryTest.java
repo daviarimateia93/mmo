@@ -7,10 +7,12 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
+import com.mmo.core.packet.Packet;
+
 public class PacketFactoryTest {
 
     @Test
-    public void bindAndGetBuilderByUUID() {
+    public void bindAndInAndOutBuilderByUUID() {
         UUID source = UUID.randomUUID();
         String property1 = "hahha";
         Integer property2 = 7;
@@ -21,24 +23,26 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketFactory.getInstance().bind(expected.getAliasAsUUID(), TestPacket.binaryBuilder());
+        PacketGateway.getInstance().bind(expected.getAliasAsUUID(), TestPacket.converter());
 
-        Packet result1 = PacketFactory.getInstance().getPacket(
+        byte[] expectedBytes = PacketGateway.getInstance().out(expected);
+
+        Packet result1 = PacketGateway.getInstance().in(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
-                expected.toBytes());
+                expectedBytes);
 
-        Packet result2 = PacketFactory.getInstance().getPacket(
+        Packet result2 = PacketGateway.getInstance().in(
                 expected.getAlias(),
                 expected.getSource(),
-                expected.toBytes());
+                expectedBytes);
 
         assertThat(result1, equalTo(expected));
         assertThat(result2, equalTo(expected));
     }
 
     @Test
-    public void bindAndGetBuilderByString() {
+    public void bindAndInAndOutBuilderByString() {
         UUID source = UUID.randomUUID();
         String property1 = "hehhe";
         Integer property2 = 8;
@@ -49,24 +53,26 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketFactory.getInstance().bind(expected.getAlias(), TestPacket.binaryBuilder());
+        PacketGateway.getInstance().bind(expected.getAlias(), TestPacket.converter());
 
-        Packet result1 = PacketFactory.getInstance().getPacket(
+        byte[] expectedBytes = PacketGateway.getInstance().out(expected);
+
+        Packet result1 = PacketGateway.getInstance().in(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
-                expected.toBytes());
+                expectedBytes);
 
-        Packet result2 = PacketFactory.getInstance().getPacket(
+        Packet result2 = PacketGateway.getInstance().in(
                 expected.getAlias(),
                 expected.getSource(),
-                expected.toBytes());
+                expectedBytes);
 
         assertThat(result1, equalTo(expected));
         assertThat(result2, equalTo(expected));
     }
 
     @Test
-    public void bindAndGetBuilderByPacket() {
+    public void bindAndInAndOutBuilderByPacket() {
         UUID source = UUID.randomUUID();
         String property1 = "hihihi";
         Integer property2 = 9;
@@ -77,17 +83,19 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketFactory.getInstance().bind(expected, TestPacket.binaryBuilder());
+        PacketGateway.getInstance().bind(expected, TestPacket.converter());
 
-        Packet result1 = PacketFactory.getInstance().getPacket(
+        byte[] expectedBytes = PacketGateway.getInstance().out(expected);
+
+        Packet result1 = PacketGateway.getInstance().in(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
-                expected.toBytes());
+                expectedBytes);
 
-        Packet result2 = PacketFactory.getInstance().getPacket(
+        Packet result2 = PacketGateway.getInstance().in(
                 expected.getAlias(),
                 expected.getSource(),
-                expected.toBytes());
+                expectedBytes);
 
         assertThat(result1, equalTo(expected));
         assertThat(result2, equalTo(expected));

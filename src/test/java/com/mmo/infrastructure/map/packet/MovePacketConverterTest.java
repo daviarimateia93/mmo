@@ -5,14 +5,23 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.core.map.Position;
+import com.mmo.core.packet.MovePacket;
 
-public class MovePacketTest {
+public class MovePacketConverterTest {
+
+    public static MovePacketConverter converter;
+
+    @BeforeAll
+    public static void setup() {
+        converter = new MovePacketConverter();
+    }
 
     @Test
-    public void serializeAndDeserialize() {
+    public void fromBytesAndToBytes() {
         UUID source = UUID.randomUUID();
 
         MovePacket expected = MovePacket.builder()
@@ -24,10 +33,8 @@ public class MovePacketTest {
                         .build())
                 .build();
 
-        MovePacket result = MovePacket.binaryBuilder()
-                .build(source, expected.toBytes());
+        MovePacket result = converter.fromBytes(source, converter.toBytes(expected));
 
         assertThat(result, equalTo(expected));
-        assertThat(result.getAlias(), equalTo("MOVE"));
     }
 }

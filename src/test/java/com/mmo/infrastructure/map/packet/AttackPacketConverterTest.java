@@ -5,12 +5,22 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class AttackPacketTest {
+import com.mmo.core.packet.AttackPacket;
+
+public class AttackPacketConverterTest {
+
+    public static AttackPacketConverter converter;
+
+    @BeforeAll
+    public static void setup() {
+        converter = new AttackPacketConverter();
+    }
 
     @Test
-    public void serializeAndDeserialize() {
+    public void fromBytesAndToBytes() {
         UUID source = UUID.randomUUID();
 
         AttackPacket expected = AttackPacket.builder()
@@ -18,10 +28,8 @@ public class AttackPacketTest {
                 .target(UUID.randomUUID())
                 .build();
 
-        AttackPacket result = AttackPacket.binaryBuilder()
-                .build(source, expected.toBytes());
+        AttackPacket result = converter.fromBytes(source, converter.toBytes(expected));
 
         assertThat(result, equalTo(expected));
-        assertThat(result.getAlias(), equalTo("ATTACK"));
     }
 }

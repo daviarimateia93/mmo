@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
+import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
 import com.mmo.infrastructure.security.TokenData;
@@ -176,7 +177,7 @@ public class Client {
     }
 
     private void sendPacket(Packet packet) throws IOException {
-        byte[] bytes = packet.toBytes();
+        byte[] bytes = PacketGateway.getInstance().out(packet);
         UUID source = packet.getSource();
         UUID alias = packet.getAliasAsUUID();
         String token = encryptor.encrypt(TokenData.create(source).getToken());
@@ -208,7 +209,7 @@ public class Client {
         byte[] bytes = new byte[size];
         inputStream.readFully(bytes);
 
-        Packet packet = PacketFactory.getInstance().getPacket(alias, source, bytes);
+        Packet packet = PacketGateway.getInstance().in(alias, source, bytes);
 
         getReceiveSubscriber().ifPresent(subscriber -> subscriber.onReceive(this, packet));
     }

@@ -4,8 +4,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.map.server.MapServer;
-import com.mmo.infrastructure.server.Packet;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

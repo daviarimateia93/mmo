@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.mmo.core.animate.Animate;
 import com.mmo.core.map.Map;
 import com.mmo.core.map.Position;
-import com.mmo.infrastructure.map.packet.MovePacket;
+import com.mmo.core.packet.MovePacket;
 import com.mmo.infrastructure.map.server.MapServer;
 
 public class MovePacketHandlerTest {

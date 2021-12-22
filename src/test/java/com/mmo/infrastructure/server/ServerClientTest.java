@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
+import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
 import com.mmo.infrastructure.security.aes.AESDecryptor;
@@ -18,7 +19,7 @@ public class ServerClientTest {
 
     @Test
     public void successfully() throws InterruptedException {
-        PacketFactory.getInstance().bind(TestPacket.ALIAS, TestPacket.binaryBuilder());
+        PacketGateway.getInstance().bind(TestPacket.ALIAS, TestPacket.converter());
 
         String cipherKey = "Bar12345Bar12345";
 

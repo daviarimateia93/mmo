@@ -1,7 +1,7 @@
 package com.mmo.infrastructure.map.server.handler;
 
+import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.map.server.MapServer;
-import com.mmo.infrastructure.server.Packet;
 
 public interface PacketHandler<T extends Packet> {
 

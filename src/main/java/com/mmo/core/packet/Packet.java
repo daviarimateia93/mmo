@@ -1,4 +1,4 @@
-package com.mmo.infrastructure.server;
+package com.mmo.core.packet;
 
 import java.util.UUID;
 
@@ -11,6 +11,4 @@ public interface Packet {
     }
 
     UUID getSource();
-
-    byte[] toBytes();
 }

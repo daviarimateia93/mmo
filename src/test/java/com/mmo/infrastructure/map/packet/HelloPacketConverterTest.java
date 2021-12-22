@@ -5,22 +5,30 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class HelloPacketTest {
+import com.mmo.core.packet.HelloPacket;
+
+public class HelloPacketConverterTest {
+
+    public static HelloPacketConverter converter;
+
+    @BeforeAll
+    public static void setup() {
+        converter = new HelloPacketConverter();
+    }
 
     @Test
-    public void serializeAndDeserialize() {
+    public void fromBytesAndToBytes() {
         UUID source = UUID.randomUUID();
 
         HelloPacket expected = HelloPacket.builder()
                 .source(source)
                 .build();
 
-        HelloPacket result = HelloPacket.binaryBuilder()
-                .build(source, expected.toBytes());
+        HelloPacket result = converter.fromBytes(source, converter.toBytes(expected));
 
         assertThat(result, equalTo(expected));
-        assertThat(result.getAlias(), equalTo("HELLO"));
     }
 }

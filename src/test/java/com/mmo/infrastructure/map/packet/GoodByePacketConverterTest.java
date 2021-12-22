@@ -5,22 +5,30 @@ import static org.hamcrest.Matchers.*;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class GoodByePacketTest {
+import com.mmo.core.packet.GoodByePacket;
+
+public class GoodByePacketConverterTest {
+
+    public static GoodByePacketConverter converter;
+
+    @BeforeAll
+    public static void setup() {
+        converter = new GoodByePacketConverter();
+    }
 
     @Test
-    public void serializeAndDeserialize() {
+    public void fromBytesAndToBytes() {
         UUID source = UUID.randomUUID();
 
         GoodByePacket expected = GoodByePacket.builder()
                 .source(source)
                 .build();
 
-        GoodByePacket result = GoodByePacket.binaryBuilder()
-                .build(source, expected.toBytes());
+        GoodByePacket result = converter.fromBytes(source, converter.toBytes(expected));
 
         assertThat(result, equalTo(expected));
-        assertThat(result.getAlias(), equalTo("GOOD_BYE"));
     }
 }

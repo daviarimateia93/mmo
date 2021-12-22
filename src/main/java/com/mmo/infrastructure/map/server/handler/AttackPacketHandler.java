@@ -1,7 +1,7 @@
 package com.mmo.infrastructure.map.server.handler;
 
 import com.mmo.core.animate.Animate;
-import com.mmo.infrastructure.map.packet.AttackPacket;
+import com.mmo.core.packet.AttackPacket;
 import com.mmo.infrastructure.map.server.MapServer;
 
 public class AttackPacketHandler implements PacketHandler<AttackPacket> {

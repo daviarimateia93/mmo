@@ -23,10 +23,10 @@ public abstract class Animate implements MapEntity {
 
     private static final Logger logger = LoggerFactory.getLogger(Animate.class);
 
-    private Long lastAttackStartTime;
-    private Long lastMoveStartTime;
-    private Animate targetAnimate;
-    private Position targetPosition;
+    private transient Long lastAttackStartTime;
+    private transient Long lastMoveStartTime;
+    private transient Animate targetAnimate;
+    private transient Position targetPosition;
 
     public abstract Attributes getAttributes();
 

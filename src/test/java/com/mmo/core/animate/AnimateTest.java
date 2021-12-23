@@ -127,6 +127,7 @@ public class AnimateTest {
     }
 
     private class AnimateImpl extends Animate {
+        UUID id = UUID.randomUUID();
         UUID instanceId = UUID.randomUUID();
         String name = UUID.randomUUID().toString();
         Position position;
@@ -135,6 +136,11 @@ public class AnimateTest {
         AnimateImpl(Position position, Attributes attributes) {
             this.position = position;
             this.attributes = attributes;
+        }
+
+        @Override
+        public UUID getId() {
+            return id;
         }
 
         @Override

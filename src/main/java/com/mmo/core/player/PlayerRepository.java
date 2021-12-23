@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface PlayerRepository {
 
-    Optional<Player> findByInstanceId(UUID instanceId);
+    Optional<Player> find(UUID id);
 
     void persist(Player player);
 }

@@ -38,4 +38,9 @@ public class Player extends Animate {
         this.stats = stats;
         this.attributes = attributes;
     }
+
+    @Override
+    public UUID getId() {
+        return instanceId;
+    }
 }

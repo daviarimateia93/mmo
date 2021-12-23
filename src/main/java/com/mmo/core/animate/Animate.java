@@ -28,6 +28,8 @@ public abstract class Animate implements MapEntity {
     private transient Animate targetAnimate;
     private transient Position targetPosition;
 
+    public abstract UUID getId();
+
     public abstract Attributes getAttributes();
 
     public boolean isAttacking() {

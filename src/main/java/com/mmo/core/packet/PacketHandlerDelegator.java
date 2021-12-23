@@ -4,6 +4,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mmo.core.map.Map;
 
 import lombok.EqualsAndHashCode;
@@ -12,6 +15,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class PacketHandlerDelegator {
+
+    private static final Logger logger = LoggerFactory.getLogger(PacketHandlerDelegator.class);
 
     private static PacketHandlerDelegator instance;
 
@@ -33,6 +38,8 @@ public class PacketHandlerDelegator {
     public void delegate(Map map, Packet packet) throws PacketHandlerNotBindedException {
         PacketHandler handler = get(packet).orElseThrow(
                 () -> new PacketHandlerNotBindedException("There is no packet handler for packet %s", packet));
+
+        logger.info("Delegating packet {} to handler {}", packet, handler);
 
         handler.handle(map, packet);
     }

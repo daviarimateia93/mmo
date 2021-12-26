@@ -14,7 +14,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 @Getter
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString
 public class Player extends Animate {
 

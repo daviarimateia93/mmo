@@ -3,6 +3,7 @@ package com.mmo.infrastructure.mongo;
 import java.util.Objects;
 
 import org.bson.UuidRepresentation;
+import org.bson.codecs.UuidCodecProvider;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -45,6 +46,7 @@ public class MongoFactory {
                 MongoClientSettings.getDefaultCodecRegistry(),
                 CodecRegistries.fromProviders(PojoCodecProvider.builder()
                         .automatic(true)
+                        .register(UuidCodecProvider.class)
                         .build()));
 
         client = MongoClients.create(MongoClientSettings.builder()
@@ -56,7 +58,7 @@ public class MongoFactory {
         database = client.getDatabase(ConfigProvider.getInstance().getString(CONFIG_MONGO_FACTORY_DATABASE));
     }
 
-    public <T> MongoCollection<T> getCollection(Class<T> type) {
-        return database.getCollection(type.getSimpleName(), type);
+    public <T> MongoCollection<T> getCollection(String name, Class<T> type) {
+        return database.getCollection(name, type);
     }
 }

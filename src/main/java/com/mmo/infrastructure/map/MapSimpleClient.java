@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mmo.core.map.Position;
-import com.mmo.core.packet.AttackPacket;
+import com.mmo.core.packet.AnimateAttackPacket;
 import com.mmo.core.packet.GoodByePacket;
 import com.mmo.core.packet.HelloPacket;
-import com.mmo.core.packet.MovePacket;
+import com.mmo.core.packet.AnimateMovePacket;
 import com.mmo.core.packet.Packet;
 import com.mmo.infrastructure.config.ConfigProvider;
 import com.mmo.infrastructure.security.Decryptor;
@@ -18,10 +18,10 @@ import com.mmo.infrastructure.security.aes.AESDecryptor;
 import com.mmo.infrastructure.security.aes.AESEncryptor;
 import com.mmo.infrastructure.server.client.Client;
 import com.mmo.infrastructure.server.packet.PacketGateway;
-import com.mmo.infrastructure.server.packet.converter.AttackPacketConverter;
+import com.mmo.infrastructure.server.packet.converter.AnimateAttackPacketConverter;
 import com.mmo.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.infrastructure.server.packet.converter.HelloPacketConverter;
-import com.mmo.infrastructure.server.packet.converter.MovePacketConverter;
+import com.mmo.infrastructure.server.packet.converter.AnimateMovePacketConverter;
 
 public class MapSimpleClient {
 
@@ -72,7 +72,7 @@ public class MapSimpleClient {
         logger.info("Received packet {} from client {}", packet, client);
 
         if (packet instanceof HelloPacket) {
-            client.send(MovePacket.builder()
+            client.send(AnimateMovePacket.builder()
                     .source(source)
                     .target(Position.builder()
                             .x(200L)
@@ -87,8 +87,8 @@ public class MapSimpleClient {
         PacketGateway.getInstance()
                 .bind(HelloPacket.ALIAS, new HelloPacketConverter())
                 .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bind(AttackPacket.ALIAS, new AttackPacketConverter())
-                .bind(MovePacket.ALIAS, new MovePacketConverter());
+                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
+                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter());
 
         new MapSimpleClient();
     }

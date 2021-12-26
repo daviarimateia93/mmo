@@ -16,10 +16,10 @@ import com.mmo.core.game.Game;
 import com.mmo.core.map.Map;
 import com.mmo.core.map.MapEntity;
 import com.mmo.core.map.Position;
-import com.mmo.core.packet.AttackPacket;
+import com.mmo.core.packet.AnimateAttackPacket;
 import com.mmo.core.packet.GoodByePacket;
 import com.mmo.core.packet.HelloPacket;
-import com.mmo.core.packet.MovePacket;
+import com.mmo.core.packet.AnimateMovePacket;
 import com.mmo.core.packet.NetworkPacket;
 import com.mmo.core.packet.Packet;
 import com.mmo.core.packet.PacketHandlerDelegator;
@@ -27,8 +27,8 @@ import com.mmo.core.packet.PersistencePacket;
 import com.mmo.core.player.Player;
 import com.mmo.core.stat.Stats;
 import com.mmo.infrastructure.config.ConfigProvider;
-import com.mmo.infrastructure.packet.AttackPacketHandler;
-import com.mmo.infrastructure.packet.MovePacketHandler;
+import com.mmo.infrastructure.packet.AnimateAttackPacketHandler;
+import com.mmo.infrastructure.packet.AnimateMovePacketHandler;
 import com.mmo.infrastructure.security.Decryptor;
 import com.mmo.infrastructure.security.Encryptor;
 import com.mmo.infrastructure.security.aes.AESDecryptor;
@@ -36,10 +36,10 @@ import com.mmo.infrastructure.security.aes.AESEncryptor;
 import com.mmo.infrastructure.server.Server;
 import com.mmo.infrastructure.server.client.Client;
 import com.mmo.infrastructure.server.packet.PacketGateway;
-import com.mmo.infrastructure.server.packet.converter.AttackPacketConverter;
+import com.mmo.infrastructure.server.packet.converter.AnimateAttackPacketConverter;
 import com.mmo.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.infrastructure.server.packet.converter.HelloPacketConverter;
-import com.mmo.infrastructure.server.packet.converter.MovePacketConverter;
+import com.mmo.infrastructure.server.packet.converter.AnimateMovePacketConverter;
 
 public class MapServer {
 
@@ -255,11 +255,11 @@ public class MapServer {
         PacketGateway.getInstance()
                 .bind(HelloPacket.ALIAS, new HelloPacketConverter())
                 .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bind(AttackPacket.ALIAS, new AttackPacketConverter())
-                .bind(MovePacket.ALIAS, new MovePacketConverter());
+                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
+                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter());
 
-        PacketHandlerDelegator.getInstance().bind(AttackPacket.class, new AttackPacketHandler());
-        PacketHandlerDelegator.getInstance().bind(MovePacket.class, new MovePacketHandler());
+        PacketHandlerDelegator.getInstance().bind(AnimateAttackPacket.class, new AnimateAttackPacketHandler());
+        PacketHandlerDelegator.getInstance().bind(AnimateMovePacket.class, new AnimateMovePacketHandler());
 
         new MapServer();
     }

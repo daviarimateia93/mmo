@@ -8,27 +8,27 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.mmo.core.packet.AttackPacket;
+import com.mmo.core.packet.AnimateAttackPacket;
 
-public class AttackPacketConverterTest {
+public class AnimateAttackPacketConverterTest {
 
-    public static AttackPacketConverter converter;
+    public static AnimateAttackPacketConverter converter;
 
     @BeforeAll
     public static void setup() {
-        converter = new AttackPacketConverter();
+        converter = new AnimateAttackPacketConverter();
     }
 
     @Test
     public void fromBytesAndToBytes() {
         UUID source = UUID.randomUUID();
 
-        AttackPacket expected = AttackPacket.builder()
+        AnimateAttackPacket expected = AnimateAttackPacket.builder()
                 .source(source)
                 .target(UUID.randomUUID())
                 .build();
 
-        AttackPacket result = converter.fromBytes(source, converter.toBytes(expected));
+        AnimateAttackPacket result = converter.fromBytes(source, converter.toBytes(expected));
 
         assertThat(result, equalTo(expected));
     }

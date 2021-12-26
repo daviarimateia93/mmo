@@ -10,19 +10,19 @@ import org.junit.jupiter.api.Test;
 import com.mmo.core.animate.Animate;
 import com.mmo.core.map.Map;
 import com.mmo.core.map.Position;
-import com.mmo.core.packet.MovePacket;
+import com.mmo.core.packet.AnimateMovePacket;
 
-public class MovePacketHandlerTest {
+public class AnimateMovePacketHandlerTest {
 
     private static Map map;
-    private static MovePacket packet;
-    private static MovePacketHandler packetHandler;
+    private static AnimateMovePacket packet;
+    private static AnimateMovePacketHandler packetHandler;
     private static Animate source;
 
     @BeforeAll
     public static void setup() {
         map = mock(Map.class);
-        packet = MovePacket.builder()
+        packet = AnimateMovePacket.builder()
                 .source(UUID.randomUUID())
                 .target(Position.builder()
                         .x(10L)
@@ -31,7 +31,7 @@ public class MovePacketHandlerTest {
                         .build())
                 .build();
 
-        packetHandler = new MovePacketHandler();
+        packetHandler = new AnimateMovePacketHandler();
 
         source = mock(Animate.class);
 

@@ -2,17 +2,17 @@ package com.mmo.infrastructure.server.packet.converter;
 
 import java.util.UUID;
 
-import com.mmo.core.packet.AttackPacket;
+import com.mmo.core.packet.AnimateAttackPacket;
 import com.mmo.infrastructure.server.packet.PacketConverter;
 import com.mmo.infrastructure.server.packet.PacketReader;
 import com.mmo.infrastructure.server.packet.PacketWriter;
 
-public class AttackPacketConverter implements PacketConverter<AttackPacket> {
+public class AnimateAttackPacketConverter implements PacketConverter<AnimateAttackPacket> {
 
     @Override
-    public AttackPacket fromBytes(UUID source, byte[] bytes) {
+    public AnimateAttackPacket fromBytes(UUID source, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
-            return AttackPacket.builder()
+            return AnimateAttackPacket.builder()
                     .source(source)
                     .target(reader.readUUID())
                     .build();
@@ -20,7 +20,7 @@ public class AttackPacketConverter implements PacketConverter<AttackPacket> {
     }
 
     @Override
-    public byte[] toBytes(AttackPacket packet) {
+    public byte[] toBytes(AnimateAttackPacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
             writer.writeUUID(packet.getTarget());
             return writer.toBytes();

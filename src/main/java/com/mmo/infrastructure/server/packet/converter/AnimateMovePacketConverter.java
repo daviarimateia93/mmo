@@ -3,17 +3,17 @@ package com.mmo.infrastructure.server.packet.converter;
 import java.util.UUID;
 
 import com.mmo.core.map.Position;
-import com.mmo.core.packet.MovePacket;
+import com.mmo.core.packet.AnimateMovePacket;
 import com.mmo.infrastructure.server.packet.PacketConverter;
 import com.mmo.infrastructure.server.packet.PacketReader;
 import com.mmo.infrastructure.server.packet.PacketWriter;
 
-public class MovePacketConverter implements PacketConverter<MovePacket> {
+public class AnimateMovePacketConverter implements PacketConverter<AnimateMovePacket> {
 
     @Override
-    public MovePacket fromBytes(UUID source, byte[] bytes) {
+    public AnimateMovePacket fromBytes(UUID source, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
-            return MovePacket.builder()
+            return AnimateMovePacket.builder()
                     .source(source)
                     .target(Position.builder()
                             .x(reader.readLong())
@@ -25,7 +25,7 @@ public class MovePacketConverter implements PacketConverter<MovePacket> {
     }
 
     @Override
-    public byte[] toBytes(MovePacket packet) {
+    public byte[] toBytes(AnimateMovePacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
             writer.writeLong(packet.getTarget().getX());
             writer.writeLong(packet.getTarget().getY());

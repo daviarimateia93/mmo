@@ -9,25 +9,25 @@ import org.junit.jupiter.api.Test;
 
 import com.mmo.core.animate.Animate;
 import com.mmo.core.map.Map;
-import com.mmo.core.packet.AttackPacket;
+import com.mmo.core.packet.AnimateAttackPacket;
 
-public class AttackPacketHandlerTest {
+public class AnimateAttackPacketHandlerTest {
 
     private static Map map;
-    private static AttackPacket packet;
-    private static AttackPacketHandler packetHandler;
+    private static AnimateAttackPacket packet;
+    private static AnimateAttackPacketHandler packetHandler;
     private static Animate source;
     private static Animate target;
 
     @BeforeAll
     public static void setup() {
         map = mock(Map.class);
-        packet = AttackPacket.builder()
+        packet = AnimateAttackPacket.builder()
                 .source(UUID.randomUUID())
                 .target(UUID.randomUUID())
                 .build();
 
-        packetHandler = new AttackPacketHandler();
+        packetHandler = new AnimateAttackPacketHandler();
 
         source = mock(Animate.class);
         target = mock(Animate.class);

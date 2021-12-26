@@ -2,8 +2,6 @@ package com.mmo.core.packet;
 
 import java.util.UUID;
 
-import com.mmo.core.map.Position;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,15 +11,15 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class MovePacket implements NetworkPacket {
+public class AnimateAttackPacket implements NetworkPacket {
 
-    public static final String ALIAS = "MOVE";
+    public static final String ALIAS = "ANIMATE_ATTACK";
 
     private final UUID source;
-    private final Position target;
+    private final UUID target;
 
     @Builder
-    private MovePacket(@NonNull UUID source, @NonNull Position target) {
+    private AnimateAttackPacket(@NonNull UUID source, @NonNull UUID target) {
         this.source = source;
         this.target = target;
     }

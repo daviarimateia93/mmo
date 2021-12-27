@@ -80,10 +80,13 @@ public abstract class Animate implements MapEntity {
                 .value(damage)
                 .build());
 
-        logger.trace("Animate {} has attacked {} with damage of {}", getInstanceId(), target.getInstanceId(), damage);
+        target.onDamage(damage, this);
+
+        onAttack(damage, target);
 
         if (!target.isAlive()) {
             lastAttackStartTime = null;
+            target.onDie();
         }
     }
 
@@ -99,37 +102,39 @@ public abstract class Animate implements MapEntity {
 
         long speed = getAttributes().getFinalMoveSpeed();
 
+        long distanceX, distanceY, distanceZ;
+
         if (current.getX() < target.getX()) {
             long difference = target.getX() - current.getX();
-            long distance = speed > difference ? difference : speed;
-            current.incrementX(distance);
+            distanceX = speed > difference ? difference : speed;
+            current.incrementX(distanceX);
         } else {
             long difference = current.getX() - target.getX();
-            long distance = speed > difference ? difference : speed;
-            current.decrementX(distance);
+            distanceX = speed > difference ? difference : speed;
+            current.decrementX(distanceX);
         }
 
         if (current.getY() < target.getY()) {
             long difference = target.getY() - current.getY();
-            long distance = speed > difference ? difference : speed;
-            current.incrementY(distance);
+            distanceY = speed > difference ? difference : speed;
+            current.incrementY(distanceY);
         } else {
             long difference = current.getY() - target.getY();
-            long distance = speed > difference ? difference : speed;
-            current.decrementY(distance);
+            distanceY = speed > difference ? difference : speed;
+            current.decrementY(distanceY);
         }
 
         if (current.getZ() < target.getZ()) {
             long difference = target.getZ() - current.getZ();
-            long distance = speed > difference ? difference : speed;
-            current.incrementZ(distance);
+            distanceZ = speed > difference ? difference : speed;
+            current.incrementZ(distanceZ);
         } else {
             long difference = current.getZ() - target.getZ();
-            long distance = speed > difference ? difference : speed;
-            current.decrementZ(distance);
+            distanceZ = speed > difference ? difference : speed;
+            current.decrementZ(distanceZ);
         }
 
-        logger.trace("Animate {} has moved to {}", getInstanceId(), getPosition());
+        onMove(distanceX, distanceY, distanceZ);
 
         if (hasFinishedMoving(current, target)) {
             lastMoveStartTime = null;
@@ -203,5 +208,21 @@ public abstract class Animate implements MapEntity {
 
     protected void dispatch(Packet packet, UUID target) {
         Game.getInstance().getMap().dispatch(packet, target);
+    }
+
+    protected void onMove(long distanceX, long distanceY, long distanceZ) {
+        logger.trace("Animate {} has moved to {}", getInstanceId(), getPosition());
+    }
+
+    protected void onDamage(int damage, Animate source) {
+        logger.trace("Animate {} has suffered damage of {} by {}", getInstanceId(), damage, source.getInstanceId());
+    }
+
+    protected void onAttack(int damage, Animate target) {
+        logger.trace("Animate {} has attacked {} with damage of {}", getInstanceId(), target.getInstanceId(), damage);
+    }
+
+    protected void onDie() {
+        logger.info("Animate {} has died", getInstanceId());
     }
 }

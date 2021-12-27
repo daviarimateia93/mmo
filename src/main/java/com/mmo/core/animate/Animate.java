@@ -80,11 +80,11 @@ public abstract class Animate implements MapEntity {
                 .value(damage)
                 .build());
 
+        logger.trace("Animate {} has attacked {} with damage of {}", getInstanceId(), target.getInstanceId(), damage);
+
         if (!target.isAlive()) {
             lastAttackStartTime = null;
         }
-
-        logger.trace("Animate {} has attacked {} with damage of {}", getInstanceId(), target.getInstanceId(), damage);
     }
 
     public void move(Position target) {
@@ -129,11 +129,11 @@ public abstract class Animate implements MapEntity {
             current.decrementZ(distance);
         }
 
+        logger.trace("Animate {} has moved to {}", getInstanceId(), getPosition());
+
         if (hasFinishedMoving(current, target)) {
             lastMoveStartTime = null;
         }
-
-        logger.trace("Animate {} has moved to {}", getInstanceId(), getPosition());
     }
 
     private boolean hasFinishedMoving(Position current, Position target) {

@@ -107,11 +107,11 @@ public class Map implements LooperUpdater {
                 .collect(Collectors.toSet());
     }
 
-    public void sendPacket(Packet packet) {
+    public void dispatch(Packet packet) {
         packetSubscribers.forEach(subscriber -> subscriber.onPacket(packet, Optional.empty()));
     }
 
-    public void sendPacket(Packet packet, UUID target) {
+    public void dispatch(Packet packet, UUID target) {
         packetSubscribers.forEach(subscriber -> subscriber.onPacket(packet, Optional.ofNullable(target)));
     }
 

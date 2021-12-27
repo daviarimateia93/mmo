@@ -198,7 +198,7 @@ public class MapTest {
                 .property2(87)
                 .build();
 
-        map.sendPacket(expected);
+        map.dispatch(expected);
 
         assertThat(packetSubscriber.getPacket(), is(expected));
         assertThat(packetSubscriber.getTarget(), is(Optional.empty()));
@@ -223,7 +223,7 @@ public class MapTest {
 
         UUID expectedTarget = UUID.randomUUID();
 
-        map.sendPacket(expectedPacket, expectedTarget);
+        map.dispatch(expectedPacket, expectedTarget);
 
         assertThat(packetSubscriber.getPacket(), is(expectedPacket));
         assertThat(packetSubscriber.getTarget(), is(Optional.of(expectedTarget)));

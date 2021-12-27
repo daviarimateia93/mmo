@@ -197,11 +197,11 @@ public abstract class Animate implements MapEntity {
         targetAnimate = null;
     }
 
-    protected void sendPacket(Packet packet) {
-        Game.getInstance().getMap().sendPacket(packet);
+    protected void dispatch(Packet packet) {
+        Game.getInstance().getMap().dispatch(packet);
     }
 
-    protected void sendPacket(Packet packet, UUID target) {
-        Game.getInstance().getMap().sendPacket(packet, target);
+    protected void dispatch(Packet packet, UUID target) {
+        Game.getInstance().getMap().dispatch(packet, target);
     }
 }

@@ -17,9 +17,9 @@ import com.mmo.core.map.Map;
 import com.mmo.core.map.MapEntity;
 import com.mmo.core.map.Position;
 import com.mmo.core.packet.AnimateAttackPacket;
+import com.mmo.core.packet.AnimateMovePacket;
 import com.mmo.core.packet.GoodByePacket;
 import com.mmo.core.packet.HelloPacket;
-import com.mmo.core.packet.AnimateMovePacket;
 import com.mmo.core.packet.NetworkPacket;
 import com.mmo.core.packet.Packet;
 import com.mmo.core.packet.PacketHandlerDelegator;
@@ -37,9 +37,9 @@ import com.mmo.infrastructure.server.Server;
 import com.mmo.infrastructure.server.client.Client;
 import com.mmo.infrastructure.server.packet.PacketGateway;
 import com.mmo.infrastructure.server.packet.converter.AnimateAttackPacketConverter;
+import com.mmo.infrastructure.server.packet.converter.AnimateMovePacketConverter;
 import com.mmo.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.infrastructure.server.packet.converter.HelloPacketConverter;
-import com.mmo.infrastructure.server.packet.converter.AnimateMovePacketConverter;
 
 public class MapServer {
 
@@ -227,8 +227,6 @@ public class MapServer {
         if (packet instanceof NetworkPacket) {
             NetworkPacket networkPacket = (NetworkPacket) packet;
             target.ifPresentOrElse(value -> send(networkPacket, value), () -> send(networkPacket));
-        } else {
-            PacketHandlerDelegator.getInstance().delegate(map, packet);
         }
     }
 

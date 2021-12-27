@@ -32,14 +32,14 @@ public class Map implements LooperUpdater {
     private final Integer nearbyRatio;
 
     @Getter(AccessLevel.NONE)
-    private final Set<MapPacketSubscriber> packetSubscribers = new LinkedHashSet<>();
+    private final Set<MapPacketDispatchSubscriber> packetSubscribers = new LinkedHashSet<>();
 
     @Builder
     private Map(
             @NonNull String name,
             @NonNull String description,
             @NonNull Integer nearbyRatio,
-            Collection<MapPacketSubscriber> packetSubscribers) {
+            Collection<MapPacketDispatchSubscriber> packetSubscribers) {
 
         this.name = name;
         this.description = description;
@@ -108,11 +108,11 @@ public class Map implements LooperUpdater {
     }
 
     public void dispatch(Packet packet) {
-        packetSubscribers.forEach(subscriber -> subscriber.onPacket(packet, Optional.empty()));
+        packetSubscribers.forEach(subscriber -> subscriber.onDispatch(packet, Optional.empty()));
     }
 
     public void dispatch(Packet packet, UUID target) {
-        packetSubscribers.forEach(subscriber -> subscriber.onPacket(packet, Optional.ofNullable(target)));
+        packetSubscribers.forEach(subscriber -> subscriber.onDispatch(packet, Optional.ofNullable(target)));
     }
 
     private boolean isNearby(MapEntity baseEntity, MapEntity testingEntity) {

@@ -183,7 +183,7 @@ public class MapTest {
 
     @Test
     public void sendPacket() {
-        PacketSubscriber packetSubscriber = new PacketSubscriber();
+        PacketDispatchSubscriber packetSubscriber = new PacketDispatchSubscriber();
 
         Map map = Map.builder()
                 .name("name")
@@ -206,7 +206,7 @@ public class MapTest {
 
     @Test
     public void sendPacketWithTarget() {
-        PacketSubscriber packetSubscriber = new PacketSubscriber();
+        PacketDispatchSubscriber packetSubscriber = new PacketDispatchSubscriber();
 
         Map map = Map.builder()
                 .name("name")
@@ -268,13 +268,13 @@ public class MapTest {
     }
 
     @Data
-    private class PacketSubscriber implements MapPacketSubscriber {
+    private class PacketDispatchSubscriber implements MapPacketDispatchSubscriber {
 
         Packet packet;
         Optional<UUID> target;
 
         @Override
-        public void onPacket(Packet packet, Optional<UUID> target) {
+        public void onDispatch(Packet packet, Optional<UUID> target) {
             this.packet = packet;
             this.target = target;
         }

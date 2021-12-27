@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.mmo.core.packet.Packet;
 
-public interface MapPacketSubscriber {
+public interface MapPacketDispatchSubscriber {
 
-    void onPacket(Packet packet, Optional<UUID> target);
+    void onDispatch(Packet packet, Optional<UUID> target);
 }

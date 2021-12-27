@@ -230,12 +230,12 @@ public class MapServer {
         }
     }
 
-    public void send(NetworkPacket packet, UUID target) {
+    private void send(NetworkPacket packet, UUID target) {
         Player player = map.getEntity(target, Player.class);
         send(packet, Set.of(player));
     }
 
-    public void send(NetworkPacket packet) {
+    private void send(NetworkPacket packet) {
         MapEntity entity = map.getEntity(packet.getSource());
         Set<Player> players = map.getNearbyEntities(entity, Player.class);
         send(packet, players);

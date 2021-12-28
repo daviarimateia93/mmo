@@ -11,4 +11,8 @@ public class ClientReadException extends ClientException {
     public ClientReadException(Throwable throwable, String messageFormat, Object... arguments) {
         super(throwable, messageFormat, arguments);
     }
+
+    public ClientReadException(Throwable throwable) {
+        super(throwable);
+    }
 }

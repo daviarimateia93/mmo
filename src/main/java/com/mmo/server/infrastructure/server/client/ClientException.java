@@ -13,4 +13,8 @@ public abstract class ClientException extends RuntimeException {
     public ClientException(Throwable throwable, String messageFormat, Object... arguments) {
         super(throwable, messageFormat, arguments);
     }
+
+    public ClientException(Throwable throwable) {
+        super(throwable);
+    }
 }

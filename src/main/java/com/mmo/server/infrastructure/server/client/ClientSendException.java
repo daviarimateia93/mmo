@@ -7,4 +7,8 @@ public class ClientSendException extends ClientException {
     public ClientSendException(Throwable throwable, String messageFormat, Object... arguments) {
         super(throwable, messageFormat, arguments);
     }
+
+    public ClientSendException(Throwable throwable) {
+        super(throwable);
+    }
 }

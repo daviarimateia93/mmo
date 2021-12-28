@@ -1,5 +1,6 @@
 package com.mmo.server.infrastructure.map.client;
 
+import java.util.Scanner;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ public class MapSimpleClient {
 
     private final Client client;
     private final UUID source;
+    private boolean exit;
 
     public MapSimpleClient() {
         source = UUID.randomUUID();
@@ -43,6 +45,25 @@ public class MapSimpleClient {
         client.send(HelloPacket.builder()
                 .source(source)
                 .build());
+
+        runCommandLoop();
+
+        client.disconnect();
+    }
+
+    private void runCommandLoop() {
+        try (Scanner command = new Scanner(System.in)) {
+            while (!exit) {
+                switch (command.nextLine()) {
+                case "exit":
+                    exit = true;
+                    break;
+
+                default:
+                    logger.info("default handler");
+                }
+            }
+        }
     }
 
     private Client createClient() {

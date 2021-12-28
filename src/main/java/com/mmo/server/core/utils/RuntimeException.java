@@ -12,6 +12,10 @@ public abstract class RuntimeException extends java.lang.RuntimeException {
         super(formatString(messageFormat, arguments), throwable);
     }
 
+    public RuntimeException(Throwable throwable) {
+        super(throwable);
+    }
+
     private static String formatString(String messageFormat, Object... arguments) {
         return String.format(messageFormat, arguments);
     }

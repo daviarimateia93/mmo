@@ -11,11 +11,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mmo.server.core.packet.NetworkPacket;
 import com.mmo.server.core.packet.Packet;
 import com.mmo.server.infrastructure.security.Decryptor;
 import com.mmo.server.infrastructure.security.Encryptor;
 import com.mmo.server.infrastructure.security.TokenData;
+import com.mmo.server.infrastructure.server.packet.DisconnectPacket;
 import com.mmo.server.infrastructure.server.packet.PacketGateway;
 
 import lombok.Builder;
@@ -26,6 +30,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class Client {
+
+    private static final Logger logger = LoggerFactory.getLogger(Client.class);
 
     private final UUID id = UUID.randomUUID();
     private final Socket socket;
@@ -136,8 +142,18 @@ public class Client {
         } catch (Exception exception) {
             throw new ClientDisconnectException(exception, "Failed to close socket");
         } finally {
-            connected = false;
-            getDisconnectSubscriber().ifPresent(subscriber -> subscriber.onDisconnect(this));
+            if (isConnected()) {
+                connected = false;
+
+                sendingQueue.add(DisconnectPacket.builder()
+                        .source(getId())
+                        .build());
+
+                sendingPool.shutdownNow();
+                receivingPool.shutdownNow();
+
+                getDisconnectSubscriber().ifPresent(subscriber -> subscriber.onDisconnect(this));
+            }
         }
     }
 
@@ -155,11 +171,15 @@ public class Client {
         NetworkPacket packet;
 
         try {
-            while ((packet = sendingQueue.take()) != null) {
+            while (isConnected() && (packet = sendingQueue.take()) != null) {
+                if (packet instanceof DisconnectPacket) {
+                    break;
+                }
+
                 sendPacket(packet);
             }
         } catch (Exception exception) {
-            throw new ClientSendException(exception, "Failed to send packet");
+            logger.error("Stop sending packet", new ClientSendException(exception));
         } finally {
             disconnect();
         }
@@ -167,11 +187,11 @@ public class Client {
 
     private void receive() {
         try {
-            while (true) {
+            while (isConnected()) {
                 receivePacket();
             }
         } catch (Exception exception) {
-            throw new ClientReadException(exception, "Failed to receive packet");
+            logger.error("Stop receiving packet", new ClientReadException(exception));
         } finally {
             disconnect();
         }

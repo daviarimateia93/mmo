@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.mmo.core.animate.Animate;
 import com.mmo.core.attribute.Attributes;
 import com.mmo.core.map.Position;
+import com.mmo.core.packet.PlayerPersistPacket;
 import com.mmo.core.stat.Stats;
 
 import lombok.Builder;
@@ -42,5 +43,15 @@ public class Player extends Animate {
     @Override
     public UUID getId() {
         return instanceId;
+    }
+
+    @Override
+    protected void onDie() {
+        super.onDie();
+
+        dispatch(PlayerPersistPacket.builder()
+                .source(instanceId)
+                .player(this)
+                .build());
     }
 }

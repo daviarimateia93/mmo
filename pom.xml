@@ -107,7 +107,7 @@
 						<configuration>
 							<archive>
 								<manifest>
-									<mainClass>com.mmo.core.MMOCoreApplication</mainClass>
+									<mainClass>com.mmo.server.infrastructure.map.server.MapServer</mainClass>
 								</manifest>
 							</archive>
 							<descriptorRefs>

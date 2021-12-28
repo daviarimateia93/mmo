@@ -18,7 +18,7 @@ public class AnimateTest {
     @Test
     @Timeout(value = 10500, unit = TimeUnit.MILLISECONDS)
     public void attack() throws InterruptedException {
-        Animate animate = new AnimateImpl(
+        AnimateImpl animate = new AnimateImpl(
                 Position.builder()
                         .x(10L)
                         .y(15L)
@@ -40,7 +40,7 @@ public class AnimateTest {
                         .attackRange(3)
                         .build());
 
-        Animate target = new AnimateImpl(
+        AnimateImpl target = new AnimateImpl(
                 Position.builder()
                         .x(20L)
                         .y(25L)
@@ -70,16 +70,20 @@ public class AnimateTest {
 
         assertThat(animate.isMoving(), equalTo(true));
         assertThat(animate.isAttacking(), equalTo(true));
+        assertThat(animate.moved, equalTo(true));
 
         LooperContextMocker.update(animate, 3000);
 
         assertThat(animate.isMoving(), equalTo(false));
         assertThat(animate.isAttacking(), equalTo(true));
+        assertThat(animate.attacked, equalTo(true));
+        assertThat(target.damaged, equalTo(true));
 
         LooperContextMocker.update(animate, 5000);
 
         assertThat(animate.isMoving(), equalTo(false));
         assertThat(animate.isAttacking(), equalTo(false));
+        assertThat(target.died, equalTo(true));
     }
 
     @Test
@@ -132,6 +136,10 @@ public class AnimateTest {
         String name = UUID.randomUUID().toString();
         Position position;
         Attributes attributes;
+        boolean moved = false;
+        boolean damaged = false;
+        boolean attacked = false;
+        boolean died = false;
 
         AnimateImpl(Position position, Attributes attributes) {
             this.position = position;
@@ -161,6 +169,30 @@ public class AnimateTest {
         @Override
         public Attributes getAttributes() {
             return attributes;
+        }
+
+        @Override
+        protected void onMove(long distanceX, long distanceY, long distanceZ) {
+            super.onMove(distanceX, distanceY, distanceZ);
+            moved = true;
+        }
+
+        @Override
+        protected void onDamage(int damage, Animate source) {
+            super.onDamage(damage, source);
+            damaged = true;
+        }
+
+        @Override
+        protected void onAttack(int damage, Animate target) {
+            super.onAttack(damage, target);
+            attacked = true;
+        }
+
+        @Override
+        protected void onDie() {
+            super.onDie();
+            died = true;
         }
     }
 }

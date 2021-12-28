@@ -46,8 +46,8 @@ public class Player extends Animate {
     }
 
     @Override
-    protected void onDie() {
-        super.onDie();
+    protected void onDie(Animate source) {
+        super.onDie(source);
 
         dispatch(PlayerPersistPacket.builder()
                 .source(instanceId)

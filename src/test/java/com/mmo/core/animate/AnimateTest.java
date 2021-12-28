@@ -2,18 +2,36 @@ package com.mmo.core.animate;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import com.mmo.core.attribute.Attributes;
+import com.mmo.core.game.GameRunnerMapMocker;
 import com.mmo.core.looper.LooperContextMocker;
+import com.mmo.core.map.Map;
 import com.mmo.core.map.Position;
+import com.mmo.core.packet.AnimateDiePacket;
 
 public class AnimateTest {
+
+    private static Map map;
+
+    @BeforeAll
+    private static void setup() {
+        map = GameRunnerMapMocker.run();
+    }
+
+    @AfterAll
+    private static void clear() {
+        GameRunnerMapMocker.stop();
+    }
 
     @Test
     @Timeout(value = 10500, unit = TimeUnit.MILLISECONDS)
@@ -84,6 +102,11 @@ public class AnimateTest {
         assertThat(animate.isMoving(), equalTo(false));
         assertThat(animate.isAttacking(), equalTo(false));
         assertThat(target.died, equalTo(true));
+
+        verify(map).dispatch(AnimateDiePacket.builder()
+                .source(target.getInstanceId())
+                .killedBy(animate.getInstanceId())
+                .build());
     }
 
     @Test
@@ -190,8 +213,8 @@ public class AnimateTest {
         }
 
         @Override
-        protected void onDie() {
-            super.onDie();
+        protected void onDie(Animate source) {
+            super.onDie(source);
             died = true;
         }
     }

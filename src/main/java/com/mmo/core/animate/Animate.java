@@ -14,6 +14,7 @@ import com.mmo.core.game.Game;
 import com.mmo.core.looper.LooperContext;
 import com.mmo.core.map.MapEntity;
 import com.mmo.core.map.Position;
+import com.mmo.core.packet.AnimateDiePacket;
 import com.mmo.core.packet.Packet;
 import com.mmo.core.property.PropertyModifierAction;
 
@@ -84,9 +85,9 @@ public abstract class Animate implements MapEntity {
 
         onAttack(damage, target);
 
-        if (!target.isAlive()) {
+        if (!target.isAlive() && Objects.nonNull(lastAttackStartTime)) {
             lastAttackStartTime = null;
-            target.onDie();
+            target.onDie(this);
         }
     }
 
@@ -136,7 +137,7 @@ public abstract class Animate implements MapEntity {
 
         onMove(distanceX, distanceY, distanceZ);
 
-        if (hasFinishedMoving(current, target)) {
+        if (hasFinishedMoving(current, target) && Objects.nonNull(lastMoveStartTime)) {
             lastMoveStartTime = null;
         }
     }
@@ -222,7 +223,12 @@ public abstract class Animate implements MapEntity {
         logger.trace("Animate {} has attacked {} with damage of {}", getInstanceId(), target.getInstanceId(), damage);
     }
 
-    protected void onDie() {
-        logger.info("Animate {} has died", getInstanceId());
+    protected void onDie(Animate source) {
+        logger.info("Animate {} has died by {}", getInstanceId(), source.getInstanceId());
+
+        dispatch(AnimateDiePacket.builder()
+                .source(getInstanceId())
+                .killedBy(source.getInstanceId())
+                .build());
     }
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mmo.server.core.map.Position;
 import com.mmo.server.core.packet.AnimateAttackPacket;
+import com.mmo.server.core.packet.AnimateDiePacket;
 import com.mmo.server.core.packet.AnimateMovePacket;
 import com.mmo.server.core.packet.GoodByePacket;
 import com.mmo.server.core.packet.HelloPacket;
@@ -19,6 +20,7 @@ import com.mmo.server.infrastructure.security.aes.AESEncryptor;
 import com.mmo.server.infrastructure.server.client.Client;
 import com.mmo.server.infrastructure.server.packet.PacketGateway;
 import com.mmo.server.infrastructure.server.packet.converter.AnimateAttackPacketConverter;
+import com.mmo.server.infrastructure.server.packet.converter.AnimateDiePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.AnimateMovePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
@@ -88,7 +90,8 @@ public class MapSimpleClient {
                 .bind(HelloPacket.ALIAS, new HelloPacketConverter())
                 .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
                 .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
-                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter());
+                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
+                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
 
         new MapSimpleClient();
     }

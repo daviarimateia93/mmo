@@ -48,7 +48,8 @@ public class PacketHandlerDelegator {
         return Optional.ofNullable(handlers.get(packet.getClass()));
     }
 
-    public <T extends Packet> void bind(Class<T> type, PacketHandler<T> handler) {
+    public <T extends Packet> PacketHandlerDelegator bind(Class<T> type, PacketHandler<T> handler) {
         handlers.put(type, handler);
+        return this;
     }
 }

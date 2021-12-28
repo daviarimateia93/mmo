@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class AnimateDiePacket implements NetworkPacket {
 
-    private static final String ALIAS = "ANIMATE_DIE";
+    public static final String ALIAS = "ANIMATE_DIE";
 
     private final UUID source;
     private final UUID killedBy;

@@ -103,7 +103,19 @@ public abstract class Animate implements MapEntity {
 
         long speed = getAttributes().getFinalMoveSpeed();
 
-        long distanceX, distanceY, distanceZ;
+        long distanceX = moveX(current, target, speed);
+        long distanceY = moveY(current, target, speed);
+        long distanceZ = moveZ(current, target, speed);
+
+        onMove(distanceX, distanceY, distanceZ);
+
+        if (hasFinishedMoving(current, target) && Objects.nonNull(lastMoveStartTime)) {
+            lastMoveStartTime = null;
+        }
+    }
+
+    private long moveX(Position current, Position target, long speed) {
+        long distanceX;
 
         if (current.getX() < target.getX()) {
             long difference = target.getX() - current.getX();
@@ -115,6 +127,12 @@ public abstract class Animate implements MapEntity {
             current.decrementX(distanceX);
         }
 
+        return distanceX;
+    }
+
+    private long moveY(Position current, Position target, long speed) {
+        long distanceY;
+
         if (current.getY() < target.getY()) {
             long difference = target.getY() - current.getY();
             distanceY = speed > difference ? difference : speed;
@@ -124,6 +142,12 @@ public abstract class Animate implements MapEntity {
             distanceY = speed > difference ? difference : speed;
             current.decrementY(distanceY);
         }
+
+        return distanceY;
+    }
+
+    private long moveZ(Position current, Position target, long speed) {
+        long distanceZ;
 
         if (current.getZ() < target.getZ()) {
             long difference = target.getZ() - current.getZ();
@@ -135,11 +159,7 @@ public abstract class Animate implements MapEntity {
             current.decrementZ(distanceZ);
         }
 
-        onMove(distanceX, distanceY, distanceZ);
-
-        if (hasFinishedMoving(current, target) && Objects.nonNull(lastMoveStartTime)) {
-            lastMoveStartTime = null;
-        }
+        return distanceZ;
     }
 
     private boolean hasFinishedMoving(Position current, Position target) {

@@ -3,9 +3,10 @@ package com.mmo.server.core.map;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import lombok.Builder;
@@ -20,7 +21,7 @@ import lombok.ToString;
 public class Terrain {
 
     private final List<Float> heightMap = new ArrayList<>();
-    private final Set<Rectangle> forbiddenAreas = new HashSet<>();
+    private final Set<Rectangle> forbiddenAreas = new LinkedHashSet<>();
 
     @Builder
     private Terrain(
@@ -43,7 +44,12 @@ public class Terrain {
     }
 
     public boolean isInsideForbiddenArea(Position position) {
+        return getForbiddenArea(position).isPresent();
+    }
+
+    public Optional<Rectangle> getForbiddenArea(Position position) {
         return forbiddenAreas.stream()
-                .anyMatch(rectangle -> rectangle.intersects(position));
+                .filter(rectangle -> rectangle.intersects(position))
+                .findFirst();
     }
 }

@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -88,6 +89,34 @@ public class TerrainTest {
 
         boolean expected = false;
         boolean result = terrain.isInsideForbiddenArea(position);
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getForbiddenArea() {
+        Position position = Position.builder()
+                .x(15L)
+                .y(15L)
+                .z(6L)
+                .build();
+
+        Optional<Rectangle> expected = Optional.of(terrain.getForbiddenAreas().iterator().next());
+        Optional<Rectangle> result = terrain.getForbiddenArea(position);
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getForbiddenAreaWhenNotInside() {
+        Position position = Position.builder()
+                .x(215L)
+                .y(215L)
+                .z(206L)
+                .build();
+
+        Optional<Rectangle> expected = Optional.empty();
+        Optional<Rectangle> result = terrain.getForbiddenArea(position);
 
         assertThat(result, equalTo(expected));
     }

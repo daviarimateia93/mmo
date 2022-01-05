@@ -26,11 +26,12 @@ import lombok.ToString;
 @ToString
 public class Map implements LooperUpdater {
 
-    private final ConcurrentHashMap<UUID, MapEntity> entities = new ConcurrentHashMap<>();
     private final String name;
     private final String description;
     private final Integer nearbyRatio;
-
+    private final Terrain terrain;
+    private final ConcurrentHashMap<UUID, MapEntity> entities = new ConcurrentHashMap<>();
+    
     @Getter(AccessLevel.NONE)
     private final Set<MapPacketDispatchSubscriber> packetSubscribers = new LinkedHashSet<>();
 
@@ -39,11 +40,13 @@ public class Map implements LooperUpdater {
             @NonNull String name,
             @NonNull String description,
             @NonNull Integer nearbyRatio,
+            @NonNull Terrain terrain,
             Collection<MapPacketDispatchSubscriber> packetSubscribers) {
 
         this.name = name;
         this.description = description;
         this.nearbyRatio = nearbyRatio;
+        this.terrain = terrain;
 
         if (Objects.nonNull(packetSubscribers)) {
             this.packetSubscribers.addAll(packetSubscribers);

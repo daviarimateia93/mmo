@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -42,6 +43,9 @@ public class MapTest {
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
+                .terrain(Terrain.builder()
+                        .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
+                        .build())
                 .build();
 
         map.addEntity(entityA);
@@ -81,6 +85,9 @@ public class MapTest {
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
+                .terrain(Terrain.builder()
+                        .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
+                        .build())
                 .build();
 
         map.addEntity(entityA);
@@ -124,6 +131,9 @@ public class MapTest {
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
+                .terrain(Terrain.builder()
+                        .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
+                        .build())
                 .build();
 
         map.addEntity(entityA);
@@ -167,6 +177,9 @@ public class MapTest {
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
+                .terrain(Terrain.builder()
+                        .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
+                        .build())
                 .build();
 
         map.addEntity(entityA);
@@ -190,6 +203,9 @@ public class MapTest {
                 .description("description")
                 .nearbyRatio(5)
                 .packetSubscribers(Set.of(packetSubscriber))
+                .terrain(Terrain.builder()
+                        .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
+                        .build())
                 .build();
 
         TestPacket expected = TestPacket.builder()
@@ -213,6 +229,9 @@ public class MapTest {
                 .description("description")
                 .nearbyRatio(5)
                 .packetSubscribers(Set.of(packetSubscriber))
+                .terrain(Terrain.builder()
+                        .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
+                        .build())
                 .build();
 
         TestPacket expectedPacket = TestPacket.builder()

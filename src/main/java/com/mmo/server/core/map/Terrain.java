@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 import lombok.Builder;
@@ -44,12 +43,11 @@ public class Terrain {
     }
 
     public boolean isInsideForbiddenArea(Position position) {
-        return getForbiddenArea(position).isPresent();
+        return isInsideForbiddenArea(position.getX(), position.getY(), position.getZ());
     }
 
-    public Optional<Rectangle> getForbiddenArea(Position position) {
+    public boolean isInsideForbiddenArea(long x, long y, long z) {
         return forbiddenAreas.stream()
-                .filter(rectangle -> rectangle.intersects(position))
-                .findFirst();
+                .anyMatch(rectangle -> rectangle.intersects(x, y, z));
     }
 }

@@ -32,21 +32,25 @@ public class Rectangle {
     }
 
     public boolean intersects(Position position) {
-        boolean validBottomLeft = position.getX() >= bottomLeftPosition.getX()
-                && position.getY() >= bottomLeftPosition.getY()
-                && position.getZ() >= bottomLeftPosition.getZ();
+        return intersects(position.getX(), position.getY(), position.getZ());
+    }
 
-        boolean validBottomRight = position.getX() <= bottomRightPosition.getX()
-                && position.getY() >= bottomRightPosition.getY()
-                && position.getZ() >= bottomRightPosition.getZ();
+    public boolean intersects(long x, long y, long z) {
+        boolean validBottomLeft = x >= bottomLeftPosition.getX()
+                && y >= bottomLeftPosition.getY()
+                && z >= bottomLeftPosition.getZ();
 
-        boolean validTopLeft = position.getX() >= topLeftPosition.getX()
-                && position.getY() <= topLeftPosition.getY()
-                && position.getZ() <= topLeftPosition.getZ();
+        boolean validBottomRight = x <= bottomRightPosition.getX()
+                && y >= bottomRightPosition.getY()
+                && z >= bottomRightPosition.getZ();
 
-        boolean validTopRight = position.getX() <= topRightPosition.getX()
-                && position.getY() <= topRightPosition.getY()
-                && position.getZ() <= topRightPosition.getZ();
+        boolean validTopLeft = x >= topLeftPosition.getX()
+                && y <= topLeftPosition.getY()
+                && z <= topLeftPosition.getZ();
+
+        boolean validTopRight = x <= topRightPosition.getX()
+                && y <= topRightPosition.getY()
+                && z <= topRightPosition.getZ();
 
         return validBottomLeft && validBottomRight && validTopLeft && validTopRight;
     }

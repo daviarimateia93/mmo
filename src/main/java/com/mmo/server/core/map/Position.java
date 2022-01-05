@@ -26,24 +26,48 @@ public class Position {
         this.x += x;
     }
 
+    public void incrementX() {
+        x++;
+    }
+
     public void incrementY(long y) {
         this.y += y;
+    }
+
+    public void incrementY() {
+        y++;
     }
 
     public void incrementZ(long z) {
         this.z += z;
     }
 
+    public void incrementZ() {
+        z++;
+    }
+
     public void decrementX(long x) {
         this.x -= x;
+    }
+
+    public void decrementX() {
+        this.x--;
     }
 
     public void decrementY(long y) {
         this.y -= y;
     }
 
+    public void decrementY() {
+        this.y--;
+    }
+
     public void decrementZ(long z) {
         this.z -= z;
+    }
+
+    public void decrementZ() {
+        this.z--;
     }
 
     public boolean isNearby(Position position, int ratio) {

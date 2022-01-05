@@ -23,18 +23,18 @@ public class PositionTest {
     }
 
     @Test
-    public void incrementZ() {
+    public void incrementOneX() {
         Position position = Position.builder()
                 .x(10L)
                 .y(10L)
                 .z(10L)
                 .build();
 
-        position.incrementZ(10);
+        position.incrementX();
 
-        assertThat(position.getX(), equalTo(10L));
+        assertThat(position.getX(), equalTo(11L));
         assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(20L));
+        assertThat(position.getZ(), equalTo(10L));
     }
 
     @Test
@@ -53,6 +53,51 @@ public class PositionTest {
     }
 
     @Test
+    public void incrementOneY() {
+        Position position = Position.builder()
+                .x(10L)
+                .y(10L)
+                .z(10L)
+                .build();
+
+        position.incrementY();
+
+        assertThat(position.getX(), equalTo(10L));
+        assertThat(position.getY(), equalTo(11L));
+        assertThat(position.getZ(), equalTo(10L));
+    }
+
+    @Test
+    public void incrementZ() {
+        Position position = Position.builder()
+                .x(10L)
+                .y(10L)
+                .z(10L)
+                .build();
+
+        position.incrementZ(10);
+
+        assertThat(position.getX(), equalTo(10L));
+        assertThat(position.getY(), equalTo(10L));
+        assertThat(position.getZ(), equalTo(20L));
+    }
+
+    @Test
+    public void incrementOneZ() {
+        Position position = Position.builder()
+                .x(10L)
+                .y(10L)
+                .z(10L)
+                .build();
+
+        position.incrementZ();
+
+        assertThat(position.getX(), equalTo(10L));
+        assertThat(position.getY(), equalTo(10L));
+        assertThat(position.getZ(), equalTo(11L));
+    }
+
+    @Test
     public void decrementX() {
         Position position = Position.builder()
                 .x(10L)
@@ -63,6 +108,21 @@ public class PositionTest {
         position.decrementX(10);
 
         assertThat(position.getX(), equalTo(0L));
+        assertThat(position.getY(), equalTo(10L));
+        assertThat(position.getZ(), equalTo(10L));
+    }
+
+    @Test
+    public void decrementOneX() {
+        Position position = Position.builder()
+                .x(10L)
+                .y(10L)
+                .z(10L)
+                .build();
+
+        position.decrementX();
+
+        assertThat(position.getX(), equalTo(9L));
         assertThat(position.getY(), equalTo(10L));
         assertThat(position.getZ(), equalTo(10L));
     }
@@ -83,6 +143,21 @@ public class PositionTest {
     }
 
     @Test
+    public void decrementOneY() {
+        Position position = Position.builder()
+                .x(10L)
+                .y(10L)
+                .z(10L)
+                .build();
+
+        position.decrementY();
+
+        assertThat(position.getX(), equalTo(10L));
+        assertThat(position.getY(), equalTo(9L));
+        assertThat(position.getZ(), equalTo(10L));
+    }
+
+    @Test
     public void decrementZ() {
         Position position = Position.builder()
                 .x(10L)
@@ -95,6 +170,21 @@ public class PositionTest {
         assertThat(position.getX(), equalTo(10L));
         assertThat(position.getY(), equalTo(10L));
         assertThat(position.getZ(), equalTo(0L));
+    }
+
+    @Test
+    public void decrementOneZ() {
+        Position position = Position.builder()
+                .x(10L)
+                .y(10L)
+                .z(10L)
+                .build();
+
+        position.decrementZ();
+
+        assertThat(position.getX(), equalTo(10L));
+        assertThat(position.getY(), equalTo(10L));
+        assertThat(position.getZ(), equalTo(9L));
     }
 
     @Test

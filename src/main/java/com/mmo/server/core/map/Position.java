@@ -23,7 +23,11 @@ public class Position {
     }
 
     public void incrementX(long x) {
-        this.x += x;
+        long limit = this.x + x;
+
+        while (this.x < limit) {
+            incrementX();
+        }
     }
 
     public void incrementX() {
@@ -31,7 +35,11 @@ public class Position {
     }
 
     public void incrementY(long y) {
-        this.y += y;
+        long limit = this.y + y;
+
+        while (this.y < limit) {
+            incrementY();
+        }
     }
 
     public void incrementY() {
@@ -39,7 +47,11 @@ public class Position {
     }
 
     public void incrementZ(long z) {
-        this.z += z;
+        long limit = this.z + z;
+
+        while (this.z < limit) {
+            incrementZ();
+        }
     }
 
     public void incrementZ() {
@@ -47,15 +59,23 @@ public class Position {
     }
 
     public void decrementX(long x) {
-        this.x -= x;
+        long limit = this.x - x;
+
+        while (this.x > limit) {
+            decrementX();
+        }
     }
 
     public void decrementX() {
-        this.x--;
+        x--;
     }
 
     public void decrementY(long y) {
-        this.y -= y;
+        long limit = this.y - y;
+
+        while (this.y > limit) {
+            decrementY();
+        }
     }
 
     public void decrementY() {
@@ -63,7 +83,11 @@ public class Position {
     }
 
     public void decrementZ(long z) {
-        this.z -= z;
+        long limit = this.z - z;
+
+        while (this.z > limit) {
+            decrementZ();
+        }
     }
 
     public void decrementZ() {

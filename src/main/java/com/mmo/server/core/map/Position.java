@@ -1,5 +1,7 @@
 package com.mmo.server.core.map;
 
+import com.mmo.server.core.game.Game;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,72 +28,138 @@ public class Position {
         long limit = this.x + x;
 
         while (this.x < limit) {
-            incrementX();
+            if (!incrementX()) {
+                break;
+            }
         }
     }
 
-    public void incrementX() {
-        x++;
+    public boolean incrementX() {
+        long newOne = x + 1;
+
+        if (!Game.getInstance().getMap()
+                .getTerrain()
+                .isInsideForbiddenArea(newOne, y, z)) {
+            x++;
+            return true;
+        }
+
+        return false;
     }
 
     public void incrementY(long y) {
         long limit = this.y + y;
 
         while (this.y < limit) {
-            incrementY();
+            if (!incrementY()) {
+                break;
+            }
         }
     }
 
-    public void incrementY() {
-        y++;
+    public boolean incrementY() {
+        long newOne = y + 1;
+
+        if (!Game.getInstance().getMap()
+                .getTerrain()
+                .isInsideForbiddenArea(x, newOne, z)) {
+            y++;
+            return true;
+        }
+
+        return false;
     }
 
     public void incrementZ(long z) {
         long limit = this.z + z;
 
         while (this.z < limit) {
-            incrementZ();
+            if (!incrementZ()) {
+                break;
+            }
         }
     }
 
-    public void incrementZ() {
-        z++;
+    public boolean incrementZ() {
+        long newOne = z + 1;
+
+        if (!Game.getInstance().getMap()
+                .getTerrain()
+                .isInsideForbiddenArea(x, y, newOne)) {
+            z++;
+            return true;
+        }
+
+        return false;
     }
 
     public void decrementX(long x) {
         long limit = this.x - x;
 
         while (this.x > limit) {
-            decrementX();
+            if (!decrementX()) {
+                break;
+            }
         }
     }
 
-    public void decrementX() {
-        x--;
+    public boolean decrementX() {
+        long newOne = x - 1;
+
+        if (!Game.getInstance().getMap()
+                .getTerrain()
+                .isInsideForbiddenArea(newOne, y, z)) {
+            x--;
+            return true;
+        }
+
+        return false;
     }
 
     public void decrementY(long y) {
         long limit = this.y - y;
 
         while (this.y > limit) {
-            decrementY();
+            if (!decrementY()) {
+                break;
+            }
         }
     }
 
-    public void decrementY() {
-        this.y--;
+    public boolean decrementY() {
+        long newOne = y - 1;
+
+        if (!Game.getInstance().getMap()
+                .getTerrain()
+                .isInsideForbiddenArea(x, newOne, z)) {
+            y--;
+            return true;
+        }
+
+        return false;
     }
 
     public void decrementZ(long z) {
         long limit = this.z - z;
 
         while (this.z > limit) {
-            decrementZ();
+            if (!decrementZ()) {
+                break;
+            }
         }
     }
 
-    public void decrementZ() {
-        this.z--;
+    public boolean decrementZ() {
+        long newOne = z - 1;
+
+        if (!Game.getInstance().getMap()
+                .getTerrain()
+                .isInsideForbiddenArea(x, y, newOne)) {
+            z--;
+            return true;
+        }
+
+        return false;
     }
 
     public boolean isNearby(Position position, int ratio) {

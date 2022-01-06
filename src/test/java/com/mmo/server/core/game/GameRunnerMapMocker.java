@@ -1,15 +1,22 @@
 package com.mmo.server.core.game;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import com.mmo.server.core.map.Map;
+import com.mmo.server.core.map.Terrain;
 
 public class GameRunnerMapMocker {
 
+    private static Terrain terrain;
     private static Map map;
 
     public static Map run() {
+        terrain = mock(Terrain.class);
         map = mock(Map.class);
+
+        when(map.getTerrain()).thenReturn(terrain);
+        when(terrain.isInsideForbiddenArea(anyLong(), anyLong(), anyLong())).thenReturn(false);
 
         new Thread() {
             @Override

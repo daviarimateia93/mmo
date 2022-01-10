@@ -25,9 +25,9 @@ public class AnimateMovePacketHandlerTest {
         packet = AnimateMovePacket.builder()
                 .source(UUID.randomUUID())
                 .target(Position.builder()
-                        .x(10L)
-                        .y(15L)
-                        .z(20L)
+                        .x(10)
+                        .y(15)
+                        .z(20)
                         .build())
                 .build();
 

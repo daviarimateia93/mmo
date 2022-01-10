@@ -4,24 +4,15 @@ import com.mmo.server.core.game.Game;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
 import lombok.ToString;
 
-@Getter
-@EqualsAndHashCode
-@ToString
-public class Position {
-
-    private Long x;
-    private Long y;
-    private Long z;
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class Position extends Vertex {
 
     @Builder
-    private Position(@NonNull Long x, @NonNull Long y, @NonNull Long z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public Position(long x, long y, long z) {
+        super(x, y, z);
     }
 
     public void incrementX(long x) {
@@ -160,18 +151,5 @@ public class Position {
         }
 
         return false;
-    }
-
-    public boolean isNearby(Position position, int ratio) {
-        long minX = x - ratio;
-        long maxX = x + ratio;
-        long minY = y - ratio;
-        long maxY = y + ratio;
-        long minZ = z - ratio;
-        long maxZ = z + ratio;
-
-        return position.getX() >= minX && position.getX() <= maxX
-                && position.getY() >= minY && position.getY() <= maxY
-                && position.getZ() >= minZ && position.getZ() <= maxZ;
     }
 }

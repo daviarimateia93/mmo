@@ -38,9 +38,9 @@ public class AnimateTest {
     public void attack() throws InterruptedException {
         AnimateImpl animate = new AnimateImpl(
                 Position.builder()
-                        .x(10L)
-                        .y(15L)
-                        .z(10L)
+                        .x(10)
+                        .y(15)
+                        .z(10)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -60,9 +60,9 @@ public class AnimateTest {
 
         AnimateImpl target = new AnimateImpl(
                 Position.builder()
-                        .x(20L)
-                        .y(25L)
-                        .z(10L)
+                        .x(20)
+                        .y(25)
+                        .z(10)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -114,9 +114,9 @@ public class AnimateTest {
     public void move() throws InterruptedException {
         Animate animate = new AnimateImpl(
                 Position.builder()
-                        .x(10L)
-                        .y(15L)
-                        .z(10L)
+                        .x(10)
+                        .y(15)
+                        .z(10)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -135,9 +135,9 @@ public class AnimateTest {
                         .build());
 
         Position expected = Position.builder()
-                .x(20L)
-                .y(25L)
-                .z(15L)
+                .x(20)
+                .y(25)
+                .z(15)
                 .build();
 
         animate.move(expected);

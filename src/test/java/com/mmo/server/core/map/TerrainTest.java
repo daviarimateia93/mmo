@@ -18,76 +18,36 @@ public class TerrainTest {
                 .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
                 .forbiddenAreas(List.of(
                         Rectangle.builder()
-                                .bottomLeftPosition(Position.builder()
-                                        .x(10L)
-                                        .y(11L)
-                                        .z(2L)
-                                        .build())
-                                .bottomRightPosition(Position.builder()
-                                        .x(20L)
-                                        .y(11L)
-                                        .z(2L)
-                                        .build())
-                                .topLeftPosition(Position.builder()
-                                        .x(10L)
-                                        .y(21L)
-                                        .z(12L)
-                                        .build())
-                                .topRightPosition(Position.builder()
-                                        .x(20L)
-                                        .y(21L)
-                                        .z(12L)
-                                        .build())
+                                .bottomLeftVertex(new Vertex(10, 11, 2))
+                                .bottomRightVertex(new Vertex(20, 11, 2))
+                                .topLeftVertex(new Vertex(10, 21, 12))
+                                .topRightVertex(new Vertex(20, 21, 12))
                                 .build(),
                         Rectangle.builder()
-                                .bottomLeftPosition(Position.builder()
-                                        .x(110L)
-                                        .y(111L)
-                                        .z(102L)
-                                        .build())
-                                .bottomRightPosition(Position.builder()
-                                        .x(120L)
-                                        .y(111L)
-                                        .z(102L)
-                                        .build())
-                                .topLeftPosition(Position.builder()
-                                        .x(110L)
-                                        .y(121L)
-                                        .z(112L)
-                                        .build())
-                                .topRightPosition(Position.builder()
-                                        .x(120L)
-                                        .y(121L)
-                                        .z(112L)
-                                        .build())
+                                .bottomLeftVertex(new Vertex(110, 111, 102))
+                                .bottomRightVertex(new Vertex(120, 111, 102))
+                                .topLeftVertex(new Vertex(110, 121, 112))
+                                .topRightVertex(new Vertex(120, 121, 112))
                                 .build()))
                 .build();
     }
 
     @Test
     public void isInsideForbiddenArea() {
-        Position position = Position.builder()
-                .x(15L)
-                .y(15L)
-                .z(6L)
-                .build();
+        Vertex vertex = new Vertex(15, 15, 6);
 
         boolean expected = true;
-        boolean result = terrain.isInsideForbiddenArea(position);
+        boolean result = terrain.isInsideForbiddenArea(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void isOutsideForbiddenArea() {
-        Position position = Position.builder()
-                .x(215L)
-                .y(215L)
-                .z(206L)
-                .build();
+        Vertex vertex = new Vertex(215, 215, 206);
 
         boolean expected = false;
-        boolean result = terrain.isInsideForbiddenArea(position);
+        boolean result = terrain.isInsideForbiddenArea(vertex);
 
         assertThat(result, equalTo(expected));
     }

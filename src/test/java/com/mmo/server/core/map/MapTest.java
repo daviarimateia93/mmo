@@ -22,21 +22,21 @@ public class MapTest {
     @Test
     public void addEntity() {
         Entity entityA = new Entity(Position.builder()
-                .x(10L)
-                .y(15L)
-                .z(10L)
+                .x(10)
+                .y(15)
+                .z(10)
                 .build());
 
         Entity entityB = new Entity(Position.builder()
-                .x(11L)
-                .y(13L)
-                .z(10L)
+                .x(11)
+                .y(13)
+                .z(10)
                 .build());
 
         Entity entityC = new Entity(Position.builder()
-                .x(9L)
-                .y(17L)
-                .z(10L)
+                .x(9)
+                .y(17)
+                .z(10)
                 .build());
 
         Map map = Map.builder()
@@ -64,21 +64,21 @@ public class MapTest {
     @Test
     public void removeEntity() {
         Entity entityA = new Entity(Position.builder()
-                .x(10L)
-                .y(15L)
-                .z(10L)
+                .x(10)
+                .y(15)
+                .z(10)
                 .build());
 
         Entity entityB = new Entity(Position.builder()
-                .x(11L)
-                .y(13L)
-                .z(10L)
+                .x(11)
+                .y(13)
+                .z(10)
                 .build());
 
         Entity entityC = new Entity(Position.builder()
-                .x(12L)
-                .y(16L)
-                .z(12L)
+                .x(12)
+                .y(16)
+                .z(12)
                 .build());
 
         Map map = Map.builder()
@@ -110,21 +110,21 @@ public class MapTest {
     @Test
     public void getNearbyEntities() {
         Entity entityA = new Entity(Position.builder()
-                .x(10L)
-                .y(15L)
-                .z(10L)
+                .x(10)
+                .y(15)
+                .z(10)
                 .build());
 
         Entity entityB = new Entity(Position.builder()
-                .x(11L)
-                .y(13L)
-                .z(10L)
+                .x(11)
+                .y(13)
+                .z(10)
                 .build());
 
         Entity entityC = new Entity(Position.builder()
-                .x(19L)
-                .y(27L)
-                .z(10L)
+                .x(19)
+                .y(27)
+                .z(10)
                 .build());
 
         Map map = Map.builder()
@@ -150,27 +150,27 @@ public class MapTest {
     @Test
     public void getTypedNearbyEntities() {
         Entity entityA = new Entity(Position.builder()
-                .x(10L)
-                .y(15L)
-                .z(10L)
+                .x(10)
+                .y(15)
+                .z(10)
                 .build());
 
         Entity entityB = new Entity(Position.builder()
-                .x(11L)
-                .y(13L)
-                .z(10L)
+                .x(11)
+                .y(13)
+                .z(10)
                 .build());
 
         Entity entityC = new Entity(Position.builder()
-                .x(19L)
-                .y(27L)
-                .z(10L)
+                .x(19)
+                .y(27)
+                .z(10)
                 .build());
 
         SubEntity entityD = new SubEntity(Position.builder()
-                .x(11L)
-                .y(13L)
-                .z(10L)
+                .x(11)
+                .y(13)
+                .z(10)
                 .build());
 
         Map map = Map.builder()

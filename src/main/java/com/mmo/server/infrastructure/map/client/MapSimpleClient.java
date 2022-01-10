@@ -98,9 +98,9 @@ public class MapSimpleClient {
             client.send(AnimateMovePacket.builder()
                     .source(source)
                     .target(Position.builder()
-                            .x(200L)
-                            .y(100L)
-                            .z(0L)
+                            .x(200)
+                            .y(100)
+                            .z(0)
                             .build())
                     .build());
         }

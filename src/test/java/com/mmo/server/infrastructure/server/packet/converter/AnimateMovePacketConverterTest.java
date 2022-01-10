@@ -27,9 +27,9 @@ public class AnimateMovePacketConverterTest {
         AnimateMovePacket expected = AnimateMovePacket.builder()
                 .source(source)
                 .target(Position.builder()
-                        .x(10L)
-                        .y(15L)
-                        .z(20L)
+                        .x(10)
+                        .y(15)
+                        .z(20)
                         .build())
                 .build();
 

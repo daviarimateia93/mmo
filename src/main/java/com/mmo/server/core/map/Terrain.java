@@ -42,7 +42,7 @@ public class Terrain {
         return Collections.unmodifiableSet(forbiddenAreas);
     }
 
-    public boolean isInsideForbiddenArea(Position position) {
+    public boolean isInsideForbiddenArea(Vertex position) {
         return isInsideForbiddenArea(position.getX(), position.getY(), position.getZ());
     }
 

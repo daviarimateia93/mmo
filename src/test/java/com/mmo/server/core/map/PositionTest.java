@@ -34,9 +34,9 @@ public class PositionTest {
     @Test
     public void incrementX() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementX(10);
@@ -49,9 +49,9 @@ public class PositionTest {
     @Test
     public void incrementOneX() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementX();
@@ -63,12 +63,12 @@ public class PositionTest {
 
     @Test
     public void incrementXWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(15L, 10L, 10L)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(15, 10, 10)).thenReturn(true);
 
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementX(10);
@@ -81,9 +81,9 @@ public class PositionTest {
     @Test
     public void incrementY() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementY(10);
@@ -96,9 +96,9 @@ public class PositionTest {
     @Test
     public void incrementOneY() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementY();
@@ -110,12 +110,12 @@ public class PositionTest {
 
     @Test
     public void incrementYWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(10L, 15L, 10L)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(10, 15, 10)).thenReturn(true);
 
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementY(10);
@@ -128,9 +128,9 @@ public class PositionTest {
     @Test
     public void incrementZ() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementZ(10);
@@ -143,9 +143,9 @@ public class PositionTest {
     @Test
     public void incrementOneZ() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementZ();
@@ -157,12 +157,12 @@ public class PositionTest {
 
     @Test
     public void incrementZWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(10L, 10L, 15L)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(10, 10, 15)).thenReturn(true);
 
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.incrementZ(10);
@@ -175,9 +175,9 @@ public class PositionTest {
     @Test
     public void decrementX() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementX(10);
@@ -190,9 +190,9 @@ public class PositionTest {
     @Test
     public void decrementOneX() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementX();
@@ -204,12 +204,12 @@ public class PositionTest {
 
     @Test
     public void decrementXWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(5L, 10L, 10L)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(5, 10, 10)).thenReturn(true);
 
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementX(10);
@@ -222,9 +222,9 @@ public class PositionTest {
     @Test
     public void decrementY() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementY(10);
@@ -237,9 +237,9 @@ public class PositionTest {
     @Test
     public void decrementOneY() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementY();
@@ -251,12 +251,12 @@ public class PositionTest {
 
     @Test
     public void decrementYWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(10L, 5L, 10L)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(10, 5, 10)).thenReturn(true);
 
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementY(10);
@@ -269,9 +269,9 @@ public class PositionTest {
     @Test
     public void decrementZ() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementZ(10);
@@ -284,9 +284,9 @@ public class PositionTest {
     @Test
     public void decrementOneZ() {
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementZ();
@@ -298,12 +298,12 @@ public class PositionTest {
 
     @Test
     public void decrementZWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(10L, 10L, 5L)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(10, 10, 5)).thenReturn(true);
 
         Position position = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
+                .x(10)
+                .y(10)
+                .z(10)
                 .build();
 
         position.decrementZ(10);
@@ -311,45 +311,5 @@ public class PositionTest {
         assertThat(position.getX(), equalTo(10L));
         assertThat(position.getY(), equalTo(10L));
         assertThat(position.getZ(), equalTo(6L));
-    }
-
-    @Test
-    public void isNearby() {
-        Position basePosition = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
-                .build();
-
-        Position testingPosition = Position.builder()
-                .x(20L)
-                .y(15L)
-                .z(15L)
-                .build();
-
-        boolean expected = true;
-        boolean result = basePosition.isNearby(testingPosition, 10);
-
-        assertThat(result, equalTo(expected));
-    }
-
-    @Test
-    public void isNotNearby() {
-        Position basePosition = Position.builder()
-                .x(10L)
-                .y(10L)
-                .z(10L)
-                .build();
-
-        Position testingPosition = Position.builder()
-                .x(20L)
-                .y(15L)
-                .z(15L)
-                .build();
-
-        boolean expected = false;
-        boolean result = basePosition.isNearby(testingPosition, 9);
-
-        assertThat(result, equalTo(expected));
     }
 }

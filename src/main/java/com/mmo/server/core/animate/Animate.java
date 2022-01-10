@@ -163,7 +163,7 @@ public abstract class Animate implements MapEntity {
     }
 
     private boolean hasFinishedMoving(Position current, Position target) {
-        return current.getX().compareTo(target.getX()) == 0 && current.getY().compareTo(target.getY()) == 0;
+        return current.getX() == target.getX() && current.getY() == target.getY();
     }
 
     @Override

@@ -14,177 +14,109 @@ public class RectangleTest {
     @BeforeAll
     public static void setup() {
         rectangle = Rectangle.builder()
-                .bottomLeftPosition(Position.builder()
-                        .x(10L)
-                        .y(11L)
-                        .z(2L)
-                        .build())
-                .bottomRightPosition(Position.builder()
-                        .x(20L)
-                        .y(11L)
-                        .z(2L)
-                        .build())
-                .topLeftPosition(Position.builder()
-                        .x(10L)
-                        .y(21L)
-                        .z(12L)
-                        .build())
-                .topRightPosition(Position.builder()
-                        .x(20L)
-                        .y(21L)
-                        .z(12L)
-                        .build())
+                .bottomLeftVertex(new Vertex(10, 11, 2))
+                .bottomRightVertex(new Vertex(20, 11, 2))
+                .topLeftVertex(new Vertex(10, 21, 12))
+                .topRightVertex(new Vertex(20, 21, 12))
                 .build();
     }
 
     @Test
     public void validateThrowsExceptionWhenInvalid() {
         assertThrows(InvalidRectangleException.class, () -> Rectangle.builder()
-                .bottomLeftPosition(Position.builder()
-                        .x(10L)
-                        .y(11L)
-                        .z(2L)
-                        .build())
-                .bottomRightPosition(Position.builder()
-                        .x(20L)
-                        .y(11L)
-                        .z(2L)
-                        .build())
-                .topLeftPosition(Position.builder()
-                        .x(10L)
-                        .y(21L)
-                        .z(12L)
-                        .build())
-                .topRightPosition(Position.builder()
-                        .x(20L)
-                        .y(21L)
-                        .z(13L)
-                        .build())
+                .bottomLeftVertex(new Vertex(10, 11, 2))
+                .bottomRightVertex(new Vertex(20, 11, 2))
+                .topLeftVertex(new Vertex(10, 21, 12))
+                .topRightVertex(new Vertex(20, 21, 13))
                 .build());
     }
 
     @Test
     public void insetersectsCenter() {
-        Position position = Position.builder()
-                .x(15L)
-                .y(15L)
-                .z(6L)
-                .build();
+        Vertex vertex = new Vertex(15, 15, 6);
 
         boolean expected = true;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void intersectsBorderBottomLeft() {
-        Position position = Position.builder()
-                .x(10L)
-                .y(11L)
-                .z(2L)
-                .build();
+        Vertex vertex = new Vertex(10, 11, 2);
 
         boolean expected = true;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void intersectsBorderBottomRight() {
-        Position position = Position.builder()
-                .x(20L)
-                .y(11L)
-                .z(2L)
-                .build();
+        Vertex vertex = new Vertex(20, 11, 2);
 
         boolean expected = true;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void intersectsBorderTopLeft() {
-        Position position = Position.builder()
-                .x(10L)
-                .y(21L)
-                .z(2L)
-                .build();
+        Vertex vertex = new Vertex(10, 21, 2);
 
         boolean expected = true;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void intersectsBorderTopRight() {
-        Position position = Position.builder()
-                .x(20L)
-                .y(21L)
-                .z(2L)
-                .build();
+        Vertex vertex = new Vertex(20, 21, 2);
 
         boolean expected = true;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void doesNotIntersectsBottomLeft() {
-        Position position = Position.builder()
-                .x(9L)
-                .y(11L)
-                .z(2L)
-                .build();
+        Vertex vertex = new Vertex(9, 11, 2);
 
         boolean expected = false;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void doesNotIntersectsBottomRight() {
-        Position position = Position.builder()
-                .x(21L)
-                .y(11L)
-                .z(2L)
-                .build();
+        Vertex vertex = new Vertex(21, 11, 2);
 
         boolean expected = false;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void doesNotIntersectsTopLeft() {
-        Position position = Position.builder()
-                .x(10L)
-                .y(22L)
-                .z(2L)
-                .build();
+        Vertex vertex = new Vertex(10, 22, 2);
 
         boolean expected = false;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void doesNotIntersectsTopRight() {
-        Position position = Position.builder()
-                .x(20L)
-                .y(22L)
-                .z(2L)
-                .build();
+        Vertex vertex = new Vertex(20, 22, 2);
 
         boolean expected = false;
-        boolean result = rectangle.intersects(position);
+        boolean result = rectangle.intersects(vertex);
 
         assertThat(result, equalTo(expected));
     }

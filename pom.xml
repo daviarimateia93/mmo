@@ -12,7 +12,6 @@
 		<project.reporting.outputEncoding>UTF-8
 		</project.reporting.outputEncoding>
 		<java.version>17</java.version>
-		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 	</properties>
 
 	<dependencies>

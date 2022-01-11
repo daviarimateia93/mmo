@@ -39,7 +39,7 @@ public abstract class Animate implements MapEntity {
     }
 
     public boolean isMoving() {
-        return Objects.nonNull(lastMoveStartTime);
+        return Objects.nonNull(lastMoveStartTime) && !hasCollided();
     }
 
     public boolean isAlive() {
@@ -103,6 +103,11 @@ public abstract class Animate implements MapEntity {
         lastMoveStartTime = System.currentTimeMillis();
     }
 
+    private void move(Long lastMoveStartTime) {
+        collided = false;
+        this.lastMoveStartTime = lastMoveStartTime;
+    }
+
     private void move() {
         Position current = getPosition();
         Position target = getTargetPosition().orElseThrow();
@@ -121,13 +126,13 @@ public abstract class Animate implements MapEntity {
     }
 
     private long moveX(Position current, Position target, long speed) {
-        long distanceX;
+        long distanceX = 0;
 
         if (current.getX() < target.getX()) {
             long difference = target.getX() - current.getX();
             distanceX = speed > difference ? difference : speed;
             collided = !current.incrementX(distanceX);
-        } else {
+        } else if (current.getX() > target.getX()) {
             long difference = current.getX() - target.getX();
             distanceX = speed > difference ? difference : speed;
             collided = !current.decrementX(distanceX);
@@ -137,13 +142,13 @@ public abstract class Animate implements MapEntity {
     }
 
     private long moveY(Position current, Position target, long speed) {
-        long distanceY;
+        long distanceY = 0;
 
         if (current.getY() < target.getY()) {
             long difference = target.getY() - current.getY();
             distanceY = speed > difference ? difference : speed;
             collided = !current.incrementY(distanceY);
-        } else {
+        } else if (current.getY() > target.getY()) {
             long difference = current.getY() - target.getY();
             distanceY = speed > difference ? difference : speed;
             collided = !current.decrementY(distanceY);
@@ -153,13 +158,13 @@ public abstract class Animate implements MapEntity {
     }
 
     private long moveZ(Position current, Position target, long speed) {
-        long distanceZ;
+        long distanceZ = 0;
 
         if (current.getZ() < target.getZ()) {
             long difference = target.getZ() - current.getZ();
             distanceZ = speed > difference ? difference : speed;
             collided = !current.incrementZ(distanceZ);
-        } else {
+        } else if (current.getZ() > target.getZ()) {
             long difference = current.getZ() - target.getZ();
             distanceZ = speed > difference ? difference : speed;
             collided = !current.decrementZ(distanceZ);
@@ -180,8 +185,7 @@ public abstract class Animate implements MapEntity {
                 lastMoveStartTime = null;
             } else {
                 // we should start moving to getting closer
-                collided = false;
-                lastMoveStartTime = lastAttackStartTime;
+                move(lastAttackStartTime);
             }
 
             update(context, lastAttackStartTime, getAttackUpdateRateInMillis(), this::attack);

@@ -41,9 +41,13 @@ public class PositionTest {
 
         position.incrementX(10);
 
-        assertThat(position.getX(), equalTo(20L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(10L));
+        Position expected = Position.builder()
+                .x(20)
+                .y(10)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -56,9 +60,13 @@ public class PositionTest {
 
         position.incrementX();
 
-        assertThat(position.getX(), equalTo(11L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(10L));
+        Position expected = Position.builder()
+                .x(11)
+                .y(10)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -74,9 +82,14 @@ public class PositionTest {
         boolean result = position.incrementX(10);
 
         assertThat(result, equalTo(false));
-        assertThat(position.getX(), equalTo(14L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(10L));
+
+        Position expected = Position.builder()
+                .x(14)
+                .y(10)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -89,9 +102,13 @@ public class PositionTest {
 
         position.incrementY(10);
 
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(20L));
-        assertThat(position.getZ(), equalTo(10L));
+        Position expected = Position.builder()
+                .x(10)
+                .y(20)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -104,9 +121,13 @@ public class PositionTest {
 
         position.incrementY();
 
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(11L));
-        assertThat(position.getZ(), equalTo(10L));
+        Position expected = Position.builder()
+                .x(10)
+                .y(11)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -122,9 +143,14 @@ public class PositionTest {
         boolean result = position.incrementY(10);
 
         assertThat(result, equalTo(false));
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(14L));
-        assertThat(position.getZ(), equalTo(10L));
+
+        Position expected = Position.builder()
+                .x(10)
+                .y(14)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -137,9 +163,13 @@ public class PositionTest {
 
         position.incrementZ(10);
 
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(20L));
+        Position expected = Position.builder()
+                .x(10)
+                .y(10)
+                .z(20)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -152,9 +182,13 @@ public class PositionTest {
 
         position.incrementZ();
 
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(11L));
+        Position expected = Position.builder()
+                .x(10)
+                .y(10)
+                .z(11)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -170,9 +204,14 @@ public class PositionTest {
         boolean result = position.incrementZ(10);
 
         assertThat(result, equalTo(false));
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(14L));
+
+        Position expected = Position.builder()
+                .x(10)
+                .y(10)
+                .z(14)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -185,9 +224,13 @@ public class PositionTest {
 
         position.decrementX(10);
 
-        assertThat(position.getX(), equalTo(0L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(10L));
+        Position expected = Position.builder()
+                .x(0)
+                .y(10)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -200,9 +243,13 @@ public class PositionTest {
 
         position.decrementX();
 
-        assertThat(position.getX(), equalTo(9L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(10L));
+        Position expected = Position.builder()
+                .x(9)
+                .y(10)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -218,9 +265,14 @@ public class PositionTest {
         boolean result = position.decrementX(10);
 
         assertThat(result, equalTo(false));
-        assertThat(position.getX(), equalTo(6L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(10L));
+
+        Position expected = Position.builder()
+                .x(6)
+                .y(10)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -233,9 +285,13 @@ public class PositionTest {
 
         position.decrementY(10);
 
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(0L));
-        assertThat(position.getZ(), equalTo(10L));
+        Position expected = Position.builder()
+                .x(10)
+                .y(0)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -248,9 +304,13 @@ public class PositionTest {
 
         position.decrementY();
 
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(9L));
-        assertThat(position.getZ(), equalTo(10L));
+        Position expected = Position.builder()
+                .x(10)
+                .y(9)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -266,9 +326,14 @@ public class PositionTest {
         boolean result = position.decrementY(10);
 
         assertThat(result, equalTo(false));
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(6L));
-        assertThat(position.getZ(), equalTo(10L));
+
+        Position expected = Position.builder()
+                .x(10)
+                .y(6)
+                .z(10)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -281,9 +346,13 @@ public class PositionTest {
 
         position.decrementZ(10);
 
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(0L));
+        Position expected = Position.builder()
+                .x(10)
+                .y(10)
+                .z(0)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -296,9 +365,13 @@ public class PositionTest {
 
         position.decrementZ();
 
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(9L));
+        Position expected = Position.builder()
+                .x(10)
+                .y(10)
+                .z(9)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 
     @Test
@@ -314,8 +387,13 @@ public class PositionTest {
         boolean result = position.decrementZ(10);
 
         assertThat(result, equalTo(false));
-        assertThat(position.getX(), equalTo(10L));
-        assertThat(position.getY(), equalTo(10L));
-        assertThat(position.getZ(), equalTo(6L));
+
+        Position expected = Position.builder()
+                .x(10)
+                .y(10)
+                .z(6)
+                .build();
+
+        assertThat(position, equalTo(expected));
     }
 }

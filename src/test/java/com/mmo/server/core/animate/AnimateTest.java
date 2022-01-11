@@ -153,6 +153,56 @@ public class AnimateTest {
         assertThat(result, equalTo(expected));
     }
 
+    @Test
+    @Timeout(value = 2500, unit = TimeUnit.MILLISECONDS)
+    public void stopMovingWhenCollision() throws InterruptedException {
+        when(map.getTerrain().isInsideForbiddenArea(19, 15, 10)).thenReturn(true);
+        
+        Animate animate = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .y(15)
+                        .z(10)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(42)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(38)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        Position expected = Position.builder()
+                .x(18)
+                .y(15)
+                .z(10)
+                .build();
+
+        animate.move(Position.builder()
+                .x(20)
+                .y(15)
+                .z(10)
+                .build());
+
+        assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
+        assertThat(animate.isMoving(), equalTo(true));
+
+        LooperContextMocker.update(animate, 2000);
+
+        Position result = animate.getPosition();
+
+        assertThat(animate.isMoving(), equalTo(false));
+        assertThat(result, equalTo(expected));
+    }
+
     private class AnimateImpl extends Animate {
         UUID id = UUID.randomUUID();
         UUID instanceId = UUID.randomUUID();

@@ -15,130 +15,142 @@ public class Position extends Vertex {
         super(x, y, z);
     }
 
-    public void incrementX(long x) {
+    public boolean incrementX(long x) {
         long limit = this.x + x;
 
         while (this.x < limit) {
             if (!incrementX()) {
-                break;
+                return false;
             }
         }
+
+        return true;
     }
 
     public boolean incrementX() {
         long newOne = x + 1;
 
-        if (!isInsideForbiddenArea(newOne, y, z)) {
-            x++;
-            return true;
+        if (isInsideForbiddenArea(newOne, y, z)) {
+            return false;
         }
 
-        return false;
+        x++;
+        return true;
     }
 
-    public void incrementY(long y) {
+    public boolean incrementY(long y) {
         long limit = this.y + y;
 
         while (this.y < limit) {
             if (!incrementY()) {
-                break;
+                return false;
             }
         }
+
+        return true;
     }
 
     public boolean incrementY() {
         long newOne = y + 1;
 
-        if (!isInsideForbiddenArea(x, newOne, z)) {
-            y++;
-            return true;
+        if (isInsideForbiddenArea(x, newOne, z)) {
+            return false;
         }
 
-        return false;
+        y++;
+        return true;
     }
 
-    public void incrementZ(long z) {
+    public boolean incrementZ(long z) {
         long limit = this.z + z;
 
         while (this.z < limit) {
             if (!incrementZ()) {
-                break;
+                return false;
             }
         }
+
+        return true;
     }
 
     public boolean incrementZ() {
         long newOne = z + 1;
 
-        if (!isInsideForbiddenArea(x, y, newOne)) {
-            z++;
-            return true;
+        if (isInsideForbiddenArea(x, y, newOne)) {
+            return false;
         }
 
-        return false;
+        z++;
+        return true;
     }
 
-    public void decrementX(long x) {
+    public boolean decrementX(long x) {
         long limit = this.x - x;
 
         while (this.x > limit) {
             if (!decrementX()) {
-                break;
+                return false;
             }
         }
+
+        return true;
     }
 
     public boolean decrementX() {
         long newOne = x - 1;
 
-        if (!isInsideForbiddenArea(newOne, y, z)) {
-            x--;
-            return true;
+        if (isInsideForbiddenArea(newOne, y, z)) {
+            return false;
         }
 
-        return false;
+        x--;
+        return true;
     }
 
-    public void decrementY(long y) {
+    public boolean decrementY(long y) {
         long limit = this.y - y;
 
         while (this.y > limit) {
             if (!decrementY()) {
-                break;
+                return false;
             }
         }
+
+        return true;
     }
 
     public boolean decrementY() {
         long newOne = y - 1;
 
-        if (!isInsideForbiddenArea(x, newOne, z)) {
-            y--;
-            return true;
+        if (isInsideForbiddenArea(x, newOne, z)) {
+            return false;
         }
 
-        return false;
+        y--;
+        return true;
     }
 
-    public void decrementZ(long z) {
+    public boolean decrementZ(long z) {
         long limit = this.z - z;
 
         while (this.z > limit) {
             if (!decrementZ()) {
-                break;
+                return false;
             }
         }
+
+        return true;
     }
 
     public boolean decrementZ() {
         long newOne = z - 1;
 
-        if (!isInsideForbiddenArea(x, y, newOne)) {
-            z--;
-            return true;
+        if (isInsideForbiddenArea(x, y, newOne)) {
+            return false;
         }
 
-        return false;
+        z--;
+        return true;
     }
 
     private boolean isInsideForbiddenArea(long x, long y, long z) {

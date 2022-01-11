@@ -71,8 +71,9 @@ public class PositionTest {
                 .z(10)
                 .build();
 
-        position.incrementX(10);
+        boolean result = position.incrementX(10);
 
+        assertThat(result, equalTo(false));
         assertThat(position.getX(), equalTo(14L));
         assertThat(position.getY(), equalTo(10L));
         assertThat(position.getZ(), equalTo(10L));
@@ -118,8 +119,9 @@ public class PositionTest {
                 .z(10)
                 .build();
 
-        position.incrementY(10);
+        boolean result = position.incrementY(10);
 
+        assertThat(result, equalTo(false));
         assertThat(position.getX(), equalTo(10L));
         assertThat(position.getY(), equalTo(14L));
         assertThat(position.getZ(), equalTo(10L));
@@ -165,8 +167,9 @@ public class PositionTest {
                 .z(10)
                 .build();
 
-        position.incrementZ(10);
+        boolean result = position.incrementZ(10);
 
+        assertThat(result, equalTo(false));
         assertThat(position.getX(), equalTo(10L));
         assertThat(position.getY(), equalTo(10L));
         assertThat(position.getZ(), equalTo(14L));
@@ -212,8 +215,9 @@ public class PositionTest {
                 .z(10)
                 .build();
 
-        position.decrementX(10);
+        boolean result = position.decrementX(10);
 
+        assertThat(result, equalTo(false));
         assertThat(position.getX(), equalTo(6L));
         assertThat(position.getY(), equalTo(10L));
         assertThat(position.getZ(), equalTo(10L));
@@ -259,8 +263,9 @@ public class PositionTest {
                 .z(10)
                 .build();
 
-        position.decrementY(10);
+        boolean result = position.decrementY(10);
 
+        assertThat(result, equalTo(false));
         assertThat(position.getX(), equalTo(10L));
         assertThat(position.getY(), equalTo(6L));
         assertThat(position.getZ(), equalTo(10L));
@@ -306,8 +311,9 @@ public class PositionTest {
                 .z(10)
                 .build();
 
-        position.decrementZ(10);
+        boolean result = position.decrementZ(10);
 
+        assertThat(result, equalTo(false));
         assertThat(position.getX(), equalTo(10L));
         assertThat(position.getY(), equalTo(10L));
         assertThat(position.getZ(), equalTo(6L));

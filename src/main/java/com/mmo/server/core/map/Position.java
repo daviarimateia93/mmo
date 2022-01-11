@@ -28,9 +28,7 @@ public class Position extends Vertex {
     public boolean incrementX() {
         long newOne = x + 1;
 
-        if (!Game.getInstance().getMap()
-                .getTerrain()
-                .isInsideForbiddenArea(newOne, y, z)) {
+        if (!isInsideForbiddenArea(newOne, y, z)) {
             x++;
             return true;
         }
@@ -51,9 +49,7 @@ public class Position extends Vertex {
     public boolean incrementY() {
         long newOne = y + 1;
 
-        if (!Game.getInstance().getMap()
-                .getTerrain()
-                .isInsideForbiddenArea(x, newOne, z)) {
+        if (!isInsideForbiddenArea(x, newOne, z)) {
             y++;
             return true;
         }
@@ -74,9 +70,7 @@ public class Position extends Vertex {
     public boolean incrementZ() {
         long newOne = z + 1;
 
-        if (!Game.getInstance().getMap()
-                .getTerrain()
-                .isInsideForbiddenArea(x, y, newOne)) {
+        if (!isInsideForbiddenArea(x, y, newOne)) {
             z++;
             return true;
         }
@@ -97,9 +91,7 @@ public class Position extends Vertex {
     public boolean decrementX() {
         long newOne = x - 1;
 
-        if (!Game.getInstance().getMap()
-                .getTerrain()
-                .isInsideForbiddenArea(newOne, y, z)) {
+        if (!isInsideForbiddenArea(newOne, y, z)) {
             x--;
             return true;
         }
@@ -120,9 +112,7 @@ public class Position extends Vertex {
     public boolean decrementY() {
         long newOne = y - 1;
 
-        if (!Game.getInstance().getMap()
-                .getTerrain()
-                .isInsideForbiddenArea(x, newOne, z)) {
+        if (!isInsideForbiddenArea(x, newOne, z)) {
             y--;
             return true;
         }
@@ -143,13 +133,17 @@ public class Position extends Vertex {
     public boolean decrementZ() {
         long newOne = z - 1;
 
-        if (!Game.getInstance().getMap()
-                .getTerrain()
-                .isInsideForbiddenArea(x, y, newOne)) {
+        if (!isInsideForbiddenArea(x, y, newOne)) {
             z--;
             return true;
         }
 
         return false;
+    }
+
+    private boolean isInsideForbiddenArea(long x, long y, long z) {
+        return Game.getInstance().getMap()
+                .getTerrain()
+                .isInsideForbiddenArea(x, y, z);
     }
 }

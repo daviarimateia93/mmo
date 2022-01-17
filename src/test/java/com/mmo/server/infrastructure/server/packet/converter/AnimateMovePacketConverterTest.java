@@ -29,7 +29,6 @@ public class AnimateMovePacketConverterTest {
                 .target(Position.builder()
                         .x(10)
                         .y(15)
-                        .z(20)
                         .build())
                 .build();
 

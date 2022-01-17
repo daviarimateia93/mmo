@@ -1,5 +1,10 @@
 package com.mmo.server.core.map;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class Rectangle {
 
-    private final Vertex topLefVertex;
+    private final Vertex topLeftVertex;
     private final Vertex topRightVertex;
     private final Vertex bottomLeftVertex;
     private final Vertex bottomRightVertex;
@@ -23,7 +28,7 @@ public class Rectangle {
             @NonNull Vertex bottomLeftVertex,
             @NonNull Vertex bottomRightVertex) {
 
-        this.topLefVertex = topLeftVertex;
+        this.topLeftVertex = topLeftVertex;
         this.topRightVertex = topRightVertex;
         this.bottomLeftVertex = bottomLeftVertex;
         this.bottomRightVertex = bottomRightVertex;
@@ -32,43 +37,54 @@ public class Rectangle {
     }
 
     public boolean intersects(Vertex vertex) {
-        return intersects(vertex.getX(), vertex.getY(), vertex.getZ());
+        return intersects(vertex.getX(), vertex.getY());
     }
 
-    public boolean intersects(long x, long y, long z) {
+    public boolean intersects(float x, float y) {
         boolean validBottomLeft = x >= bottomLeftVertex.getX()
-                && y >= bottomLeftVertex.getY()
-                && z >= bottomLeftVertex.getZ();
+                && y >= bottomLeftVertex.getY();
 
         boolean validBottomRight = x <= bottomRightVertex.getX()
-                && y >= bottomRightVertex.getY()
-                && z >= bottomRightVertex.getZ();
+                && y >= bottomRightVertex.getY();
 
-        boolean validTopLeft = x >= topLefVertex.getX()
-                && y <= topLefVertex.getY()
-                && z <= topLefVertex.getZ();
+        boolean validTopLeft = x >= topLeftVertex.getX()
+                && y <= topLeftVertex.getY();
 
         boolean validTopRight = x <= topRightVertex.getX()
-                && y <= topRightVertex.getY()
-                && z <= topRightVertex.getZ();
+                && y <= topRightVertex.getY();
 
         return validBottomLeft && validBottomRight && validTopLeft && validTopRight;
     }
 
     private void validate() throws InvalidRectangleException {
-        long a1 = bottomRightVertex.getX() - bottomLeftVertex.getX();
-        long b1 = bottomRightVertex.getY() - bottomLeftVertex.getY();
-        long c1 = bottomRightVertex.getZ() - bottomLeftVertex.getZ();
-        long a2 = topLefVertex.getX() - bottomRightVertex.getX();
-        long b2 = topLefVertex.getY() - bottomRightVertex.getY();
-        long c2 = topLefVertex.getZ() - bottomRightVertex.getZ();
-        long a = b1 * c2 - b2 * c1;
-        long b = a2 * c1 - a1 * c2;
-        long c = a1 * b2 - b1 * a2;
-        long d = (-a * bottomLeftVertex.getX() - b * bottomLeftVertex.getY() - c * bottomLeftVertex.getZ());
+        Set<Vertex> vertices = new LinkedHashSet<>(
+                List.of(bottomLeftVertex, bottomRightVertex, topLeftVertex, topRightVertex));
 
-        if (a * topRightVertex.getX() + b * topRightVertex.getY() + c * topRightVertex.getZ() + d != 0) {
-            throw new InvalidRectangleException("This is a invalid rectangle");
+        Set<Float> distances = new LinkedHashSet<>();
+
+        for (Vertex first : vertices) {
+            for (Vertex second : vertices) {
+                if (!first.equals(second)) {
+                    distances.add(first.getDistance(second));
+                }
+            }
+        }
+
+        if (distances.size() > 3)
+            throw new InvalidRectangleException("Distance more than 3");
+
+        List<Float> sortedDistances = new ArrayList<>(distances);
+
+        if (distances.size() == 2) {
+            if (2 * sortedDistances.get(0) != sortedDistances.get(1)) {
+                throw new InvalidRectangleException("Line seqments does not form a square");
+            }
+
+            return;
+        }
+
+        if (sortedDistances.get(0) + sortedDistances.get(1) != sortedDistances.get(2)) {
+            throw new InvalidRectangleException("Distance of sides should satisfy pythagorean theorem");
         }
     }
 }

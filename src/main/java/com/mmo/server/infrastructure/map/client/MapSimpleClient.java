@@ -100,7 +100,6 @@ public class MapSimpleClient {
                     .target(Position.builder()
                             .x(200)
                             .y(100)
-                            .z(0)
                             .build())
                     .build());
         }

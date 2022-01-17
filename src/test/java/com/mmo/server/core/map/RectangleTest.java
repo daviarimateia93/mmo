@@ -14,26 +14,26 @@ public class RectangleTest {
     @BeforeAll
     public static void setup() {
         rectangle = Rectangle.builder()
-                .bottomLeftVertex(new Vertex(10, 11, 2))
-                .bottomRightVertex(new Vertex(20, 11, 2))
-                .topLeftVertex(new Vertex(10, 21, 12))
-                .topRightVertex(new Vertex(20, 21, 12))
+                .bottomLeftVertex(new Vertex(10, 2))
+                .bottomRightVertex(new Vertex(20, 2))
+                .topLeftVertex(new Vertex(10, 12))
+                .topRightVertex(new Vertex(20, 12))
                 .build();
     }
 
     @Test
     public void validateThrowsExceptionWhenInvalid() {
         assertThrows(InvalidRectangleException.class, () -> Rectangle.builder()
-                .bottomLeftVertex(new Vertex(10, 11, 2))
-                .bottomRightVertex(new Vertex(20, 11, 2))
-                .topLeftVertex(new Vertex(10, 21, 12))
-                .topRightVertex(new Vertex(20, 21, 13))
+                .bottomLeftVertex(new Vertex(10, 2))
+                .bottomRightVertex(new Vertex(20, 2))
+                .topLeftVertex(new Vertex(10, 12))
+                .topRightVertex(new Vertex(20, 13))
                 .build());
     }
 
     @Test
     public void insetersectsCenter() {
-        Vertex vertex = new Vertex(15, 15, 6);
+        Vertex vertex = new Vertex(15, 6);
 
         boolean expected = true;
         boolean result = rectangle.intersects(vertex);
@@ -43,7 +43,7 @@ public class RectangleTest {
 
     @Test
     public void intersectsBorderBottomLeft() {
-        Vertex vertex = new Vertex(10, 11, 2);
+        Vertex vertex = new Vertex(10, 2);
 
         boolean expected = true;
         boolean result = rectangle.intersects(vertex);
@@ -53,7 +53,7 @@ public class RectangleTest {
 
     @Test
     public void intersectsBorderBottomRight() {
-        Vertex vertex = new Vertex(20, 11, 2);
+        Vertex vertex = new Vertex(20, 2);
 
         boolean expected = true;
         boolean result = rectangle.intersects(vertex);
@@ -63,7 +63,7 @@ public class RectangleTest {
 
     @Test
     public void intersectsBorderTopLeft() {
-        Vertex vertex = new Vertex(10, 21, 2);
+        Vertex vertex = new Vertex(10, 2);
 
         boolean expected = true;
         boolean result = rectangle.intersects(vertex);
@@ -73,7 +73,7 @@ public class RectangleTest {
 
     @Test
     public void intersectsBorderTopRight() {
-        Vertex vertex = new Vertex(20, 21, 2);
+        Vertex vertex = new Vertex(20, 2);
 
         boolean expected = true;
         boolean result = rectangle.intersects(vertex);
@@ -83,7 +83,7 @@ public class RectangleTest {
 
     @Test
     public void doesNotIntersectsBottomLeft() {
-        Vertex vertex = new Vertex(9, 11, 2);
+        Vertex vertex = new Vertex(9, 2);
 
         boolean expected = false;
         boolean result = rectangle.intersects(vertex);
@@ -93,7 +93,7 @@ public class RectangleTest {
 
     @Test
     public void doesNotIntersectsBottomRight() {
-        Vertex vertex = new Vertex(21, 11, 2);
+        Vertex vertex = new Vertex(21, 2);
 
         boolean expected = false;
         boolean result = rectangle.intersects(vertex);
@@ -103,7 +103,7 @@ public class RectangleTest {
 
     @Test
     public void doesNotIntersectsTopLeft() {
-        Vertex vertex = new Vertex(10, 22, 2);
+        Vertex vertex = new Vertex(10, 1);
 
         boolean expected = false;
         boolean result = rectangle.intersects(vertex);
@@ -113,7 +113,7 @@ public class RectangleTest {
 
     @Test
     public void doesNotIntersectsTopRight() {
-        Vertex vertex = new Vertex(20, 22, 2);
+        Vertex vertex = new Vertex(20, 1);
 
         boolean expected = false;
         boolean result = rectangle.intersects(vertex);

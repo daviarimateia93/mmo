@@ -11,12 +11,12 @@ import lombok.ToString;
 public class Position extends Vertex {
 
     @Builder
-    public Position(long x, long y, long z) {
-        super(x, y, z);
+    public Position(float x, float y) {
+        super(x, y);
     }
 
-    public boolean incrementX(long x) {
-        long limit = this.x + x;
+    public boolean incrementX(float x) {
+        float limit = this.x + x;
 
         while (this.x < limit) {
             if (!incrementX()) {
@@ -28,9 +28,9 @@ public class Position extends Vertex {
     }
 
     public boolean incrementX() {
-        long newOne = x + 1;
+        float newOne = x + 1;
 
-        if (isInsideForbiddenArea(newOne, y, z)) {
+        if (isInsideForbiddenArea(newOne, y)) {
             return false;
         }
 
@@ -38,8 +38,8 @@ public class Position extends Vertex {
         return true;
     }
 
-    public boolean incrementY(long y) {
-        long limit = this.y + y;
+    public boolean incrementY(float y) {
+        float limit = this.y + y;
 
         while (this.y < limit) {
             if (!incrementY()) {
@@ -51,9 +51,9 @@ public class Position extends Vertex {
     }
 
     public boolean incrementY() {
-        long newOne = y + 1;
+        float newOne = y + 1;
 
-        if (isInsideForbiddenArea(x, newOne, z)) {
+        if (isInsideForbiddenArea(x, newOne)) {
             return false;
         }
 
@@ -61,31 +61,8 @@ public class Position extends Vertex {
         return true;
     }
 
-    public boolean incrementZ(long z) {
-        long limit = this.z + z;
-
-        while (this.z < limit) {
-            if (!incrementZ()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public boolean incrementZ() {
-        long newOne = z + 1;
-
-        if (isInsideForbiddenArea(x, y, newOne)) {
-            return false;
-        }
-
-        z++;
-        return true;
-    }
-
-    public boolean decrementX(long x) {
-        long limit = this.x - x;
+    public boolean decrementX(float x) {
+        float limit = this.x - x;
 
         while (this.x > limit) {
             if (!decrementX()) {
@@ -97,9 +74,9 @@ public class Position extends Vertex {
     }
 
     public boolean decrementX() {
-        long newOne = x - 1;
+        float newOne = x - 1;
 
-        if (isInsideForbiddenArea(newOne, y, z)) {
+        if (isInsideForbiddenArea(newOne, y)) {
             return false;
         }
 
@@ -107,8 +84,8 @@ public class Position extends Vertex {
         return true;
     }
 
-    public boolean decrementY(long y) {
-        long limit = this.y - y;
+    public boolean decrementY(float y) {
+        float limit = this.y - y;
 
         while (this.y > limit) {
             if (!decrementY()) {
@@ -120,9 +97,9 @@ public class Position extends Vertex {
     }
 
     public boolean decrementY() {
-        long newOne = y - 1;
+        float newOne = y - 1;
 
-        if (isInsideForbiddenArea(x, newOne, z)) {
+        if (isInsideForbiddenArea(x, newOne)) {
             return false;
         }
 
@@ -130,32 +107,9 @@ public class Position extends Vertex {
         return true;
     }
 
-    public boolean decrementZ(long z) {
-        long limit = this.z - z;
-
-        while (this.z > limit) {
-            if (!decrementZ()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public boolean decrementZ() {
-        long newOne = z - 1;
-
-        if (isInsideForbiddenArea(x, y, newOne)) {
-            return false;
-        }
-
-        z--;
-        return true;
-    }
-
-    private boolean isInsideForbiddenArea(long x, long y, long z) {
+    private boolean isInsideForbiddenArea(float x, float y) {
         return Game.getInstance().getMap()
                 .getTerrain()
-                .isInsideForbiddenArea(x, y, z);
+                .isInsideForbiddenArea(x, y);
     }
 }

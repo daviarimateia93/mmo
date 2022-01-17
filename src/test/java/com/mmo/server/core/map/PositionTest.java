@@ -28,7 +28,7 @@ public class PositionTest {
 
     @AfterEach
     private void clearEach() {
-        when(map.getTerrain().isInsideForbiddenArea(anyLong(), anyLong(), anyLong())).thenReturn(false);
+        when(map.getTerrain().isInsideForbiddenArea(anyFloat(), anyFloat())).thenReturn(false);
     }
 
     @Test
@@ -36,7 +36,6 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         position.incrementX(10);
@@ -44,7 +43,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(20)
                 .y(10)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -55,7 +53,6 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         position.incrementX();
@@ -63,7 +60,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(11)
                 .y(10)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -71,12 +67,11 @@ public class PositionTest {
 
     @Test
     public void incrementXWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(15, 10, 10)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(15, 10)).thenReturn(true);
 
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         boolean result = position.incrementX(10);
@@ -86,7 +81,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(14)
                 .y(10)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -97,7 +91,6 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         position.incrementY(10);
@@ -105,7 +98,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(10)
                 .y(20)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -116,7 +108,6 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         position.incrementY();
@@ -124,7 +115,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(10)
                 .y(11)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -132,12 +122,11 @@ public class PositionTest {
 
     @Test
     public void incrementYWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(10, 15, 10)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(10, 15)).thenReturn(true);
 
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         boolean result = position.incrementY(10);
@@ -147,68 +136,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(10)
                 .y(14)
-                .z(10)
-                .build();
-
-        assertThat(position, equalTo(expected));
-    }
-
-    @Test
-    public void incrementZ() {
-        Position position = Position.builder()
-                .x(10)
-                .y(10)
-                .z(10)
-                .build();
-
-        position.incrementZ(10);
-
-        Position expected = Position.builder()
-                .x(10)
-                .y(10)
-                .z(20)
-                .build();
-
-        assertThat(position, equalTo(expected));
-    }
-
-    @Test
-    public void incrementOneZ() {
-        Position position = Position.builder()
-                .x(10)
-                .y(10)
-                .z(10)
-                .build();
-
-        position.incrementZ();
-
-        Position expected = Position.builder()
-                .x(10)
-                .y(10)
-                .z(11)
-                .build();
-
-        assertThat(position, equalTo(expected));
-    }
-
-    @Test
-    public void incrementZWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(10, 10, 15)).thenReturn(true);
-
-        Position position = Position.builder()
-                .x(10)
-                .y(10)
-                .z(10)
-                .build();
-
-        boolean result = position.incrementZ(10);
-
-        assertThat(result, equalTo(false));
-
-        Position expected = Position.builder()
-                .x(10)
-                .y(10)
-                .z(14)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -219,7 +146,6 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         position.decrementX(10);
@@ -227,7 +153,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(0)
                 .y(10)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -238,7 +163,6 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         position.decrementX();
@@ -246,7 +170,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(9)
                 .y(10)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -254,12 +177,11 @@ public class PositionTest {
 
     @Test
     public void decrementXWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(5, 10, 10)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(5, 10)).thenReturn(true);
 
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         boolean result = position.decrementX(10);
@@ -269,7 +191,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(6)
                 .y(10)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -280,7 +201,6 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         position.decrementY(10);
@@ -288,7 +208,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(10)
                 .y(0)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -299,7 +218,6 @@ public class PositionTest {
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         position.decrementY();
@@ -307,7 +225,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(10)
                 .y(9)
-                .z(10)
                 .build();
 
         assertThat(position, equalTo(expected));
@@ -315,12 +232,11 @@ public class PositionTest {
 
     @Test
     public void decrementYWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(10, 5, 10)).thenReturn(true);
+        when(map.getTerrain().isInsideForbiddenArea(10, 5)).thenReturn(true);
 
         Position position = Position.builder()
                 .x(10)
                 .y(10)
-                .z(10)
                 .build();
 
         boolean result = position.decrementY(10);
@@ -330,68 +246,6 @@ public class PositionTest {
         Position expected = Position.builder()
                 .x(10)
                 .y(6)
-                .z(10)
-                .build();
-
-        assertThat(position, equalTo(expected));
-    }
-
-    @Test
-    public void decrementZ() {
-        Position position = Position.builder()
-                .x(10)
-                .y(10)
-                .z(10)
-                .build();
-
-        position.decrementZ(10);
-
-        Position expected = Position.builder()
-                .x(10)
-                .y(10)
-                .z(0)
-                .build();
-
-        assertThat(position, equalTo(expected));
-    }
-
-    @Test
-    public void decrementOneZ() {
-        Position position = Position.builder()
-                .x(10)
-                .y(10)
-                .z(10)
-                .build();
-
-        position.decrementZ();
-
-        Position expected = Position.builder()
-                .x(10)
-                .y(10)
-                .z(9)
-                .build();
-
-        assertThat(position, equalTo(expected));
-    }
-
-    @Test
-    public void decrementZWhenCollision() {
-        when(map.getTerrain().isInsideForbiddenArea(10, 10, 5)).thenReturn(true);
-
-        Position position = Position.builder()
-                .x(10)
-                .y(10)
-                .z(10)
-                .build();
-
-        boolean result = position.decrementZ(10);
-
-        assertThat(result, equalTo(false));
-
-        Position expected = Position.builder()
-                .x(10)
-                .y(10)
-                .z(6)
                 .build();
 
         assertThat(position, equalTo(expected));

@@ -13,20 +13,20 @@ import lombok.ToString;
 @ToString
 public class Vertex {
 
-    protected long x;
-    protected long y;
-    protected long z;
+    protected float x;
+    protected float y;
+
+    public float getDistance(Vertex other) {
+        return (x - other.getX()) * (x - other.getX()) + (y - other.getY()) * (y - other.getY());
+    }
 
     public boolean isNearby(Vertex position, int ratio) {
-        long minX = x - ratio;
-        long maxX = x + ratio;
-        long minY = y - ratio;
-        long maxY = y + ratio;
-        long minZ = z - ratio;
-        long maxZ = z + ratio;
+        float minX = x - ratio;
+        float maxX = x + ratio;
+        float minY = y - ratio;
+        float maxY = y + ratio;
 
         return position.getX() >= minX && position.getX() <= maxX
-                && position.getY() >= minY && position.getY() <= maxY
-                && position.getZ() >= minZ && position.getZ() <= maxZ;
+                && position.getY() >= minY && position.getY() <= maxY;
     }
 }

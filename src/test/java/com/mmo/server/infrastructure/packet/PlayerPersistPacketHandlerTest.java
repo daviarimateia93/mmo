@@ -40,7 +40,6 @@ public class PlayerPersistPacketHandlerTest {
                         .position(Position.builder()
                                 .x(50)
                                 .y(10)
-                                .z(1)
                                 .build())
                         .stats(Stats.builder()
                                 .strength(10)

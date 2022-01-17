@@ -40,7 +40,6 @@ public class AnimateTest {
                 Position.builder()
                         .x(10)
                         .y(15)
-                        .z(10)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -62,7 +61,6 @@ public class AnimateTest {
                 Position.builder()
                         .x(20)
                         .y(25)
-                        .z(10)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -116,7 +114,6 @@ public class AnimateTest {
                 Position.builder()
                         .x(10)
                         .y(15)
-                        .z(10)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -137,7 +134,6 @@ public class AnimateTest {
         Position expected = Position.builder()
                 .x(20)
                 .y(25)
-                .z(15)
                 .build();
 
         animate.move(expected);
@@ -156,13 +152,12 @@ public class AnimateTest {
     @Test
     @Timeout(value = 2500, unit = TimeUnit.MILLISECONDS)
     public void stopMovingWhenCollision() throws InterruptedException {
-        when(map.getTerrain().isInsideForbiddenArea(19, 15, 10)).thenReturn(true);
-        
+        when(map.getTerrain().isInsideForbiddenArea(19, 15)).thenReturn(true);
+
         Animate animate = new AnimateImpl(
                 Position.builder()
                         .x(10)
                         .y(15)
-                        .z(10)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -183,13 +178,11 @@ public class AnimateTest {
         Position expected = Position.builder()
                 .x(18)
                 .y(15)
-                .z(10)
                 .build();
 
         animate.move(Position.builder()
                 .x(20)
                 .y(15)
-                .z(10)
                 .build());
 
         assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
@@ -245,8 +238,8 @@ public class AnimateTest {
         }
 
         @Override
-        protected void onMove(long distanceX, long distanceY, long distanceZ) {
-            super.onMove(distanceX, distanceY, distanceZ);
+        protected void onMove(float distanceX, float distanceY) {
+            super.onMove(distanceX, distanceY);
             moved = true;
         }
 

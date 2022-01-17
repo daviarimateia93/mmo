@@ -18,23 +18,23 @@ public class TerrainTest {
                 .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
                 .forbiddenAreas(List.of(
                         Rectangle.builder()
-                                .bottomLeftVertex(new Vertex(10, 11, 2))
-                                .bottomRightVertex(new Vertex(20, 11, 2))
-                                .topLeftVertex(new Vertex(10, 21, 12))
-                                .topRightVertex(new Vertex(20, 21, 12))
+                                .bottomLeftVertex(new Vertex(10, 11))
+                                .bottomRightVertex(new Vertex(20, 11))
+                                .topLeftVertex(new Vertex(10, 21))
+                                .topRightVertex(new Vertex(20, 21))
                                 .build(),
                         Rectangle.builder()
-                                .bottomLeftVertex(new Vertex(110, 111, 102))
-                                .bottomRightVertex(new Vertex(120, 111, 102))
-                                .topLeftVertex(new Vertex(110, 121, 112))
-                                .topRightVertex(new Vertex(120, 121, 112))
+                                .bottomLeftVertex(new Vertex(110, 111))
+                                .bottomRightVertex(new Vertex(120, 111))
+                                .topLeftVertex(new Vertex(110, 121))
+                                .topRightVertex(new Vertex(120, 121))
                                 .build()))
                 .build();
     }
 
     @Test
     public void isInsideForbiddenArea() {
-        Vertex vertex = new Vertex(15, 15, 6);
+        Vertex vertex = new Vertex(15, 15);
 
         boolean expected = true;
         boolean result = terrain.isInsideForbiddenArea(vertex);
@@ -44,7 +44,7 @@ public class TerrainTest {
 
     @Test
     public void isOutsideForbiddenArea() {
-        Vertex vertex = new Vertex(215, 215, 206);
+        Vertex vertex = new Vertex(215, 215);
 
         boolean expected = false;
         boolean result = terrain.isInsideForbiddenArea(vertex);

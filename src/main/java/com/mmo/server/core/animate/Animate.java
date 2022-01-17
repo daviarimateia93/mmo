@@ -114,26 +114,25 @@ public abstract class Animate implements MapEntity {
 
         long speed = getAttributes().getFinalMoveSpeed();
 
-        long distanceX = moveX(current, target, speed);
-        long distanceY = moveY(current, target, speed);
-        long distanceZ = moveZ(current, target, speed);
+        float distanceX = moveX(current, target, speed);
+        float distanceY = moveY(current, target, speed);
 
-        onMove(distanceX, distanceY, distanceZ);
+        onMove(distanceX, distanceY);
 
         if (hasFinishedMoving(current, target) && Objects.nonNull(lastMoveStartTime)) {
             lastMoveStartTime = null;
         }
     }
 
-    private long moveX(Position current, Position target, long speed) {
-        long distanceX = 0;
+    private float moveX(Position current, Position target, long speed) {
+        float distanceX = 0;
 
         if (current.getX() < target.getX()) {
-            long difference = target.getX() - current.getX();
+            float difference = target.getX() - current.getX();
             distanceX = speed > difference ? difference : speed;
             collided = !current.incrementX(distanceX);
         } else if (current.getX() > target.getX()) {
-            long difference = current.getX() - target.getX();
+            float difference = current.getX() - target.getX();
             distanceX = speed > difference ? difference : speed;
             collided = !current.decrementX(distanceX);
         }
@@ -141,36 +140,20 @@ public abstract class Animate implements MapEntity {
         return distanceX;
     }
 
-    private long moveY(Position current, Position target, long speed) {
-        long distanceY = 0;
+    private float moveY(Position current, Position target, long speed) {
+        float distanceY = 0;
 
         if (current.getY() < target.getY()) {
-            long difference = target.getY() - current.getY();
+            float difference = target.getY() - current.getY();
             distanceY = speed > difference ? difference : speed;
             collided = !current.incrementY(distanceY);
         } else if (current.getY() > target.getY()) {
-            long difference = current.getY() - target.getY();
+            float difference = current.getY() - target.getY();
             distanceY = speed > difference ? difference : speed;
             collided = !current.decrementY(distanceY);
         }
 
         return distanceY;
-    }
-
-    private long moveZ(Position current, Position target, long speed) {
-        long distanceZ = 0;
-
-        if (current.getZ() < target.getZ()) {
-            long difference = target.getZ() - current.getZ();
-            distanceZ = speed > difference ? difference : speed;
-            collided = !current.incrementZ(distanceZ);
-        } else if (current.getZ() > target.getZ()) {
-            long difference = current.getZ() - target.getZ();
-            distanceZ = speed > difference ? difference : speed;
-            collided = !current.decrementZ(distanceZ);
-        }
-
-        return distanceZ;
     }
 
     private boolean hasFinishedMoving(Position current, Position target) {
@@ -242,7 +225,7 @@ public abstract class Animate implements MapEntity {
         Game.getInstance().getMap().dispatch(packet, target);
     }
 
-    protected void onMove(long distanceX, long distanceY, long distanceZ) {
+    protected void onMove(float distanceX, float distanceY) {
         logger.trace("Animate {} has moved to {}", getInstanceId(), getPosition());
     }
 

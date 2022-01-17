@@ -18,7 +18,6 @@ public class AnimateMovePacketTest {
                 .target(Position.builder()
                         .x(10L)
                         .y(11L)
-                        .z(12L)
                         .build())
                 .build();
 

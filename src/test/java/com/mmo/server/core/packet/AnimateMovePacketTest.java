@@ -17,7 +17,7 @@ public class AnimateMovePacketTest {
                 .source(UUID.randomUUID())
                 .target(Position.builder()
                         .x(10L)
-                        .y(11L)
+                        .z(11L)
                         .build())
                 .build();
 

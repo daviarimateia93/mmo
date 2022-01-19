@@ -134,7 +134,7 @@ public class MapServer {
                 .name("PlayerName-" + UUID.randomUUID())
                 .position(Position.builder()
                         .x(random.ints(0, 1000).findFirst().getAsInt())
-                        .y(random.ints(0, 1000).findFirst().getAsInt())
+                        .z(random.ints(0, 1000).findFirst().getAsInt())
                         .build())
                 .stats(Stats.builder()
                         .strength(10)

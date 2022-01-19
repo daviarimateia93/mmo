@@ -43,11 +43,11 @@ public class Terrain {
     }
 
     public boolean isInsideForbiddenArea(Vertex position) {
-        return isInsideForbiddenArea(position.getX(), position.getY());
+        return isInsideForbiddenArea(position.getX(), position.getZ());
     }
 
-    public boolean isInsideForbiddenArea(float x, float y) {
+    public boolean isInsideForbiddenArea(float x, float z) {
         return forbiddenAreas.stream()
-                .anyMatch(rectangle -> rectangle.intersects(x, y));
+                .anyMatch(rectangle -> rectangle.intersects(x, z));
     }
 }

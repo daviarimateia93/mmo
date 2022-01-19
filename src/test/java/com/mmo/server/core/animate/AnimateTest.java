@@ -39,7 +39,7 @@ public class AnimateTest {
         AnimateImpl animate = new AnimateImpl(
                 Position.builder()
                         .x(10)
-                        .y(15)
+                        .z(15)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -60,7 +60,7 @@ public class AnimateTest {
         AnimateImpl target = new AnimateImpl(
                 Position.builder()
                         .x(20)
-                        .y(25)
+                        .z(25)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -113,7 +113,7 @@ public class AnimateTest {
         Animate animate = new AnimateImpl(
                 Position.builder()
                         .x(10)
-                        .y(15)
+                        .z(15)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -133,7 +133,7 @@ public class AnimateTest {
 
         Position expected = Position.builder()
                 .x(20)
-                .y(25)
+                .z(25)
                 .build();
 
         animate.move(expected);
@@ -157,7 +157,7 @@ public class AnimateTest {
         Animate animate = new AnimateImpl(
                 Position.builder()
                         .x(10)
-                        .y(15)
+                        .z(15)
                         .build(),
                 Attributes.builder()
                         .hp(30)
@@ -177,12 +177,12 @@ public class AnimateTest {
 
         Position expected = Position.builder()
                 .x(18)
-                .y(15)
+                .z(15)
                 .build();
 
         animate.move(Position.builder()
                 .x(20)
-                .y(15)
+                .z(15)
                 .build());
 
         assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
@@ -238,8 +238,8 @@ public class AnimateTest {
         }
 
         @Override
-        protected void onMove(float distanceX, float distanceY) {
-            super.onMove(distanceX, distanceY);
+        protected void onMove(float distanceX, float distanceZ) {
+            super.onMove(distanceX, distanceZ);
             moved = true;
         }
 

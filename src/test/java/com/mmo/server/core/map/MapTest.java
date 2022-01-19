@@ -23,17 +23,17 @@ public class MapTest {
     public void addEntity() {
         Entity entityA = new Entity(Position.builder()
                 .x(10)
-                .y(15)
+                .z(15)
                 .build());
 
         Entity entityB = new Entity(Position.builder()
                 .x(11)
-                .y(13)
+                .z(13)
                 .build());
 
         Entity entityC = new Entity(Position.builder()
                 .x(9)
-                .y(17)
+                .z(17)
                 .build());
 
         Map map = Map.builder()
@@ -62,17 +62,17 @@ public class MapTest {
     public void removeEntity() {
         Entity entityA = new Entity(Position.builder()
                 .x(10)
-                .y(15)
+                .z(15)
                 .build());
 
         Entity entityB = new Entity(Position.builder()
                 .x(11)
-                .y(13)
+                .z(13)
                 .build());
 
         Entity entityC = new Entity(Position.builder()
                 .x(12)
-                .y(16)
+                .z(16)
                 .build());
 
         Map map = Map.builder()
@@ -105,17 +105,17 @@ public class MapTest {
     public void getNearbyEntities() {
         Entity entityA = new Entity(Position.builder()
                 .x(10)
-                .y(15)
+                .z(15)
                 .build());
 
         Entity entityB = new Entity(Position.builder()
                 .x(11)
-                .y(13)
+                .z(13)
                 .build());
 
         Entity entityC = new Entity(Position.builder()
                 .x(19)
-                .y(27)
+                .z(27)
                 .build());
 
         Map map = Map.builder()
@@ -142,22 +142,22 @@ public class MapTest {
     public void getTypedNearbyEntities() {
         Entity entityA = new Entity(Position.builder()
                 .x(10)
-                .y(15)
+                .z(15)
                 .build());
 
         Entity entityB = new Entity(Position.builder()
                 .x(11)
-                .y(13)
+                .z(13)
                 .build());
 
         Entity entityC = new Entity(Position.builder()
                 .x(19)
-                .y(27)
+                .z(27)
                 .build());
 
         SubEntity entityD = new SubEntity(Position.builder()
                 .x(11)
-                .y(13)
+                .z(13)
                 .build());
 
         Map map = Map.builder()

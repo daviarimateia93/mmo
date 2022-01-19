@@ -23,7 +23,7 @@ public class PlayerPersistPacketTest {
                         .name("PlayerName-" + UUID.randomUUID())
                         .position(Position.builder()
                                 .x(50)
-                                .y(10)
+                                .z(10)
                                 .build())
                         .stats(Stats.builder()
                                 .strength(10)

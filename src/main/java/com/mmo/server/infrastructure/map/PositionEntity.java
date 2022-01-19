@@ -8,13 +8,12 @@ import lombok.Data;
 public class PositionEntity {
 
     private Float x;
-    private Float y;
-    private Long z;
+    private Float z;
 
     public static PositionEntity of(Position position) {
         PositionEntity entity = new PositionEntity();
         entity.setX(position.getX());
-        entity.setY(position.getY());
+        entity.setZ(position.getZ());
 
         return entity;
     }
@@ -22,7 +21,7 @@ public class PositionEntity {
     public Position toPosition() {
         return Position.builder()
                 .x(getX())
-                .y(getY())
+                .z(getZ())
                 .build();
     }
 }

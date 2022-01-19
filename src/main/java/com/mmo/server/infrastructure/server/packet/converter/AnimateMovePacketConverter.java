@@ -17,7 +17,7 @@ public class AnimateMovePacketConverter implements PacketConverter<AnimateMovePa
                     .source(source)
                     .target(Position.builder()
                             .x(reader.readFloat())
-                            .y(reader.readFloat())
+                            .z(reader.readFloat())
                             .build())
                     .build();
         }
@@ -27,7 +27,7 @@ public class AnimateMovePacketConverter implements PacketConverter<AnimateMovePa
     public byte[] toBytes(AnimateMovePacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
             writer.writeFloat(packet.getTarget().getX());
-            writer.writeFloat(packet.getTarget().getY());
+            writer.writeFloat(packet.getTarget().getZ());
             return writer.toBytes();
         }
     }

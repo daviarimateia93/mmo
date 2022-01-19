@@ -37,21 +37,21 @@ public class Rectangle {
     }
 
     public boolean intersects(Vertex vertex) {
-        return intersects(vertex.getX(), vertex.getY());
+        return intersects(vertex.getX(), vertex.getZ());
     }
 
     public boolean intersects(float x, float y) {
         boolean validBottomLeft = x >= bottomLeftVertex.getX()
-                && y >= bottomLeftVertex.getY();
+                && y >= bottomLeftVertex.getZ();
 
         boolean validBottomRight = x <= bottomRightVertex.getX()
-                && y >= bottomRightVertex.getY();
+                && y >= bottomRightVertex.getZ();
 
         boolean validTopLeft = x >= topLeftVertex.getX()
-                && y <= topLeftVertex.getY();
+                && y <= topLeftVertex.getZ();
 
         boolean validTopRight = x <= topRightVertex.getX()
-                && y <= topRightVertex.getY();
+                && y <= topRightVertex.getZ();
 
         return validBottomLeft && validBottomRight && validTopLeft && validTopRight;
     }
@@ -61,12 +61,12 @@ public class Rectangle {
     }
 
     public float getHeight() {
-        return Math.abs(topLeftVertex.getY() - bottomLeftVertex.getY());
+        return Math.abs(topLeftVertex.getZ() - bottomLeftVertex.getZ());
     }
 
     public Vertex getCenter() {
         float x = topLeftVertex.getX() + (getWidth() / 2);
-        float y = bottomLeftVertex.getY() + (getHeight() / 2);
+        float y = bottomLeftVertex.getZ() + (getHeight() / 2);
 
         return new Vertex(x, y);
     }

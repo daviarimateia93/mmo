@@ -138,9 +138,9 @@ public class RectangleTest {
     }
 
     @Test
-    public void getHeight() {
+    public void getDepth() {
         float expected = 11;
-        float result = complexRectangle.getHeight();
+        float result = complexRectangle.getDepth();
 
         assertThat(result, equalTo(expected));
     }

@@ -60,13 +60,13 @@ public class Rectangle {
         return Math.abs(bottomLeftVertex.getX() - bottomRightVertex.getX());
     }
 
-    public float getHeight() {
+    public float getDepth() {
         return Math.abs(topLeftVertex.getZ() - bottomLeftVertex.getZ());
     }
 
     public Vertex getCenter() {
         float x = topLeftVertex.getX() + (getWidth() / 2);
-        float y = bottomLeftVertex.getZ() + (getHeight() / 2);
+        float y = bottomLeftVertex.getZ() + (getDepth() / 2);
 
         return new Vertex(x, y);
     }

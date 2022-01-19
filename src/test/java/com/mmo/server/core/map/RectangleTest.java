@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 public class RectangleTest {
 
     private static Rectangle rectangle;
+    private static Rectangle complexRectangle;
 
     @BeforeAll
     public static void setup() {
@@ -18,6 +19,13 @@ public class RectangleTest {
                 .bottomRightVertex(new Vertex(20, 2))
                 .topLeftVertex(new Vertex(10, 12))
                 .topRightVertex(new Vertex(20, 12))
+                .build();
+
+        complexRectangle = Rectangle.builder()
+                .bottomLeftVertex(new Vertex(-8, -6))
+                .bottomRightVertex(new Vertex(7, -6))
+                .topLeftVertex(new Vertex(-8, 5))
+                .topRightVertex(new Vertex(7, 5))
                 .build();
     }
 
@@ -117,6 +125,30 @@ public class RectangleTest {
 
         boolean expected = false;
         boolean result = rectangle.intersects(vertex);
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getWidth() {
+        float expected = 15;
+        float result = complexRectangle.getWidth();
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getHeight() {
+        float expected = 11;
+        float result = complexRectangle.getHeight();
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getCenter() {
+        Vertex expected = new Vertex(-0.5f, -0.5f);
+        Vertex result = complexRectangle.getCenter();
 
         assertThat(result, equalTo(expected));
     }

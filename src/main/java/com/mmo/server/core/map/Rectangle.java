@@ -56,6 +56,21 @@ public class Rectangle {
         return validBottomLeft && validBottomRight && validTopLeft && validTopRight;
     }
 
+    public float getWidth() {
+        return Math.abs(bottomLeftVertex.getX() - bottomRightVertex.getX());
+    }
+
+    public float getHeight() {
+        return Math.abs(topLeftVertex.getY() - bottomLeftVertex.getY());
+    }
+
+    public Vertex getCenter() {
+        float x = topLeftVertex.getX() + (getWidth() / 2);
+        float y = bottomLeftVertex.getY() + (getHeight() / 2);
+
+        return new Vertex(x, y);
+    }
+
     private void validate() throws InvalidRectangleException {
         Set<Vertex> vertices = new LinkedHashSet<>(
                 List.of(bottomLeftVertex, bottomRightVertex, topLeftVertex, topRightVertex));

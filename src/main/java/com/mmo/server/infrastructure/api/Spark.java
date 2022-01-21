@@ -17,6 +17,18 @@ public abstract class Spark {
         spark.Spark.get(path, (request, response) -> toJson(route.handle(request, response)));
     }
 
+    public static void post(String path, Route route) {
+        spark.Spark.post(path, (request, response) -> toJson(route.handle(request, response)));
+    }
+
+    public static void put(String path, Route route) {
+        spark.Spark.put(path, (request, response) -> toJson(route.handle(request, response)));
+    }
+
+    public static void delete(String path, Route route) {
+        spark.Spark.delete(path, (request, response) -> toJson(route.handle(request, response)));
+    }
+
     public static UUID getUUIDParam(String param, Request request, Response response) {
         String uuid = request.params(param);
 

@@ -1,13 +1,11 @@
-package com.mmo.server.core.map;
+package com.mmo.server.core.math;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Setter
 @Getter
 @EqualsAndHashCode
 @ToString

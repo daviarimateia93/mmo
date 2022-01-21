@@ -8,6 +8,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.mmo.server.core.math.Rectangle;
+import com.mmo.server.core.math.Vertex;
+
 public class TerrainTest {
 
     private static Terrain terrain;

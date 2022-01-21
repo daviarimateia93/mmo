@@ -1,4 +1,4 @@
-package com.mmo.server.core.map;
+package com.mmo.server.core.math;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;

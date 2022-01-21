@@ -37,6 +37,7 @@ public class MapTest {
                 .build());
 
         Map map = Map.builder()
+                .id(UUID.randomUUID())
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
@@ -76,6 +77,7 @@ public class MapTest {
                 .build());
 
         Map map = Map.builder()
+                .id(UUID.randomUUID())
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
@@ -119,6 +121,7 @@ public class MapTest {
                 .build());
 
         Map map = Map.builder()
+                .id(UUID.randomUUID())
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
@@ -161,6 +164,7 @@ public class MapTest {
                 .build());
 
         Map map = Map.builder()
+                .id(UUID.randomUUID())
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
@@ -186,6 +190,7 @@ public class MapTest {
         PacketDispatchSubscriber packetSubscriber = new PacketDispatchSubscriber();
 
         Map map = Map.builder()
+                .id(UUID.randomUUID())
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)
@@ -212,6 +217,7 @@ public class MapTest {
         PacketDispatchSubscriber packetSubscriber = new PacketDispatchSubscriber();
 
         Map map = Map.builder()
+                .id(UUID.randomUUID())
                 .name("name")
                 .description("description")
                 .nearbyRatio(5)

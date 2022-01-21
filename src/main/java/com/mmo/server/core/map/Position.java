@@ -1,6 +1,7 @@
 package com.mmo.server.core.map;
 
 import com.mmo.server.core.game.Game;
+import com.mmo.server.core.math.Vertex;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

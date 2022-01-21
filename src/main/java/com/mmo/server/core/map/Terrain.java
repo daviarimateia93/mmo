@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.mmo.server.core.math.Rectangle;
+import com.mmo.server.core.math.Vertex;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

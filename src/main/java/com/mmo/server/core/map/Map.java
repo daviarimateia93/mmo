@@ -22,27 +22,40 @@ import lombok.NonNull;
 import lombok.ToString;
 
 @Getter
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class Map implements LooperUpdater {
 
+    @EqualsAndHashCode.Include
+    private final UUID id;
+
+    @EqualsAndHashCode.Include
     private final String name;
+
+    @EqualsAndHashCode.Include
     private final String description;
+
+    @EqualsAndHashCode.Include
     private final Integer nearbyRatio;
+
+    @EqualsAndHashCode.Include
     private final Terrain terrain;
+
     private final ConcurrentHashMap<UUID, MapEntity> entities = new ConcurrentHashMap<>();
-    
+
     @Getter(AccessLevel.NONE)
     private final Set<MapPacketDispatchSubscriber> packetSubscribers = new LinkedHashSet<>();
 
     @Builder
     private Map(
+            @NonNull UUID id,
             @NonNull String name,
             @NonNull String description,
             @NonNull Integer nearbyRatio,
             @NonNull Terrain terrain,
             Collection<MapPacketDispatchSubscriber> packetSubscribers) {
 
+        this.id = id;
         this.name = name;
         this.description = description;
         this.nearbyRatio = nearbyRatio;

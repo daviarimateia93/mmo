@@ -1,4 +1,4 @@
-package com.mmo.server.core.map;
+package com.mmo.server.core.math;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import com.mmo.server.core.map.InvalidRectangleException;
 
 public class RectangleTest {
 

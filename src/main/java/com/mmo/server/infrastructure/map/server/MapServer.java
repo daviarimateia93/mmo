@@ -82,6 +82,7 @@ public class MapServer {
 
     private Map loadMap() {
         return Map.builder()
+                .id(UUID.randomUUID())
                 .name("adventure_plains")
                 .description("Located at the southern end, these plains were quiet and peaceful.")
                 .nearbyRatio(10)

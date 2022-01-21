@@ -1,9 +1,10 @@
 package com.mmo.server.infrastructure.api;
 
-import static com.mashape.unirest.http.Unirest.*;
+import static com.mashape.unirest.http.Unirest.get;
 import static com.mmo.server.infrastructure.api.Spark.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -48,6 +49,18 @@ public class SparkMapControllerTest {
         Map result = fromJson(get("http://localhost:4567/maps/" + expected.getId())
                 .asString()
                 .getBody(), Map.class);
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getByIdReturns404() throws UnirestException {
+        when(repository.find(any())).thenReturn(Optional.empty());
+
+        int expected = 404;
+        int result = get("http://localhost:4567/maps/" + UUID.randomUUID())
+                .asString()
+                .getStatus();
 
         assertThat(result, equalTo(expected));
     }

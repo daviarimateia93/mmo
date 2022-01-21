@@ -1,10 +1,12 @@
 package com.mmo.server.infrastructure.api;
 
+import static com.mashape.unirest.http.Unirest.get;
 import static com.mashape.unirest.http.Unirest.post;
 import static com.mmo.server.infrastructure.api.Spark.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
@@ -40,7 +42,7 @@ public class SparkAuthControllerTest {
     }
 
     @Test
-    public void getById() throws UnirestException {
+    public void getToken() throws UnirestException {
         Random random = new Random();
 
         Player player = Player.builder()
@@ -85,6 +87,18 @@ public class SparkAuthControllerTest {
         TokenResponseDTO result = fromJson(post("http://localhost:4567/auth/" + player.getId())
                 .asString()
                 .getBody(), TokenResponseDTO.class);
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getTokenReturns401() throws UnirestException {
+        when(repository.find(any())).thenReturn(Optional.empty());
+
+        int expected = 404;
+        int result = get("http://localhost:4567/auth/" + UUID.randomUUID())
+                .asString()
+                .getStatus();
 
         assertThat(result, equalTo(expected));
     }

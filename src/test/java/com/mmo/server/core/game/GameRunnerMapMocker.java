@@ -16,7 +16,7 @@ public class GameRunnerMapMocker {
         map = mock(Map.class);
 
         when(map.getTerrain()).thenReturn(terrain);
-        when(terrain.isInsideForbiddenArea(anyFloat(), anyFloat())).thenReturn(false);
+        when(terrain.isInsideForbiddenArea(anyInt(), anyInt())).thenReturn(false);
 
         new Thread() {
             @Override

@@ -12,8 +12,8 @@ public class VertexTest {
         Vertex basePosition = new Vertex(10, 10);
         Vertex testingPosition = new Vertex(20, 15);
 
-        float expected = 125;
-        float result = basePosition.getDistance(testingPosition);
+        int expected = 125;
+        int result = basePosition.getDistance(testingPosition);
 
         assertThat(result, equalTo(expected));
     }

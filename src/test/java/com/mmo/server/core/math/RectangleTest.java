@@ -24,8 +24,8 @@ public class RectangleTest {
                 .build();
 
         complexRectangle = Rectangle.builder()
-                .bottomLeftVertex(new Vertex(-8, -6))
-                .bottomRightVertex(new Vertex(7, -6))
+                .bottomLeftVertex(new Vertex(-8, -7))
+                .bottomRightVertex(new Vertex(7, -7))
                 .topLeftVertex(new Vertex(-8, 5))
                 .topRightVertex(new Vertex(7, 5))
                 .build();
@@ -133,23 +133,23 @@ public class RectangleTest {
 
     @Test
     public void getWidth() {
-        float expected = 15;
-        float result = complexRectangle.getWidth();
+        int expected = 15;
+        int result = complexRectangle.getWidth();
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void getDepth() {
-        float expected = 11;
-        float result = complexRectangle.getDepth();
+        int expected = 12;
+        int result = complexRectangle.getDepth();
 
         assertThat(result, equalTo(expected));
     }
 
     @Test
     public void getCenter() {
-        Vertex expected = new Vertex(-0.5f, -0.5f);
+        Vertex expected = new Vertex(-1, -1);
         Vertex result = complexRectangle.getCenter();
 
         assertThat(result, equalTo(expected));

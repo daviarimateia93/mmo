@@ -112,10 +112,10 @@ public abstract class Animate implements MapEntity {
         Position current = getPosition();
         Position target = getTargetPosition().orElseThrow();
 
-        long speed = getAttributes().getFinalMoveSpeed();
+        int speed = getAttributes().getFinalMoveSpeed();
 
-        float distanceX = moveX(current, target, speed);
-        float distanceZ = moveZ(current, target, speed);
+        int distanceX = moveX(current, target, speed);
+        int distanceZ = moveZ(current, target, speed);
 
         onMove(distanceX, distanceZ);
 
@@ -124,15 +124,15 @@ public abstract class Animate implements MapEntity {
         }
     }
 
-    private float moveX(Position current, Position target, long speed) {
-        float distanceX = 0;
+    private int moveX(Position current, Position target, int speed) {
+        int distanceX = 0;
 
         if (current.getX() < target.getX()) {
-            float difference = target.getX() - current.getX();
+            int difference = target.getX() - current.getX();
             distanceX = speed > difference ? difference : speed;
             collided = !current.incrementX(distanceX);
         } else if (current.getX() > target.getX()) {
-            float difference = current.getX() - target.getX();
+            int difference = current.getX() - target.getX();
             distanceX = speed > difference ? difference : speed;
             collided = !current.decrementX(distanceX);
         }
@@ -140,15 +140,15 @@ public abstract class Animate implements MapEntity {
         return distanceX;
     }
 
-    private float moveZ(Position current, Position target, long speed) {
-        float distanceZ = 0;
+    private int moveZ(Position current, Position target, int speed) {
+        int distanceZ = 0;
 
         if (current.getZ() < target.getZ()) {
-            float difference = target.getZ() - current.getZ();
+            int difference = target.getZ() - current.getZ();
             distanceZ = speed > difference ? difference : speed;
             collided = !current.incrementZ(distanceZ);
         } else if (current.getZ() > target.getZ()) {
-            float difference = current.getZ() - target.getZ();
+            int difference = current.getZ() - target.getZ();
             distanceZ = speed > difference ? difference : speed;
             collided = !current.decrementZ(distanceZ);
         }
@@ -225,7 +225,7 @@ public abstract class Animate implements MapEntity {
         Game.getInstance().getMap().dispatch(packet, target);
     }
 
-    protected void onMove(float distanceX, float distanceZ) {
+    protected void onMove(int distanceX, int distanceZ) {
         logger.trace("Animate {} has moved to {}", getInstanceId(), getPosition());
     }
 

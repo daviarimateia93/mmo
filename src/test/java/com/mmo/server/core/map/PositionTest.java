@@ -28,7 +28,7 @@ public class PositionTest {
 
     @AfterEach
     private void clearEach() {
-        when(map.getTerrain().isInsideForbiddenArea(anyFloat(), anyFloat())).thenReturn(false);
+        when(map.getTerrain().isInsideForbiddenArea(anyInt(), anyInt())).thenReturn(false);
     }
 
     @Test

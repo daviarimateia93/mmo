@@ -238,7 +238,7 @@ public class AnimateTest {
         }
 
         @Override
-        protected void onMove(float distanceX, float distanceZ) {
+        protected void onMove(int distanceX, int distanceZ) {
             super.onMove(distanceX, distanceZ);
             moved = true;
         }

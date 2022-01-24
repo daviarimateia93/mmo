@@ -49,7 +49,7 @@ public class Terrain {
         return isInsideForbiddenArea(position.getX(), position.getZ());
     }
 
-    public boolean isInsideForbiddenArea(float x, float z) {
+    public boolean isInsideForbiddenArea(int x, int z) {
         return forbiddenAreas.stream()
                 .anyMatch(rectangle -> rectangle.intersects(x, z));
     }

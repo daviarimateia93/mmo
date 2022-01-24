@@ -42,7 +42,7 @@ public class Rectangle {
         return intersects(vertex.getX(), vertex.getZ());
     }
 
-    public boolean intersects(float x, float y) {
+    public boolean intersects(int x, int y) {
         boolean validBottomLeft = x >= bottomLeftVertex.getX()
                 && y >= bottomLeftVertex.getZ();
 
@@ -58,17 +58,17 @@ public class Rectangle {
         return validBottomLeft && validBottomRight && validTopLeft && validTopRight;
     }
 
-    public float getWidth() {
+    public int getWidth() {
         return Math.abs(bottomLeftVertex.getX() - bottomRightVertex.getX());
     }
 
-    public float getDepth() {
+    public int getDepth() {
         return Math.abs(topLeftVertex.getZ() - bottomLeftVertex.getZ());
     }
 
     public Vertex getCenter() {
-        float x = topLeftVertex.getX() + (getWidth() / 2);
-        float y = bottomLeftVertex.getZ() + (getDepth() / 2);
+        int y = bottomLeftVertex.getZ() + (getDepth() / 2);
+        int x = topLeftVertex.getX() + (getWidth() / 2);
 
         return new Vertex(x, y);
     }
@@ -77,7 +77,7 @@ public class Rectangle {
         Set<Vertex> vertices = new LinkedHashSet<>(
                 List.of(bottomLeftVertex, bottomRightVertex, topLeftVertex, topRightVertex));
 
-        Set<Float> distances = new LinkedHashSet<>();
+        Set<Integer> distances = new LinkedHashSet<>();
 
         for (Vertex first : vertices) {
             for (Vertex second : vertices) {
@@ -90,7 +90,7 @@ public class Rectangle {
         if (distances.size() > 3)
             throw new InvalidRectangleException("Distance more than 3");
 
-        List<Float> sortedDistances = new ArrayList<>(distances);
+        List<Integer> sortedDistances = new ArrayList<>(distances);
 
         if (distances.size() == 2) {
             if (2 * sortedDistances.get(0) != sortedDistances.get(1)) {

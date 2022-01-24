@@ -16,8 +16,8 @@ public class AnimateMovePacketTest {
         AnimateMovePacket packet = AnimateMovePacket.builder()
                 .source(UUID.randomUUID())
                 .target(Position.builder()
-                        .x(10L)
-                        .z(11L)
+                        .x(10)
+                        .z(11)
                         .build())
                 .build();
 

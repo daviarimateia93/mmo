@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class PositionEntity {
 
-    private Float x;
-    private Float z;
+    private Integer x;
+    private Integer z;
 
     public static PositionEntity of(Position position) {
         PositionEntity entity = new PositionEntity();

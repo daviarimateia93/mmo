@@ -1,5 +1,6 @@
 package com.mmo.server.infrastructure.map.server;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
@@ -16,6 +17,9 @@ import com.mmo.server.core.game.Game;
 import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.MapEntity;
 import com.mmo.server.core.map.Position;
+import com.mmo.server.core.map.Terrain;
+import com.mmo.server.core.math.Rectangle;
+import com.mmo.server.core.math.Vertex;
 import com.mmo.server.core.packet.AnimateAttackPacket;
 import com.mmo.server.core.packet.AnimateDiePacket;
 import com.mmo.server.core.packet.AnimateMovePacket;
@@ -87,6 +91,22 @@ public class MapServer {
                 .description("Located at the southern end, these plains were quiet and peaceful.")
                 .nearbyRatio(10)
                 .packetSubscribers(Set.of(this::persist, this::send))
+                .terrain(Terrain.builder()
+                        .heightMap(List.of(128.f, 128.f, 128.f, 129.f, 130.f, 131.f))
+                        .forbiddenAreas(List.of(
+                                Rectangle.builder()
+                                        .bottomLeftVertex(new Vertex(10, 11))
+                                        .bottomRightVertex(new Vertex(20, 11))
+                                        .topLeftVertex(new Vertex(10, 21))
+                                        .topRightVertex(new Vertex(20, 21))
+                                        .build(),
+                                Rectangle.builder()
+                                        .bottomLeftVertex(new Vertex(110, 111))
+                                        .bottomRightVertex(new Vertex(120, 111))
+                                        .topLeftVertex(new Vertex(110, 121))
+                                        .topRightVertex(new Vertex(120, 121))
+                                        .build()))
+                        .build())
                 .build();
     }
 

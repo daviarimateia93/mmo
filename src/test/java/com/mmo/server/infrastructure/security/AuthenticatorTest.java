@@ -45,7 +45,7 @@ public class AuthenticatorTest {
         player = Player.builder()
                 .userId(user.getId())
                 .instanceId(UUID.randomUUID())
-                .name("PlayerName-" + UUID.randomUUID())
+                .name("name")
                 .position(Position.builder()
                         .x(50)
                         .z(10)

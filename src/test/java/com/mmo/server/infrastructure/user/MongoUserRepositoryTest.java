@@ -26,7 +26,7 @@ public class MongoUserRepositoryTest {
 
     @AfterAll
     public static void clear() {
-        // MongoServer.getInstance().stop();
+        MongoServer.getInstance().stop();
     }
 
     @Test

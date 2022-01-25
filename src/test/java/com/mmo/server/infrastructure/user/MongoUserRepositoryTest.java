@@ -30,7 +30,7 @@ public class MongoUserRepositoryTest {
     }
 
     @Test
-    public void findAndPersist() {
+    public void findsAndPersist() {
         User user = User.builder()
                 .id(UUID.randomUUID())
                 .name("name")
@@ -38,9 +38,11 @@ public class MongoUserRepositoryTest {
                 .build();
 
         assertThat(repository.find(user.getId()), is(Optional.empty()));
+        assertThat(repository.findByName(user.getName()), is(Optional.empty()));
 
         repository.persist(user);
 
         assertThat(repository.find(user.getId()), is(Optional.of(user)));
+        assertThat(repository.findByName(user.getName()), is(Optional.of(user)));
     }
 }

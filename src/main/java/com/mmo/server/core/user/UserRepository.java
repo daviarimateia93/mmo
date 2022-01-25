@@ -7,5 +7,7 @@ public interface UserRepository {
 
     Optional<User> find(UUID id);
 
+    Optional<User> findByName(String name);
+
     void persist(User user);
 }

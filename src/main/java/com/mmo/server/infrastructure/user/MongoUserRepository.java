@@ -27,6 +27,14 @@ public class MongoUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByName(String name) {
+        UserEntity entity = collection.find(Filters.eq("name", name)).first();
+
+        return Optional.ofNullable(entity)
+                .map(UserEntity::toUser);
+    }
+
+    @Override
     public void persist(User player) {
         UserEntity entity = UserEntity.of(player);
 

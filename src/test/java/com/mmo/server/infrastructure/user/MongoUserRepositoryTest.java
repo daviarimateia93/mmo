@@ -33,7 +33,7 @@ public class MongoUserRepositoryTest {
     public void findsAndPersist() {
         User user = User.builder()
                 .id(UUID.randomUUID())
-                .name("name")
+                .name("name " + UUID.randomUUID())
                 .password("password")
                 .build();
 

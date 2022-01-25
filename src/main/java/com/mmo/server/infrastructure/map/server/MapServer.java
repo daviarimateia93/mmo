@@ -220,6 +220,8 @@ public class MapServer {
             }
         } else {
             if (packet instanceof HelloPacket) {
+                // TODO authenticate here
+                
                 addClient(client, packet.getSource());
 
                 logger.info("Client has sent HelloPacket, it is now connected");

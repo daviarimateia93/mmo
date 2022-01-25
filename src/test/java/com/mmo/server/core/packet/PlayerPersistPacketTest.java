@@ -19,6 +19,7 @@ public class PlayerPersistPacketTest {
         PlayerPersistPacket packet = PlayerPersistPacket.builder()
                 .source(UUID.randomUUID())
                 .player(Player.builder()
+                        .userId(UUID.randomUUID())
                         .instanceId(UUID.randomUUID())
                         .name("PlayerName-" + UUID.randomUUID())
                         .position(Position.builder()

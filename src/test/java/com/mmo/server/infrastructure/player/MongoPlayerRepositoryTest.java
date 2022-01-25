@@ -35,6 +35,7 @@ public class MongoPlayerRepositoryTest {
     @Test
     public void findAndPersist() {
         Player player = Player.builder()
+                .userId(UUID.randomUUID())
                 .instanceId(UUID.randomUUID())
                 .name("PlayerName-" + UUID.randomUUID())
                 .position(Position.builder()

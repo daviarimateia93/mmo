@@ -13,6 +13,7 @@ import lombok.Data;
 public class PlayerEntity {
 
     private UUID id;
+    private UUID userId;
     private UUID instanceId;
     private String name;
     private PositionEntity position;
@@ -21,6 +22,7 @@ public class PlayerEntity {
 
     public Player toPlayer() {
         return Player.builder()
+                .userId(userId)
                 .instanceId(getInstanceId())
                 .name(getName())
                 .position(getPosition().toPosition())
@@ -32,6 +34,7 @@ public class PlayerEntity {
     public static PlayerEntity of(Player player) {
         PlayerEntity entity = new PlayerEntity();
         entity.setId(player.getId());
+        entity.setUserId(player.getUserId());
         entity.setInstanceId(player.getInstanceId());
         entity.setName(player.getName());
         entity.setPosition(PositionEntity.of(player.getPosition()));

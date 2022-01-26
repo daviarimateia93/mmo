@@ -256,8 +256,18 @@ public class MapServer {
             }
         } else {
             if (packet instanceof HelloPacket) {
-                // TODO authenticate here
-                authenticator.authenticate("userName", "userPassword", packet.getSource());
+                HelloPacket helloPacket = (HelloPacket) packet;
+
+                boolean authenticated = authenticator.authenticate(
+                        helloPacket.getUserName(),
+                        helloPacket.getUserPassword(),
+                        helloPacket.getSource());
+
+                if (!authenticated) {
+                    logger.info("Client has not authenticated");
+
+                    client.disconnect();
+                }
 
                 addClient(client, packet.getSource());
 

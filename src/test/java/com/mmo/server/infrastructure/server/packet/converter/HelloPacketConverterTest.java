@@ -25,6 +25,8 @@ public class HelloPacketConverterTest {
 
         HelloPacket expected = HelloPacket.builder()
                 .source(source)
+                .userName("userName")
+                .userPassword("userPassword")
                 .build();
 
         HelloPacket result = converter.fromBytes(source, converter.toBytes(expected));

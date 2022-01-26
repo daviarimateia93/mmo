@@ -29,11 +29,17 @@ import com.mmo.server.core.packet.NetworkPacket;
 import com.mmo.server.core.packet.Packet;
 import com.mmo.server.core.packet.PacketHandlerDelegator;
 import com.mmo.server.core.packet.PersistencePacket;
+import com.mmo.server.core.packet.PlayerPersistPacket;
 import com.mmo.server.core.player.Player;
+import com.mmo.server.core.player.PlayerRepository;
 import com.mmo.server.core.stat.Stats;
+import com.mmo.server.core.user.UserRepository;
 import com.mmo.server.infrastructure.config.ConfigProvider;
 import com.mmo.server.infrastructure.packet.AnimateAttackPacketHandler;
 import com.mmo.server.infrastructure.packet.AnimateMovePacketHandler;
+import com.mmo.server.infrastructure.packet.PlayerPersistPacketHandler;
+import com.mmo.server.infrastructure.player.MongoPlayerRepository;
+import com.mmo.server.infrastructure.security.Authenticator;
 import com.mmo.server.infrastructure.security.Decryptor;
 import com.mmo.server.infrastructure.security.Encryptor;
 import com.mmo.server.infrastructure.security.aes.AESDecryptor;
@@ -46,6 +52,7 @@ import com.mmo.server.infrastructure.server.packet.converter.AnimateDiePacketCon
 import com.mmo.server.infrastructure.server.packet.converter.AnimateMovePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
+import com.mmo.server.infrastructure.user.MongoUserRepository;
 
 public class MapServer {
 
@@ -58,12 +65,34 @@ public class MapServer {
     private final ConcurrentHashMap<Client, UUID> clients = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Client> instanceIds = new ConcurrentHashMap<>();
     private final Map map;
+    private final Authenticator authenticator;
     private final Server server;
 
     private MapServer() {
+        logger.info("Binding packet converters and handlers");
+
+        UserRepository userRepository = new MongoUserRepository();
+        PlayerRepository playerRepository = new MongoPlayerRepository();
+
+        PacketGateway.getInstance()
+                .bind(HelloPacket.ALIAS, new HelloPacketConverter())
+                .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
+                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
+                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
+                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
+
+        PacketHandlerDelegator.getInstance()
+                .bind(AnimateAttackPacket.class, new AnimateAttackPacketHandler())
+                .bind(AnimateMovePacket.class, new AnimateMovePacketHandler())
+                .bind(PlayerPersistPacket.class, new PlayerPersistPacketHandler(playerRepository));
+
         logger.info("Loading map");
 
         map = loadMap();
+
+        logger.info("Creating authenticator");
+
+        authenticator = newAuthenticator(userRepository, playerRepository);
 
         logger.info("Running game");
 
@@ -71,7 +100,7 @@ public class MapServer {
 
         logger.info("Starting server");
 
-        server = createServer();
+        server = newServer();
         server.run();
     }
 
@@ -110,7 +139,7 @@ public class MapServer {
                 .build();
     }
 
-    private Server createServer() {
+    private Server newServer() {
         Encryptor encryptor = AESEncryptor.builder()
                 .key(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_CIPHER_KEY))
                 .build();
@@ -127,6 +156,13 @@ public class MapServer {
                 .disconnectSubscriber(this::removeClient)
                 .sendSubscriber(this::onSend)
                 .receiveSubscriber(this::onReceive)
+                .build();
+    }
+
+    private Authenticator newAuthenticator(UserRepository userRepository, PlayerRepository playerRepository) {
+        return Authenticator.builder()
+                .userRepository(userRepository)
+                .playerRepository(playerRepository)
                 .build();
     }
 
@@ -221,7 +257,8 @@ public class MapServer {
         } else {
             if (packet instanceof HelloPacket) {
                 // TODO authenticate here
-                
+                authenticator.authenticate("userName", "userPassword", packet.getSource());
+
                 addClient(client, packet.getSource());
 
                 logger.info("Client has sent HelloPacket, it is now connected");
@@ -274,17 +311,6 @@ public class MapServer {
     }
 
     public static void main(String... args) {
-        PacketGateway.getInstance()
-                .bind(HelloPacket.ALIAS, new HelloPacketConverter())
-                .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
-                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
-                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
-
-        PacketHandlerDelegator.getInstance()
-                .bind(AnimateAttackPacket.class, new AnimateAttackPacketHandler())
-                .bind(AnimateMovePacket.class, new AnimateMovePacketHandler());
-
         new MapServer();
     }
 }

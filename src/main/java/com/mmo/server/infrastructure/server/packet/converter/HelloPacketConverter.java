@@ -14,6 +14,8 @@ public class HelloPacketConverter implements PacketConverter<HelloPacket> {
         try (PacketReader reader = new PacketReader(bytes)) {
             return HelloPacket.builder()
                     .source(source)
+                    .userName(reader.readUTF())
+                    .userPassword(reader.readUTF())
                     .build();
         }
     }
@@ -21,6 +23,8 @@ public class HelloPacketConverter implements PacketConverter<HelloPacket> {
     @Override
     public byte[] toBytes(HelloPacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
+            writer.writeUTF(packet.getUserName());
+            writer.writeUTF(packet.getUserPassword());
             return writer.toBytes();
         }
     }

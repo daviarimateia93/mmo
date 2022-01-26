@@ -13,6 +13,8 @@ public class HelloPacketTest {
     public void getAlias() {
         HelloPacket packet = HelloPacket.builder()
                 .source(UUID.randomUUID())
+                .userName("userName")
+                .userPassword("userPassword")
                 .build();
 
         assertThat(packet.getAlias(), is("HELLO"));

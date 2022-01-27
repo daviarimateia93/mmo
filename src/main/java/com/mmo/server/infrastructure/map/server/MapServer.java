@@ -52,6 +52,7 @@ import com.mmo.server.infrastructure.server.packet.converter.AnimateDiePacketCon
 import com.mmo.server.infrastructure.server.packet.converter.AnimateMovePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
+import com.mmo.server.infrastructure.setup.AdminSetupper;
 import com.mmo.server.infrastructure.user.MongoUserRepository;
 
 public class MapServer {
@@ -69,10 +70,18 @@ public class MapServer {
     private final Server server;
 
     private MapServer() {
-        logger.info("Binding packet converters and handlers");
-
         UserRepository userRepository = new MongoUserRepository();
         PlayerRepository playerRepository = new MongoPlayerRepository();
+
+        logger.info("Initializing admin setup");
+
+        AdminSetupper.builder()
+                .userRepository(userRepository)
+                .playerRepository(playerRepository)
+                .build()
+                .setup();
+
+        logger.info("Binding packet converters and handlers");
 
         PacketGateway.getInstance()
                 .bind(HelloPacket.ALIAS, new HelloPacketConverter())

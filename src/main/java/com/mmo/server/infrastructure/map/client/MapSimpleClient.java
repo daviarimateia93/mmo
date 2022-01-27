@@ -84,7 +84,7 @@ public class MapSimpleClient {
 
         Client client = Client.clientBuilder()
                 .host(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_HOST))
-                .port(ConfigProvider.getInstance().getInteger(CONFIG_MAP_SERVER_PORT))
+                .port(ConfigProvider.getInstance().getInt(CONFIG_MAP_SERVER_PORT))
                 .encryptor(encryptor)
                 .decryptor(decryptor)
                 .sendSubscriber(this::onSend)

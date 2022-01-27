@@ -149,7 +149,7 @@ public class MapServer {
                 .build();
 
         return Server.builder()
-                .port(ConfigProvider.getInstance().getInteger(CONFIG_MAP_SERVER_PORT))
+                .port(ConfigProvider.getInstance().getInt(CONFIG_MAP_SERVER_PORT))
                 .encryptor(encryptor)
                 .decryptor(decryptor)
                 .connectSubscriber(this::confirmClientConnected)

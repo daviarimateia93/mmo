@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.UUID;
 
 public class ConfigProvider {
 
@@ -35,11 +36,15 @@ public class ConfigProvider {
                         .orElseThrow(() -> new ConfigNotFoundException("Config %s not found", name)));
     }
 
+    public UUID getUUID(String name) {
+        return UUID.fromString(getString(name));
+    }
+
     public Long getLong(String name) {
         return Long.valueOf(getString(name));
     }
 
-    public Integer getInteger(String name) {
+    public Integer getInt(String name) {
         return Integer.valueOf(getString(name));
     }
 

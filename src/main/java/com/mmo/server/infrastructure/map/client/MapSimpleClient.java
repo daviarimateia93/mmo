@@ -39,6 +39,13 @@ public class MapSimpleClient {
     private boolean exit;
 
     public MapSimpleClient() {
+        PacketGateway.getInstance()
+                .bind(HelloPacket.ALIAS, new HelloPacketConverter())
+                .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
+                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
+                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
+                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
+
         source = UUID.randomUUID();
         client = createClient();
 
@@ -106,13 +113,6 @@ public class MapSimpleClient {
     }
 
     public static void main(String... args) {
-        PacketGateway.getInstance()
-                .bind(HelloPacket.ALIAS, new HelloPacketConverter())
-                .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
-                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
-                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
-
         new MapSimpleClient();
     }
 }

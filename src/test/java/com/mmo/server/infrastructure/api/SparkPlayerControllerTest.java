@@ -1,6 +1,6 @@
 package com.mmo.server.infrastructure.api;
 
-import static com.mashape.unirest.http.Unirest.post;
+import static com.mashape.unirest.http.Unirest.get;
 import static com.mmo.server.infrastructure.api.Spark.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
@@ -82,7 +82,7 @@ public class SparkPlayerControllerTest {
         when(authenticator.authenticate(userName, userPassword, player.getId())).thenReturn(true);
 
         PlayerEntity expected = PlayerEntity.of(player);
-        PlayerEntity result = fromJson(post("http://localhost:4567/players/" + player.getId())
+        PlayerEntity result = fromJson(get("http://localhost:4567/players/" + player.getId())
                 .header("x-userName", userName)
                 .header("x-userPassword", userPassword)
                 .asString()

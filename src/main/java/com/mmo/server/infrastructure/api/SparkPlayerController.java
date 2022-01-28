@@ -26,7 +26,7 @@ public class SparkPlayerController {
         this.authenticator = authenticator;
         this.repository = repository;
 
-        post("/players/:id", this::getPlayer);
+        get("/players/:id", this::getPlayer);
     }
 
     private PlayerEntity getPlayer(Request request, Response response) {

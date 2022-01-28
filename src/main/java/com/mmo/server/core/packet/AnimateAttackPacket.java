@@ -16,11 +16,17 @@ public class AnimateAttackPacket implements NetworkPacket {
     public static final String ALIAS = "ANIMATE_ATTACK";
 
     private final UUID source;
+    private final Long timestamp;
     private final UUID target;
 
     @Builder
-    private AnimateAttackPacket(@NonNull UUID source, @NonNull UUID target) {
+    private AnimateAttackPacket(
+            @NonNull UUID source,
+            @NonNull Long timestamp,
+            @NonNull UUID target) {
+        
         this.source = source;
+        this.timestamp = timestamp;
         this.target = target;
     }
 

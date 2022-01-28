@@ -18,12 +18,18 @@ public class PlayerPersistPacket implements PersistencePacket {
     public static final String ALIAS = "PLAYER_PERSIST";
 
     private final UUID source;
+    private final Long timestamp;
     private final Player player;
 
     @Builder
-    private PlayerPersistPacket(@NonNull UUID source, @NonNull Player player) {
-        this.player = player;
+    private PlayerPersistPacket(
+            @NonNull UUID source,
+            @NonNull Long timestamp,
+            @NonNull Player player) {
+
         this.source = source;
+        this.timestamp = timestamp;
+        this.player = player;
     }
 
     @Override

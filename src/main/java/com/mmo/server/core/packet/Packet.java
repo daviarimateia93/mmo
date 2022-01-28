@@ -11,4 +11,6 @@ public interface Packet {
     }
 
     UUID getSource();
+
+    Long getTimestamp();
 }

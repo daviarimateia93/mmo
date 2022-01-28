@@ -18,10 +18,12 @@ public class DisconnectPacket implements NetworkPacket {
     public static final String ALIAS = "DISCONNECT";
 
     private final UUID source;
+    private final Long timestamp;
 
     @Builder
-    private DisconnectPacket(@NonNull UUID source) {
+    private DisconnectPacket(@NonNull UUID source, @NonNull Long timestamp) {
         this.source = source;
+        this.timestamp = timestamp;
     }
 
     @Override

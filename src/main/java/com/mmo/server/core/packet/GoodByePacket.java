@@ -16,10 +16,15 @@ public class GoodByePacket implements NetworkPacket {
     public static final String ALIAS = "GOOD_BYE";
 
     private final UUID source;
+    private final Long timestamp;
 
     @Builder
-    private GoodByePacket(@NonNull UUID source) {
+    private GoodByePacket(
+            @NonNull UUID source,
+            @NonNull Long timestamp) {
+
         this.source = source;
+        this.timestamp = timestamp;
     }
 
     @Override

@@ -18,11 +18,17 @@ public class AnimateMovePacket implements NetworkPacket {
     public static final String ALIAS = "ANIMATE_MOVE";
 
     private final UUID source;
+    private final Long timestamp;
     private final Position target;
 
     @Builder
-    private AnimateMovePacket(@NonNull UUID source, @NonNull Position target) {
+    private AnimateMovePacket(
+            @NonNull UUID source,
+            @NonNull Long timestamp,
+            @NonNull Position target) {
+
         this.source = source;
+        this.timestamp = timestamp;
         this.target = target;
     }
 

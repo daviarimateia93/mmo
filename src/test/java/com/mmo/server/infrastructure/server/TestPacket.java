@@ -19,16 +19,19 @@ public class TestPacket implements NetworkPacket {
     public final static String ALIAS = "test";
 
     private final UUID source;
+    private final Long timestamp;
     private final String property1;
     private final Integer property2;
 
     @Builder
     private TestPacket(
             @NonNull UUID source,
+            @NonNull Long timestamp,
             @NonNull String property1,
             @NonNull Integer property2) {
 
         this.source = source;
+        this.timestamp = timestamp;
         this.property1 = property1;
         this.property2 = property2;
     }

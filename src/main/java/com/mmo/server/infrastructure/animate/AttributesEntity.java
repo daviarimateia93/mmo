@@ -1,16 +1,21 @@
 package com.mmo.server.infrastructure.animate;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import com.mmo.server.core.attribute.Attributes;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 
 @Data
 public class AttributesEntity {
 
+    @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private Integer hp;
+    @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private Integer mp;
     private Integer attack;
@@ -21,40 +26,50 @@ public class AttributesEntity {
     private Integer dodgeRate;
     private Integer attackSpeed;
     private Integer moveSpeed;
+    @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private Integer hpRecovery;
+    @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private Integer mpRecovery;
     private Integer attackRange;
 
+    @BsonProperty("hp")
     public void setHP(Integer hp) {
         this.hp = hp;
     }
 
+    @BsonProperty("hp")
     public Integer getHP() {
         return hp;
     }
 
+    @BsonProperty("mp")
     public void setMP(Integer mp) {
         this.mp = mp;
     }
 
+    @BsonProperty("mp")
     public Integer getMP() {
         return mp;
     }
 
+    @BsonProperty("hpRecovery")
     public void setHPRecovery(Integer hpRecovery) {
         this.hpRecovery = hpRecovery;
     }
 
+    @BsonProperty("hpRecovery")
     public Integer getHPRecovery() {
         return hpRecovery;
     }
 
+    @BsonProperty("mpRecovery")
     public void setMPRecovery(Integer mpRecovery) {
         this.mpRecovery = mpRecovery;
     }
 
+    @BsonProperty("mpRecovery")
     public Integer getMPRecovery() {
         return mpRecovery;
     }
@@ -92,8 +107,7 @@ public class AttributesEntity {
                 .moveSpeed(getMoveSpeed())
                 .hpRecovery(getHPRecovery())
                 .mpRecovery(getMPRecovery())
-                .attackRange(
-                        getAttackRange())
+                .attackRange(getAttackRange())
                 .build();
     }
 }

@@ -1,12 +1,9 @@
 package com.mmo.server.infrastructure.api;
 
-import static com.mashape.unirest.http.Unirest.get;
 import static com.mashape.unirest.http.Unirest.post;
 import static com.mmo.server.infrastructure.api.Spark.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
@@ -22,28 +19,31 @@ import com.mmo.server.core.map.Position;
 import com.mmo.server.core.player.Player;
 import com.mmo.server.core.player.PlayerRepository;
 import com.mmo.server.core.stat.Stats;
-import com.mmo.server.infrastructure.api.SparkAuthController.TokenResponseDTO;
-import com.mmo.server.infrastructure.security.Encryptor;
+import com.mmo.server.infrastructure.player.PlayerEntity;
+import com.mmo.server.infrastructure.security.Authenticator;
 
-public class SparkAuthControllerTest {
+public class SparkPlayerControllerTest {
 
     private static PlayerRepository repository;
-    private static Encryptor encryptor;
+    private static Authenticator authenticator;
 
     @BeforeAll
     public static void setup() {
         repository = mock(PlayerRepository.class);
-        encryptor = mock(Encryptor.class);
+        authenticator = mock(Authenticator.class);
 
-        SparkAuthController.builder()
+        SparkPlayerController.builder()
                 .repository(repository)
-                .encryptor(encryptor)
+                .authenticator(authenticator)
                 .build();
     }
 
     @Test
-    public void getToken() throws UnirestException {
+    public void getPlayer() throws UnirestException {
         Random random = new Random();
+
+        String userName = "userName";
+        String userPassword = "userPassword";
 
         Player player = Player.builder()
                 .userId(UUID.randomUUID())
@@ -78,28 +78,15 @@ public class SparkAuthControllerTest {
                         .build())
                 .build();
 
-        String token = "encrypted-token";
-
         when(repository.find(player.getId())).thenReturn(Optional.of(player));
-        when(encryptor.encrypt(anyString())).thenReturn(token);
+        when(authenticator.authenticate(userName, userPassword, player.getId())).thenReturn(true);
 
-        TokenResponseDTO expected = new TokenResponseDTO(token);
-
-        TokenResponseDTO result = fromJson(post("http://localhost:4567/auth/" + player.getId())
+        PlayerEntity expected = PlayerEntity.of(player);
+        PlayerEntity result = fromJson(post("http://localhost:4567/players/" + player.getId())
+                .header("x-userName", userName)
+                .header("x-userPassword", userPassword)
                 .asString()
-                .getBody(), TokenResponseDTO.class);
-
-        assertThat(result, equalTo(expected));
-    }
-
-    @Test
-    public void getTokenReturns401() throws UnirestException {
-        when(repository.find(any())).thenReturn(Optional.empty());
-
-        int expected = 404;
-        int result = get("http://localhost:4567/auth/" + UUID.randomUUID())
-                .asString()
-                .getStatus();
+                .getBody(), PlayerEntity.class);
 
         assertThat(result, equalTo(expected));
     }

@@ -47,6 +47,15 @@ public abstract class Spark {
         return parsed;
     }
 
+    public static <T> T getBody(Class<T> type, Request request, Response response) {
+        try {
+            String body = request.body();
+            return fromJson(body, type);
+        } catch (Exception exception) {
+            return setStatus(400, response);
+        }
+    }
+
     public static <T> T setStatus(int status, Response response) {
         response.status(status);
         return null;

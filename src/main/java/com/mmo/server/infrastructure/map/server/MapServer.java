@@ -2,7 +2,6 @@ package com.mmo.server.infrastructure.map.server;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,11 +11,9 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mmo.server.core.attribute.Attributes;
 import com.mmo.server.core.game.Game;
 import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.MapEntity;
-import com.mmo.server.core.map.Position;
 import com.mmo.server.core.map.Terrain;
 import com.mmo.server.core.math.Rectangle;
 import com.mmo.server.core.math.Vertex;
@@ -32,7 +29,6 @@ import com.mmo.server.core.packet.PersistencePacket;
 import com.mmo.server.core.packet.PlayerPersistPacket;
 import com.mmo.server.core.player.Player;
 import com.mmo.server.core.player.PlayerRepository;
-import com.mmo.server.core.stat.Stats;
 import com.mmo.server.core.user.UserRepository;
 import com.mmo.server.infrastructure.config.ConfigProvider;
 import com.mmo.server.infrastructure.packet.AnimateAttackPacketHandler;
@@ -68,10 +64,11 @@ public class MapServer {
     private final Map map;
     private final Authenticator authenticator;
     private final Server server;
+    private final PlayerRepository playerRepository;
 
     private MapServer() {
         UserRepository userRepository = new MongoUserRepository();
-        PlayerRepository playerRepository = new MongoPlayerRepository();
+        playerRepository = new MongoPlayerRepository();
 
         logger.info("Initializing admin setup");
 
@@ -193,39 +190,7 @@ public class MapServer {
     }
 
     private synchronized void addClient(Client client, UUID instanceId) {
-        Random random = new Random();
-
-        Player player = Player.builder()
-                .instanceId(instanceId)
-                .name("PlayerName-" + UUID.randomUUID())
-                .position(Position.builder()
-                        .x(random.ints(0, 1000).findFirst().getAsInt())
-                        .z(random.ints(0, 1000).findFirst().getAsInt())
-                        .build())
-                .stats(Stats.builder()
-                        .strength(10)
-                        .dexterity(10)
-                        .intelligence(10)
-                        .concentration(10)
-                        .sense(10)
-                        .charm(10)
-                        .build())
-                .attributes(Attributes.builder()
-                        .hp(30)
-                        .mp(31)
-                        .attack(42)
-                        .defense(33)
-                        .magicDefense(34)
-                        .hitRate(35)
-                        .critical(36)
-                        .dodgeRate(37)
-                        .attackSpeed(38)
-                        .moveSpeed(2)
-                        .hpRecovery(40)
-                        .mpRecovery(41)
-                        .attackRange(3)
-                        .build())
-                .build();
+        Player player = playerRepository.find(instanceId).orElseThrow();
 
         clients.put(client, instanceId);
         instanceIds.put(instanceId, client);
@@ -283,7 +248,9 @@ public class MapServer {
                 logger.info("Client has sent HelloPacket, it is now connected");
 
                 send(HelloPacket.builder()
-                        .source(packet.getSource())
+                        .source(helloPacket.getSource())
+                        .userName(helloPacket.getUserName())
+                        .userPassword(helloPacket.getUserPassword())
                         .build());
             } else {
                 logger.info("Client is not connected, forcing disconnect");

@@ -5,17 +5,17 @@ import com.mmo.server.core.map.Position;
 import lombok.Data;
 
 @Data
-public class PositionEntity {
+public class PositionDTO {
 
     private Integer x;
     private Integer z;
 
-    public static PositionEntity of(Position position) {
-        PositionEntity entity = new PositionEntity();
-        entity.setX(position.getX());
-        entity.setZ(position.getZ());
+    public static PositionDTO of(Position position) {
+        PositionDTO dto = new PositionDTO();
+        dto.setX(position.getX());
+        dto.setZ(position.getZ());
 
-        return entity;
+        return dto;
     }
 
     public Position toPosition() {

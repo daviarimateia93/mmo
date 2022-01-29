@@ -5,7 +5,7 @@ import static com.mmo.server.infrastructure.api.Spark.*;
 import java.util.UUID;
 
 import com.mmo.server.core.player.PlayerRepository;
-import com.mmo.server.infrastructure.player.PlayerEntity;
+import com.mmo.server.infrastructure.player.PlayerDTO;
 import com.mmo.server.infrastructure.security.Authenticator;
 
 import lombok.Builder;
@@ -29,7 +29,7 @@ public class SparkPlayerController {
         get("/players/:id", this::getPlayer);
     }
 
-    private PlayerEntity getPlayer(Request request, Response response) {
+    private PlayerDTO getPlayer(Request request, Response response) {
         UUID id = getUUIDParam("id", request, response);
         String userName = request.headers("x-userName");
         String userPassword = request.headers("x-userPassword");
@@ -39,7 +39,7 @@ public class SparkPlayerController {
         }
 
         return repository.find(id)
-                .map(PlayerEntity::of)
+                .map(PlayerDTO::of)
                 .orElseGet(() -> setStatus(404, response));
     }
 }

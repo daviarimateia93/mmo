@@ -19,7 +19,7 @@ import com.mmo.server.core.map.Position;
 import com.mmo.server.core.player.Player;
 import com.mmo.server.core.player.PlayerRepository;
 import com.mmo.server.core.stat.Stats;
-import com.mmo.server.infrastructure.player.PlayerEntity;
+import com.mmo.server.infrastructure.player.PlayerDTO;
 import com.mmo.server.infrastructure.security.Authenticator;
 
 public class SparkPlayerControllerTest {
@@ -81,12 +81,12 @@ public class SparkPlayerControllerTest {
         when(repository.find(player.getId())).thenReturn(Optional.of(player));
         when(authenticator.authenticate(userName, userPassword, player.getId())).thenReturn(true);
 
-        PlayerEntity expected = PlayerEntity.of(player);
-        PlayerEntity result = fromJson(get("http://localhost:4567/players/" + player.getId())
+        PlayerDTO expected = PlayerDTO.of(player);
+        PlayerDTO result = fromJson(get("http://localhost:4567/players/" + player.getId())
                 .header("x-userName", userName)
                 .header("x-userPassword", userPassword)
                 .asString()
-                .getBody(), PlayerEntity.class);
+                .getBody(), PlayerDTO.class);
 
         assertThat(result, equalTo(expected));
     }

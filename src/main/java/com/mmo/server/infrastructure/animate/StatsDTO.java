@@ -5,7 +5,7 @@ import com.mmo.server.core.stat.Stats;
 import lombok.Data;
 
 @Data
-public class StatsEntity {
+public class StatsDTO {
 
     private Integer strength;
     private Integer dexterity;
@@ -14,16 +14,16 @@ public class StatsEntity {
     private Integer sense;
     private Integer charm;
 
-    public static StatsEntity of(Stats stats) {
-        StatsEntity entity = new StatsEntity();
-        entity.setStrength(stats.getStrength());
-        entity.setDexterity(stats.getDexterity());
-        entity.setIntelligence(stats.getIntelligence());
-        entity.setConcentration(stats.getConcentration());
-        entity.setSense(stats.getSense());
-        entity.setCharm(stats.getCharm());
+    public static StatsDTO of(Stats stats) {
+        StatsDTO dto = new StatsDTO();
+        dto.setStrength(stats.getStrength());
+        dto.setDexterity(stats.getDexterity());
+        dto.setIntelligence(stats.getIntelligence());
+        dto.setConcentration(stats.getConcentration());
+        dto.setSense(stats.getSense());
+        dto.setCharm(stats.getCharm());
 
-        return entity;
+        return dto;
     }
 
     public Stats toStats() {

@@ -7,13 +7,24 @@ import com.mmo.server.core.map.Map;
 import lombok.Data;
 
 @Data
-public class MapEntity {
+public class MapDTO {
 
     private UUID id;
     private String name;
     private String description;
     private Integer nearbyRatio;
-    private TerrainEntity terrain;
+    private TerrainDTO terrain;
+
+    public static MapDTO of(Map map) {
+        MapDTO dto = new MapDTO();
+        dto.setId(map.getId());
+        dto.setName(map.getName());
+        dto.setDescription(map.getDescription());
+        dto.setNearbyRatio(map.getNearbyRatio());
+        dto.setTerrain(TerrainDTO.of(map.getTerrain()));
+
+        return dto;
+    }
 
     public Map toMap() {
         return Map.builder()
@@ -23,16 +34,5 @@ public class MapEntity {
                 .nearbyRatio(nearbyRatio)
                 .terrain(terrain.toTerrain())
                 .build();
-    }
-
-    public static MapEntity of(Map map) {
-        MapEntity entity = new MapEntity();
-        entity.setId(map.getId());
-        entity.setName(map.getName());
-        entity.setDescription(map.getDescription());
-        entity.setNearbyRatio(map.getNearbyRatio());
-        entity.setTerrain(TerrainEntity.of(map.getTerrain()));
-
-        return entity;
     }
 }

@@ -12,31 +12,31 @@ import com.mongodb.client.model.ReplaceOptions;
 
 public class MongoUserRepository implements UserRepository {
 
-    private final MongoCollection<UserEntity> collection;
+    private final MongoCollection<UserDTO> collection;
 
     public MongoUserRepository() {
-        collection = MongoFactory.getInstance().getCollection("User", UserEntity.class);
+        collection = MongoFactory.getInstance().getCollection("User", UserDTO.class);
     }
 
     @Override
     public Optional<User> find(UUID id) {
-        UserEntity entity = collection.find(Filters.eq("_id", id)).first();
+        UserDTO entity = collection.find(Filters.eq("_id", id)).first();
 
         return Optional.ofNullable(entity)
-                .map(UserEntity::toUser);
+                .map(UserDTO::toUser);
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        UserEntity entity = collection.find(Filters.eq("name", name)).first();
+        UserDTO entity = collection.find(Filters.eq("name", name)).first();
 
         return Optional.ofNullable(entity)
-                .map(UserEntity::toUser);
+                .map(UserDTO::toUser);
     }
 
     @Override
     public void persist(User player) {
-        UserEntity entity = UserEntity.of(player);
+        UserDTO entity = UserDTO.of(player);
 
         collection.replaceOne(
                 Filters.eq("_id", entity.getId()),

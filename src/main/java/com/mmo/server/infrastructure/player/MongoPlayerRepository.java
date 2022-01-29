@@ -12,23 +12,23 @@ import com.mongodb.client.model.ReplaceOptions;
 
 public class MongoPlayerRepository implements PlayerRepository {
 
-    private final MongoCollection<PlayerEntity> collection;
+    private final MongoCollection<PlayerDTO> collection;
 
     public MongoPlayerRepository() {
-        collection = MongoFactory.getInstance().getCollection("Player", PlayerEntity.class);
+        collection = MongoFactory.getInstance().getCollection("Player", PlayerDTO.class);
     }
 
     @Override
     public Optional<Player> find(UUID id) {
-        PlayerEntity entity = collection.find(Filters.eq("_id", id)).first();
+        PlayerDTO entity = collection.find(Filters.eq("_id", id)).first();
 
         return Optional.ofNullable(entity)
-                .map(PlayerEntity::toPlayer);
+                .map(PlayerDTO::toPlayer);
     }
 
     @Override
     public void persist(Player player) {
-        PlayerEntity entity = PlayerEntity.of(player);
+        PlayerDTO entity = PlayerDTO.of(player);
 
         collection.replaceOne(
                 Filters.eq("_id", entity.getId()),

@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-public class AttributesEntity {
+public class AttributesDTO {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
@@ -74,23 +74,23 @@ public class AttributesEntity {
         return mpRecovery;
     }
 
-    public static AttributesEntity of(Attributes stats) {
-        AttributesEntity entity = new AttributesEntity();
-        entity.setHP(stats.getHP());
-        entity.setMP(stats.getMP());
-        entity.setAttack(stats.getAttack());
-        entity.setDefense(stats.getDefense());
-        entity.setMagicDefense(stats.getMagicDefense());
-        entity.setHitRate(stats.getHitRate());
-        entity.setCritical(stats.getCritical());
-        entity.setDodgeRate(stats.getDodgeRate());
-        entity.setAttackSpeed(stats.getAttackSpeed());
-        entity.setMoveSpeed(stats.getMoveSpeed());
-        entity.setHPRecovery(stats.getHPRecovery());
-        entity.setMPRecovery(stats.getMPRecovery());
-        entity.setAttackRange(stats.getAttackRange());
+    public static AttributesDTO of(Attributes stats) {
+        AttributesDTO dto = new AttributesDTO();
+        dto.setHP(stats.getHP());
+        dto.setMP(stats.getMP());
+        dto.setAttack(stats.getAttack());
+        dto.setDefense(stats.getDefense());
+        dto.setMagicDefense(stats.getMagicDefense());
+        dto.setHitRate(stats.getHitRate());
+        dto.setCritical(stats.getCritical());
+        dto.setDodgeRate(stats.getDodgeRate());
+        dto.setAttackSpeed(stats.getAttackSpeed());
+        dto.setMoveSpeed(stats.getMoveSpeed());
+        dto.setHPRecovery(stats.getHPRecovery());
+        dto.setMPRecovery(stats.getMPRecovery());
+        dto.setAttackRange(stats.getAttackRange());
 
-        return entity;
+        return dto;
     }
 
     public Attributes toAttributes() {

@@ -7,11 +7,20 @@ import com.mmo.server.core.user.User;
 import lombok.Data;
 
 @Data
-public class UserEntity {
+public class UserDTO {
 
     private UUID id;
     private String name;
     private String password;
+
+    public static UserDTO of(User user) {
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setPassword(user.getPassword());
+
+        return dto;
+    }
 
     public User toUser() {
         return User.builder()
@@ -19,14 +28,5 @@ public class UserEntity {
                 .name(name)
                 .password(password)
                 .build();
-    }
-
-    public static UserEntity of(User user) {
-        UserEntity entity = new UserEntity();
-        entity.setId(user.getId());
-        entity.setName(user.getName());
-        entity.setPassword(user.getPassword());
-
-        return entity;
     }
 }

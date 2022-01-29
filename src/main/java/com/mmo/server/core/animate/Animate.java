@@ -1,5 +1,7 @@
 package com.mmo.server.core.animate;
 
+import static java.lang.Math.*;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -112,10 +114,9 @@ public abstract class Animate implements MapEntity {
         Position current = getPosition();
         Position target = getTargetPosition().orElseThrow();
 
-        int speed = getAttributes().getFinalMoveSpeed();
-
-        int distanceX = moveX(current, target, speed);
-        int distanceZ = moveZ(current, target, speed);
+        int distance = getMoveDistance(current, target);
+        int distanceX = moveX(current, target, distance);
+        int distanceZ = moveZ(current, target, distance);
 
         onMove(distanceX, distanceZ);
 
@@ -124,32 +125,47 @@ public abstract class Animate implements MapEntity {
         }
     }
 
-    private int moveX(Position current, Position target, int speed) {
+    private Integer getMoveDistance(Position current, Position target) {
+        Integer finalMoveSpeed = getAttributes().getFinalMoveSpeed();
+
+        // check if they are in the same line
+        if (current.getX() == target.getX() || current.getZ() == target.getZ()) {
+            return finalMoveSpeed;
+        }
+
+        // calculate distance
+        int point = (int) pow(finalMoveSpeed, 2);
+        int distance = (int) round(sqrt(point + point));
+
+        return finalMoveSpeed - (distance - finalMoveSpeed);
+    }
+
+    private int moveX(Position current, Position target, int distance) {
         int distanceX = 0;
 
         if (current.getX() < target.getX()) {
             int difference = target.getX() - current.getX();
-            distanceX = speed > difference ? difference : speed;
+            distanceX = distance > difference ? difference : distance;
             collided = !current.incrementX(distanceX);
         } else if (current.getX() > target.getX()) {
             int difference = current.getX() - target.getX();
-            distanceX = speed > difference ? difference : speed;
+            distanceX = distance > difference ? difference : distance;
             collided = !current.decrementX(distanceX);
         }
 
         return distanceX;
     }
 
-    private int moveZ(Position current, Position target, int speed) {
+    private int moveZ(Position current, Position target, int distance) {
         int distanceZ = 0;
 
         if (current.getZ() < target.getZ()) {
             int difference = target.getZ() - current.getZ();
-            distanceZ = speed > difference ? difference : speed;
+            distanceZ = distance > difference ? difference : distance;
             collided = !current.incrementZ(distanceZ);
         } else if (current.getZ() > target.getZ()) {
             int difference = current.getZ() - target.getZ();
-            distanceZ = speed > difference ? difference : speed;
+            distanceZ = distance > difference ? difference : distance;
             collided = !current.decrementZ(distanceZ);
         }
 

@@ -108,7 +108,7 @@ public class AnimateTest {
     }
 
     @Test
-    @Timeout(value = 2500, unit = TimeUnit.MILLISECONDS)
+    @Timeout(value = 3500, unit = TimeUnit.MILLISECONDS)
     public void move() throws InterruptedException {
         Animate animate = new AnimateImpl(
                 Position.builder()
@@ -141,7 +141,7 @@ public class AnimateTest {
         assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
         assertThat(animate.isMoving(), equalTo(true));
 
-        LooperContextMocker.update(animate, 2000);
+        LooperContextMocker.update(animate, 3000);
 
         Position result = animate.getPosition();
 

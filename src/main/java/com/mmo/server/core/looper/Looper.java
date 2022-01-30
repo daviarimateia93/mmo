@@ -18,7 +18,7 @@ public class Looper implements Runnable {
     private final LooperUpdater updater;
     private boolean running;
     private Long lastTick;
-    private LooperContext context;
+    private LooperContextBag context;
 
     @Builder
     private Looper(
@@ -30,7 +30,7 @@ public class Looper implements Runnable {
         this.renderer = renderer;
         this.updater = updater;
 
-        context = new LooperContext();
+        context = new LooperContextBag();
     }
 
     public Optional<Long> getLastTick() {

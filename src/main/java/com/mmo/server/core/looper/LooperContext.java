@@ -1,37 +1,25 @@
 package com.mmo.server.core.looper;
 
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+public interface LooperContext {
 
-@Getter
-@Setter(AccessLevel.PROTECTED)
-@EqualsAndHashCode
-@ToString
-public class LooperContext {
+    Long getTick();
 
-    private Long tick;
-    private Long lag;
-    private Double desiredLag;
+    Long getLag();
 
-    protected LooperContext() {
+    Double getDesiredLag();
 
-    }
-
-    public OffsetDateTime getTickDateTime() {
-        Instant instant = Instant.ofEpochMilli(tick);
+    default OffsetDateTime getTickDateTime() {
+        Instant instant = Instant.ofEpochMilli(getTick());
         ZoneId zoneId = ZoneId.systemDefault();
 
         return OffsetDateTime.ofInstant(instant, zoneId);
     }
 
-    public Long getMillisDuration() {
-        return System.currentTimeMillis() - tick;
+    default Long getMillisDuration() {
+        return System.currentTimeMillis() - getTick();
     }
 }

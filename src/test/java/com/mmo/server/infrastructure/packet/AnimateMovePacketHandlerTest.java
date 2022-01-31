@@ -4,10 +4,12 @@ import static org.mockito.Mockito.*;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.server.core.animate.Animate;
+import com.mmo.server.core.game.GameRunnerMapMocker;
 import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.Position;
 import com.mmo.server.core.packet.AnimateMovePacket;
@@ -21,7 +23,7 @@ public class AnimateMovePacketHandlerTest {
 
     @BeforeAll
     public static void setup() {
-        map = mock(Map.class);
+        map = GameRunnerMapMocker.run();
         packet = AnimateMovePacket.builder()
                 .source(UUID.randomUUID())
                 .target(Position.builder()
@@ -37,9 +39,14 @@ public class AnimateMovePacketHandlerTest {
         when(map.getEntity(packet.getSource(), Animate.class)).thenReturn(source);
     }
 
+    @AfterAll
+    private static void clear() {
+        GameRunnerMapMocker.stop();
+    }
+
     @Test
     public void handle() {
-        packetHandler.handle(map, packet);
+        packetHandler.handle(packet);
 
         verify(source).move(packet.getTarget());
     }

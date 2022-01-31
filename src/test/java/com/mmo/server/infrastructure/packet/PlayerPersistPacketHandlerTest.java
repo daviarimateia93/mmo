@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.server.core.attribute.Attributes;
-import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.Position;
 import com.mmo.server.core.packet.PlayerPersistPacket;
 import com.mmo.server.core.player.Player;
@@ -17,13 +16,11 @@ import com.mmo.server.core.stat.Stats;
 
 public class PlayerPersistPacketHandlerTest {
 
-    private static Map map;
     private static PlayerRepository repository;
     private static PlayerPersistPacketHandler packetHandler;
 
     @BeforeAll
     public static void setup() {
-        map = mock(Map.class);
         repository = mock(PlayerRepository.class);
         packetHandler = new PlayerPersistPacketHandler(repository);
     }
@@ -68,7 +65,7 @@ public class PlayerPersistPacketHandlerTest {
                         .build())
                 .build();
 
-        packetHandler.handle(map, packet);
+        packetHandler.handle(packet);
         verify(repository).persist(packet.getPlayer());
     }
 }

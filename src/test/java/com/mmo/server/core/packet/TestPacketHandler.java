@@ -1,6 +1,5 @@
 package com.mmo.server.core.packet;
 
-import com.mmo.server.core.map.Map;
 import com.mmo.server.infrastructure.server.TestPacket;
 
 import lombok.EqualsAndHashCode;
@@ -12,12 +11,10 @@ import lombok.ToString;
 @ToString
 public class TestPacketHandler implements PacketHandler<TestPacket> {
 
-    private Map map;
     private TestPacket packet;
 
     @Override
-    public void handle(Map map, TestPacket packet) {
-        this.map = map;
+    public void handle(TestPacket packet) {
         this.packet = packet;
     }
 }

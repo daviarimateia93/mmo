@@ -226,7 +226,7 @@ public class MapServer {
 
                 client.disconnect();
             } else {
-                PacketHandlerDelegator.getInstance().delegate(map, packet);
+                PacketHandlerDelegator.getInstance().delegate(packet);
             }
         } else {
             if (packet instanceof HelloPacket) {
@@ -266,7 +266,7 @@ public class MapServer {
 
     private void persist(Packet packet, Optional<UUID> target) {
         if (packet instanceof PersistencePacket) {
-            PacketHandlerDelegator.getInstance().delegate(map, packet);
+            PacketHandlerDelegator.getInstance().delegate(packet);
         }
     }
 

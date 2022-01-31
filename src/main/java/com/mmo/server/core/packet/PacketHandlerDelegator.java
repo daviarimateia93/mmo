@@ -7,8 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mmo.server.core.map.Map;
-
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -35,13 +33,13 @@ public class PacketHandlerDelegator {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void delegate(Map map, Packet packet) throws PacketHandlerNotBindedException {
+    public void delegate(Packet packet) throws PacketHandlerNotBindedException {
         PacketHandler handler = get(packet).orElseThrow(
                 () -> new PacketHandlerNotBindedException("There is no packet handler for packet %s", packet));
 
         logger.info("Delegating packet {} to handler {}", packet, handler);
 
-        handler.handle(map, packet);
+        handler.handle(packet);
     }
 
     private Optional<PacketHandler<?>> get(Packet packet) {

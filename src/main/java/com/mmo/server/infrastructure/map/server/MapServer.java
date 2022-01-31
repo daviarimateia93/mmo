@@ -64,33 +64,22 @@ public class MapServer {
     private final Map map;
     private final Authenticator authenticator;
     private final Server server;
+    private final UserRepository userRepository;
     private final PlayerRepository playerRepository;
 
     private MapServer() {
-        UserRepository userRepository = new MongoUserRepository();
+        userRepository = new MongoUserRepository();
         playerRepository = new MongoPlayerRepository();
 
         logger.info("Initializing admin setup");
 
-        AdminSetupper.builder()
-                .userRepository(userRepository)
-                .playerRepository(playerRepository)
-                .build()
-                .setup();
+        setup();
 
         logger.info("Binding packet converters and handlers");
 
-        PacketGateway.getInstance()
-                .bind(HelloPacket.ALIAS, new HelloPacketConverter())
-                .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
-                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
-                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
+        bindConverters();
 
-        PacketHandlerDelegator.getInstance()
-                .bind(AnimateAttackPacket.class, new AnimateAttackPacketHandler())
-                .bind(AnimateMovePacket.class, new AnimateMovePacketHandler())
-                .bind(PlayerPersistPacket.class, new PlayerPersistPacketHandler(playerRepository));
+        bindHandlers();
 
         logger.info("Loading map");
 
@@ -98,7 +87,7 @@ public class MapServer {
 
         logger.info("Creating authenticator");
 
-        authenticator = newAuthenticator(userRepository, playerRepository);
+        authenticator = newAuthenticator();
 
         logger.info("Running game");
 
@@ -110,13 +99,28 @@ public class MapServer {
         server.run();
     }
 
-    private void runGame() {
-        Executors.newSingleThreadScheduledExecutor()
-                .execute(() -> Game.getInstance().run(map));
+    private void setup() {
+        AdminSetupper.builder()
+                .userRepository(userRepository)
+                .playerRepository(playerRepository)
+                .build()
+                .setup();
     }
 
-    public Map getMap() {
-        return map;
+    private void bindConverters() {
+        PacketGateway.getInstance()
+                .bind(HelloPacket.ALIAS, new HelloPacketConverter())
+                .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
+                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
+                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
+                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
+    }
+
+    private void bindHandlers() {
+        PacketHandlerDelegator.getInstance()
+                .bind(AnimateAttackPacket.class, new AnimateAttackPacketHandler())
+                .bind(AnimateMovePacket.class, new AnimateMovePacketHandler())
+                .bind(PlayerPersistPacket.class, new PlayerPersistPacketHandler(playerRepository));
     }
 
     private Map loadMap() {
@@ -165,7 +169,12 @@ public class MapServer {
                 .build();
     }
 
-    private Authenticator newAuthenticator(UserRepository userRepository, PlayerRepository playerRepository) {
+    private void runGame() {
+        Executors.newSingleThreadScheduledExecutor()
+                .execute(() -> Game.getInstance().run(map));
+    }
+
+    private Authenticator newAuthenticator() {
         return Authenticator.builder()
                 .userRepository(userRepository)
                 .playerRepository(playerRepository)

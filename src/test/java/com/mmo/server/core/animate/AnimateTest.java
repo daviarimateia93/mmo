@@ -2,12 +2,14 @@ package com.mmo.server.core.animate;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -31,6 +33,11 @@ public class AnimateTest {
     @AfterAll
     private static void clear() {
         GameRunnerMapMocker.stop();
+    }
+
+    @AfterEach
+    private void clearEach() {
+        when(map.getTerrain().isInsideForbiddenArea(anyInt(), anyInt())).thenReturn(false);
     }
 
     @Test
@@ -134,6 +141,48 @@ public class AnimateTest {
         Position expected = Position.builder()
                 .x(20)
                 .z(25)
+                .build();
+
+        animate.move(expected);
+
+        assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
+        assertThat(animate.isMoving(), equalTo(true));
+
+        LooperContextMocker.update(animate, 3000);
+
+        Position result = animate.getPosition();
+
+        assertThat(animate.isMoving(), equalTo(false));
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    @Timeout(value = 3500, unit = TimeUnit.MILLISECONDS)
+    public void moveStraightly() throws InterruptedException {
+        Animate animate = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .z(15)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(42)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(38)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        Position expected = Position.builder()
+                .x(30)
+                .z(15)
                 .build();
 
         animate.move(expected);

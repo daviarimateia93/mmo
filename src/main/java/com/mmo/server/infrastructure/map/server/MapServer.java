@@ -198,6 +198,12 @@ public class MapServer {
                         TimeUnit.MINUTES);
     }
 
+    private boolean validateClientAndInstanceId(Client client, UUID instanceId) {
+        return Optional.ofNullable(clients.get(client))
+                .filter(instanceId::equals)
+                .isPresent();
+    }
+
     private synchronized void addClient(Client client, UUID instanceId) {
         Player player = playerRepository.find(instanceId).orElseThrow();
 
@@ -230,6 +236,11 @@ public class MapServer {
         boolean connected = isConnected(client);
 
         if (connected) {
+            if (!validateClientAndInstanceId(client, packet.getSource())) {
+                logger.info("InstanceId does not belongs to this client");
+                client.disconnect();
+            }
+
             if (packet instanceof GoodByePacket) {
                 logger.info("Client has sent GoodByePacket, it will disconnect");
 

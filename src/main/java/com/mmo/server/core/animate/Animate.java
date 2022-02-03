@@ -158,7 +158,7 @@ public abstract class Animate implements MapEntity {
         }
     }
 
-    private Integer getMoveDistance(Position current, Position target) {
+    public Integer getMoveDistance(Position current, Position target) {
         Integer finalMoveSpeed = getAttributes().getFinalMoveSpeed();
 
         // check if they are in the same line

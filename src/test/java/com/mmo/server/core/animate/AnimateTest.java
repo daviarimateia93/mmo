@@ -406,6 +406,74 @@ public class AnimateTest {
         assertThat(result, equalTo(expected));
     }
 
+    @Test
+    public void getMoveDistance() {
+        AnimateImpl animate = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .z(15)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(60)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(50)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        Position target = Position.builder()
+                .x(30)
+                .z(25)
+                .build();
+
+        int expected = 1;
+        int result = animate.getMoveDistance(animate.getPosition(), target);
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getMoveDistanceStraightly() {
+        AnimateImpl animate = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .z(15)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(60)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(50)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        Position target = Position.builder()
+                .x(30)
+                .z(15)
+                .build();
+
+        int expected = animate.getAttributes().getFinalMoveSpeed();
+        int result = animate.getMoveDistance(animate.getPosition(), target);
+
+        assertThat(result, equalTo(expected));
+    }
+
     private class AnimateImpl extends Animate {
         UUID id = UUID.randomUUID();
         UUID instanceId = UUID.randomUUID();

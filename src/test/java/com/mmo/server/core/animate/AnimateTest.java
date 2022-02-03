@@ -429,13 +429,8 @@ public class AnimateTest {
                         .attackRange(3)
                         .build());
 
-        Position target = Position.builder()
-                .x(30)
-                .z(25)
-                .build();
-
         int expected = 1;
-        int result = animate.getMoveDistance(animate.getPosition(), target);
+        int result = animate.getMoveDistance(animate.getPosition().getX(), animate.getPosition().getZ(), 30, 25);
 
         assertThat(result, equalTo(expected));
     }
@@ -463,13 +458,8 @@ public class AnimateTest {
                         .attackRange(3)
                         .build());
 
-        Position target = Position.builder()
-                .x(30)
-                .z(15)
-                .build();
-
         int expected = animate.getAttributes().getFinalMoveSpeed();
-        int result = animate.getMoveDistance(animate.getPosition(), target);
+        int result = animate.getMoveDistance(animate.getPosition().getX(), animate.getPosition().getZ(), 30, 15);
 
         assertThat(result, equalTo(expected));
     }

@@ -77,6 +77,10 @@ public abstract class Animate implements MapEntity {
     }
 
     private void attack() {
+        if (!isAttacking()) {
+            return;
+        }
+
         Animate target = getTargetAnimate().orElseThrow();
         int attack = getAttributes().getFinalAttack();
         int targetDefense = target.getAttributes().getFinalDefense();
@@ -95,6 +99,8 @@ public abstract class Animate implements MapEntity {
         if (!target.isAlive() && Objects.nonNull(lastAttackStartTime)) {
             lastAttackStartTime = null;
             target.onDie(this);
+        } else {
+            lastAttackStartTime = System.currentTimeMillis();
         }
     }
 
@@ -111,6 +117,10 @@ public abstract class Animate implements MapEntity {
     }
 
     private void move() {
+        if (!isMoving()) {
+            return;
+        }
+
         Position current = getPosition();
         Position target = getTargetPosition().orElseThrow();
 
@@ -122,6 +132,8 @@ public abstract class Animate implements MapEntity {
 
         if (hasFinishedMoving(current, target) && Objects.nonNull(lastMoveStartTime)) {
             lastMoveStartTime = null;
+        } else {
+            lastMoveStartTime = System.currentTimeMillis();
         }
     }
 

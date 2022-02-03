@@ -41,7 +41,7 @@ public class AnimateTest {
     }
 
     @Test
-    @Timeout(value = 10500, unit = TimeUnit.MILLISECONDS)
+    @Timeout(value = 11000, unit = TimeUnit.MILLISECONDS)
     public void attack() throws InterruptedException {
         AnimateImpl animate = new AnimateImpl(
                 Position.builder()
@@ -102,7 +102,7 @@ public class AnimateTest {
         assertThat(animate.attacked, equalTo(true));
         assertThat(target.damaged, equalTo(true));
 
-        LooperContextMocker.update(animate, 5000);
+        LooperContextMocker.update(animate, 6000);
 
         assertThat(animate.isMoving(), equalTo(false));
         assertThat(animate.isAttacking(), equalTo(false));

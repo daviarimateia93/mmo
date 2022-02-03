@@ -245,6 +245,167 @@ public class AnimateTest {
         assertThat(result, equalTo(expected));
     }
 
+    @Test
+    @Timeout(value = 1500, unit = TimeUnit.MILLISECONDS)
+    public void stopMoving() {
+        Animate animate = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .z(15)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(42)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(38)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        Position expected = Position.builder()
+                .x(18)
+                .z(15)
+                .build();
+
+        animate.move(Position.builder()
+                .x(20)
+                .z(15)
+                .build());
+
+        assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
+        assertThat(animate.isMoving(), equalTo(true));
+
+        LooperContextMocker.update(animate, 650);
+
+        animate.stopMoving();
+
+        assertThat(animate.isMoving(), equalTo(false));
+        assertThat(animate.getPosition(), not(equalTo(expected)));
+    }
+
+    @Test
+    @Timeout(value = 3000, unit = TimeUnit.MILLISECONDS)
+    public void stopAttacking() {
+        AnimateImpl animate = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .z(15)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(60)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(50)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        AnimateImpl target = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .z(15)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(42)
+                        .defense(50)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(38)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        animate.attack(target);
+
+        assertThat(animate.isAttacking(), equalTo(true));
+
+        LooperContextMocker.update(animate, 2100);
+
+        animate.stopAttacking();
+
+        assertThat(animate.isAttacking(), equalTo(false));
+        assertThat(target.damaged, equalTo(true));
+        assertThat(target.isAlive(), equalTo(true));
+    }
+
+    @Test
+    public void getAttackUpdateRateInMillis() {
+        AnimateImpl animate = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .z(15)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(60)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(50)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        int expected = 2000;
+        int result = animate.getAttackUpdateRateInMillis();
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void getMoveUpdateRateInMillis() {
+        AnimateImpl animate = new AnimateImpl(
+                Position.builder()
+                        .x(10)
+                        .z(15)
+                        .build(),
+                Attributes.builder()
+                        .hp(30)
+                        .mp(31)
+                        .attack(60)
+                        .defense(33)
+                        .magicDefense(34)
+                        .hitRate(35)
+                        .critical(36)
+                        .dodgeRate(37)
+                        .attackSpeed(50)
+                        .moveSpeed(2)
+                        .hpRecovery(40)
+                        .mpRecovery(41)
+                        .attackRange(3)
+                        .build());
+
+        int expected = 300;
+        int result = animate.getMoveUpdateRateInMillis();
+
+        assertThat(result, equalTo(expected));
+    }
+
     private class AnimateImpl extends Animate {
         UUID id = UUID.randomUUID();
         UUID instanceId = UUID.randomUUID();

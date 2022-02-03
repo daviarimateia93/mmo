@@ -70,6 +70,27 @@ public abstract class Animate implements MapEntity {
         return Optional.ofNullable(targetAnimate);
     }
 
+    /*
+     * (attackSpeed / 100) by second
+     * (attackSpeed / 100 / 1000) by millis
+     * ---------------------------------
+     * examples:
+     * 025 -> 4s
+     * 050 -> 2s
+     * 100 -> 1s
+     * 200 -> 0.5s
+     * 400 -> 0.25s
+     * attackSpeed * desiredSeconds = 100
+     * desiredSeconds = 100/attackSpeed
+     */
+    public int getAttackUpdateRateInMillis() {
+        return (100 / getAttributes().getFinalAttackSpeed()) * 1000;
+    }
+
+    public int getMoveUpdateRateInMillis() {
+        return MOVE_UPDATE_RATIO_IN_MILLIS;
+    }
+
     public void attack(Animate target) {
         clearTargetPosition();
         targetAnimate = target;
@@ -97,7 +118,7 @@ public abstract class Animate implements MapEntity {
         onAttack(damage, target);
 
         if (!target.isAlive() && Objects.nonNull(lastAttackStartTime)) {
-            lastAttackStartTime = null;
+            stopAttacking();
             target.onDie(this);
         } else {
             lastAttackStartTime = System.currentTimeMillis();
@@ -131,7 +152,7 @@ public abstract class Animate implements MapEntity {
         onMove(distanceX, distanceZ);
 
         if (hasFinishedMoving(current, target) && Objects.nonNull(lastMoveStartTime)) {
-            lastMoveStartTime = null;
+            stopMoving();
         } else {
             lastMoveStartTime = System.currentTimeMillis();
         }
@@ -193,7 +214,7 @@ public abstract class Animate implements MapEntity {
         if (isAttacking()) {
             if (isInsideAttackRange(targetAnimate.getPosition())) {
                 // we reach our target
-                lastMoveStartTime = null;
+                stopMoving();
             } else {
                 // we should start moving to getting closer
                 move(lastAttackStartTime);
@@ -216,33 +237,20 @@ public abstract class Animate implements MapEntity {
         }
     }
 
-    /*
-     * (attackSpeed / 100) by second
-     * (attackSpeed / 100 / 1000) by millis
-     * ---------------------------------
-     * examples:
-     * 025 -> 4s
-     * 050 -> 2s
-     * 100 -> 1s
-     * 200 -> 0.5s
-     * 400 -> 0.25s
-     * attackSpeed * desiredSeconds = 100
-     * desiredSeconds = 100/attackSpeed
-     */
-    private int getAttackUpdateRateInMillis() {
-        return (100 / getAttributes().getFinalAttackSpeed()) * 1000;
-    }
-
-    private int getMoveUpdateRateInMillis() {
-        return MOVE_UPDATE_RATIO_IN_MILLIS;
-    }
-
     private void clearTargetPosition() {
         targetPosition = null;
     }
 
     private void clearTargetAnimate() {
         targetAnimate = null;
+    }
+
+    public void stopMoving() {
+        lastMoveStartTime = null;
+    }
+
+    public void stopAttacking() {
+        lastAttackStartTime = null;
     }
 
     protected void dispatch(Packet packet) {

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -24,11 +23,6 @@ public class MongoMapRepositoryTest {
         MongoServer.getInstance().start();
 
         repository = new MongoMapRepository();
-    }
-
-    @AfterAll
-    public static void clear() {
-        MongoServer.getInstance().stop();
     }
 
     @Test

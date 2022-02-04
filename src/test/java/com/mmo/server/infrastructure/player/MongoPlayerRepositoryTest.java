@@ -6,7 +6,6 @@ import static org.hamcrest.MatcherAssert.*;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -25,11 +24,6 @@ public class MongoPlayerRepositoryTest {
         MongoServer.getInstance().start();
 
         repository = new MongoPlayerRepository();
-    }
-
-    @AfterAll
-    public static void clear() {
-        MongoServer.getInstance().stop();
     }
 
     @Test

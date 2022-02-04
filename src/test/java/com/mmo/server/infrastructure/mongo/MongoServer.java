@@ -59,13 +59,7 @@ public class MongoServer {
         if (Objects.isNull(executable) && Objects.isNull(process))
             return;
 
-        new Thread() {
-            @Override
-            public void run() {
-                process.stop();
-                executable.stop();
-            }
-        }.start();
-
+        process.stop();
+        executable.stop();
     }
 }

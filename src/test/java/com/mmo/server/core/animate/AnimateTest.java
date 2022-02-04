@@ -429,10 +429,22 @@ public class AnimateTest {
                         .attackRange(3)
                         .build());
 
-        int expected = 3;
-        int result = animate.getMoveDistance(animate.getPosition().getX(), animate.getPosition().getZ(), 30, 25);
+        int expectedWithoutRemainder = 3;
+        int resultWithoutRemainder = animate.getMoveDistance(
+                animate.getPosition().getX(),
+                animate.getPosition().getZ(),
+                30, 25);
 
-        assertThat(result, equalTo(expected));
+        assertThat(resultWithoutRemainder, equalTo(expectedWithoutRemainder));
+
+        int expectedWithRemainder = 4;
+        int resultWithRemainderresult = animate.getMoveDistance(
+                animate.getPosition().getX(),
+                animate.getPosition().getZ(),
+                30,
+                25);
+
+        assertThat(resultWithRemainderresult, equalTo(expectedWithRemainder));
     }
 
     @Test

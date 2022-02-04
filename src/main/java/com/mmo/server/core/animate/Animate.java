@@ -31,6 +31,7 @@ public abstract class Animate implements MapEntity {
     private Animate targetAnimate;
     private Position targetPosition;
     private boolean collided;
+    private float moveDistanceRest = 0;
 
     public abstract UUID getId();
 
@@ -171,10 +172,21 @@ public abstract class Animate implements MapEntity {
         }
 
         // calculate distance
-        int point = (int) pow(finalMoveSpeed, 2);
-        int distance = (int) round(sqrt(point + point));
+        float point = (float) pow(finalMoveSpeed, 2);
+        float distance = (float) sqrt(point + point);
+        float rest = distance % 1;
+        int distanceAsInt = (int) (distance - rest);
 
-        return finalMoveSpeed - (distance - finalMoveSpeed);
+        moveDistanceRest += rest;
+
+        int finalMoveDistance = finalMoveSpeed - (distanceAsInt - finalMoveSpeed);
+
+        if (moveDistanceRest > 1) {
+            finalMoveDistance++;
+            moveDistanceRest -= 1;
+        }
+
+        return finalMoveDistance;
     }
 
     private int moveX(Position current, Position target, int distance) {

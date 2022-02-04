@@ -423,13 +423,13 @@ public class AnimateTest {
                         .critical(36)
                         .dodgeRate(37)
                         .attackSpeed(50)
-                        .moveSpeed(2)
+                        .moveSpeed(4)
                         .hpRecovery(40)
                         .mpRecovery(41)
                         .attackRange(3)
                         .build());
 
-        int expected = 1;
+        int expected = 3;
         int result = animate.getMoveDistance(animate.getPosition().getX(), animate.getPosition().getZ(), 30, 25);
 
         assertThat(result, equalTo(expected));

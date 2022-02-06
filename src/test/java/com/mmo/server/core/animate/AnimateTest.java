@@ -432,18 +432,21 @@ public class AnimateTest {
 
         Vertex expectedWithoutRemainder = new Vertex(2, 1);
         Vertex resultWithoutRemainder = animate.getMoveDistance(
-                animate.getPosition().getX(),
-                animate.getPosition().getZ(),
-                30, 25);
+                animate.getPosition(),
+                Position.builder()
+                        .x(30)
+                        .z(25)
+                        .build());
 
         assertThat(resultWithoutRemainder, equalTo(expectedWithoutRemainder));
 
         Vertex expectedWithRemainder = new Vertex(3, 1);
         Vertex resultWithRemainderResult = animate.getMoveDistance(
-                animate.getPosition().getX(),
-                animate.getPosition().getZ(),
-                30,
-                25);
+                animate.getPosition(),
+                Position.builder()
+                        .x(30)
+                        .z(25)
+                        .build());
 
         assertThat(resultWithRemainderResult, equalTo(expectedWithRemainder));
     }
@@ -472,7 +475,12 @@ public class AnimateTest {
                         .build());
 
         Vertex expected = new Vertex(2, 0);
-        Vertex result = animate.getMoveDistance(animate.getPosition().getX(), animate.getPosition().getZ(), 30, 15);
+        Vertex result = animate.getMoveDistance(
+                animate.getPosition(),
+                Position.builder()
+                        .x(30)
+                        .z(15)
+                        .build());
 
         assertThat(result, equalTo(expected));
     }

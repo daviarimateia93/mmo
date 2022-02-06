@@ -161,15 +161,11 @@ public abstract class Animate implements MapEntity {
         }
     }
 
-    private Vertex getMoveDistance(Position current, Position target) {
-        return getMoveDistance(current.getX(), current.getZ(), target.getX(), target.getZ());
-    }
-
-    public Vertex getMoveDistance(int currentX, int currentZ, int targetX, int targetZ) {
+    public Vertex getMoveDistance(Position current, Position target) {
         int finalMoveSpeed = getAttributes().getFinalMoveSpeed();
 
-        float targetOtherPointDistance = abs(targetX - currentX);
-        float playerOtherPointDistance = abs(currentZ - targetZ);
+        float targetOtherPointDistance = abs(target.getX() - current.getX());
+        float playerOtherPointDistance = abs(current.getZ() - target.getZ());
 
         float playerTargetAngle = (float) toDegrees(atan(targetOtherPointDistance / playerOtherPointDistance));
 
@@ -194,8 +190,6 @@ public abstract class Animate implements MapEntity {
             zMoveDistanceAsInt++;
             moveDistanceZRemainder -= 1;
         }
-
-        logger.info("Testing... x {} z {}", xMoveDistance, zMoveDistance);
 
         return new Vertex(xMoveDistanceAsInt, zMoveDistanceAsInt);
     }

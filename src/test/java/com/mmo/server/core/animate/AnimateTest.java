@@ -19,6 +19,7 @@ import com.mmo.server.core.game.GameRunnerMapMocker;
 import com.mmo.server.core.looper.LooperContextMocker;
 import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.Position;
+import com.mmo.server.core.math.Vertex;
 import com.mmo.server.core.packet.AnimateDiePacket;
 
 public class AnimateTest {
@@ -139,7 +140,7 @@ public class AnimateTest {
                         .build());
 
         Position expected = Position.builder()
-                .x(20)
+                .x(13)
                 .z(25)
                 .build();
 
@@ -429,22 +430,22 @@ public class AnimateTest {
                         .attackRange(3)
                         .build());
 
-        int expectedWithoutRemainder = 3;
-        int resultWithoutRemainder = animate.getMoveDistance(
+        Vertex expectedWithoutRemainder = new Vertex(2, 1);
+        Vertex resultWithoutRemainder = animate.getMoveDistance(
                 animate.getPosition().getX(),
                 animate.getPosition().getZ(),
                 30, 25);
 
         assertThat(resultWithoutRemainder, equalTo(expectedWithoutRemainder));
 
-        int expectedWithRemainder = 4;
-        int resultWithRemainderresult = animate.getMoveDistance(
+        Vertex expectedWithRemainder = new Vertex(3, 1);
+        Vertex resultWithRemainderResult = animate.getMoveDistance(
                 animate.getPosition().getX(),
                 animate.getPosition().getZ(),
                 30,
                 25);
 
-        assertThat(resultWithRemainderresult, equalTo(expectedWithRemainder));
+        assertThat(resultWithRemainderResult, equalTo(expectedWithRemainder));
     }
 
     @Test
@@ -470,8 +471,8 @@ public class AnimateTest {
                         .attackRange(3)
                         .build());
 
-        int expected = animate.getAttributes().getFinalMoveSpeed();
-        int result = animate.getMoveDistance(animate.getPosition().getX(), animate.getPosition().getZ(), 30, 15);
+        Vertex expected = new Vertex(2, 0);
+        Vertex result = animate.getMoveDistance(animate.getPosition().getX(), animate.getPosition().getZ(), 30, 15);
 
         assertThat(result, equalTo(expected));
     }

@@ -16,6 +16,7 @@ import com.mmo.server.core.game.Game;
 import com.mmo.server.core.looper.LooperContext;
 import com.mmo.server.core.map.MapEntity;
 import com.mmo.server.core.map.Position;
+import com.mmo.server.core.math.Vertex;
 import com.mmo.server.core.packet.AnimateDiePacket;
 import com.mmo.server.core.packet.Packet;
 import com.mmo.server.core.property.PropertyModifierAction;
@@ -31,7 +32,8 @@ public abstract class Animate implements MapEntity {
     private Animate targetAnimate;
     private Position targetPosition;
     private boolean collided;
-    private float moveDistanceRemainder = 0;
+    private float moveDistanceXRemainder = 0;
+    private float moveDistanceZRemainder = 0;
 
     public abstract UUID getId();
 
@@ -146,9 +148,9 @@ public abstract class Animate implements MapEntity {
         Position current = getPosition();
         Position target = getTargetPosition().orElseThrow();
 
-        int distance = getMoveDistance(current, target);
-        int distanceX = moveX(current, target, distance);
-        int distanceZ = moveZ(current, target, distance);
+        Vertex distance = getMoveDistance(current, target);
+        int distanceX = moveX(current, target, distance.getX());
+        int distanceZ = moveZ(current, target, distance.getZ());
 
         onMove(distanceX, distanceZ);
 
@@ -159,38 +161,43 @@ public abstract class Animate implements MapEntity {
         }
     }
 
-    private Integer getMoveDistance(Position current, Position target) {
+    private Vertex getMoveDistance(Position current, Position target) {
         return getMoveDistance(current.getX(), current.getZ(), target.getX(), target.getZ());
     }
 
-    public Integer getMoveDistance(int currentX, int currentZ, int targetX, int targetZ) {
-        Integer finalMoveSpeed = getAttributes().getFinalMoveSpeed();
+    public Vertex getMoveDistance(int currentX, int currentZ, int targetX, int targetZ) {
+        int finalMoveSpeed = getAttributes().getFinalMoveSpeed();
 
-        // check if they are in the same line
-        if (currentX == targetX || currentZ == targetZ) {
-            return finalMoveSpeed;
+        float targetOtherPointDistance = abs(targetX - currentX);
+        float playerOtherPointDistance = abs(currentZ - targetZ);
+
+        float playerTargetAngle = (float) toDegrees(atan(targetOtherPointDistance / playerOtherPointDistance));
+
+        float xMoveDistance = (playerTargetAngle * finalMoveSpeed) / 90;
+        float zMoveDistance = finalMoveSpeed - xMoveDistance;
+
+        float xRemainder = xMoveDistance % 1;
+        float zRemainder = zMoveDistance % 1;
+
+        int xMoveDistanceAsInt = (int) (xMoveDistance - xRemainder);
+        int zMoveDistanceAsInt = (int) (zMoveDistance - zRemainder);
+
+        moveDistanceXRemainder += xRemainder;
+        moveDistanceZRemainder += zRemainder;
+
+        if (moveDistanceXRemainder >= 1) {
+            xMoveDistanceAsInt++;
+            moveDistanceXRemainder -= 1;
         }
 
-        // calculate distance
-        float point = (float) pow(finalMoveSpeed, 2);
-        float pointsDistance = (float) sqrt(point + point);
-
-        // store remainder
-        float remainder = pointsDistance % 1;
-        int distanceAsInt = (int) (pointsDistance - remainder);
-
-        moveDistanceRemainder += remainder;
-
-        // subtract the excess from finalMoveSpeed
-        int moveDistance = finalMoveSpeed - (distanceAsInt - finalMoveSpeed);
-
-        // if we got >1 remainder, add to moveDistance
-        if (moveDistanceRemainder > 1) {
-            moveDistance++;
-            moveDistanceRemainder -= 1;
+        if (moveDistanceZRemainder >= 1) {
+            zMoveDistanceAsInt++;
+            moveDistanceZRemainder -= 1;
         }
 
-        return moveDistance;
+        logger.info("Testing... x {} z {}", xMoveDistance, zMoveDistance);
+
+        return new Vertex(xMoveDistanceAsInt, zMoveDistanceAsInt);
     }
 
     private int moveX(Position current, Position target, int distance) {

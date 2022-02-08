@@ -167,10 +167,8 @@ public abstract class Animate implements MapEntity {
 
         float targetOtherPointDistance = abs(target.getX() - current.getX());
         float playerOtherPointDistance = abs(current.getZ() - target.getZ());
-        float targetPlayerPointDistance = (float) sqrt(
-                pow(targetOtherPointDistance, 2) + pow(playerOtherPointDistance, 2));
 
-        float playerTargetAngle = (float) toDegrees(asin(targetOtherPointDistance / targetPlayerPointDistance));
+        float playerTargetAngle = (float) toDegrees(atan(targetOtherPointDistance / playerOtherPointDistance));
 
         float distanceX = (playerTargetAngle * finalMoveSpeed) / 90;
         float distanceZ = finalMoveSpeed - distanceX;

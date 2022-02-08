@@ -33,8 +33,8 @@ public abstract class Animate implements MapEntity {
     private Animate targetAnimate;
     private Position targetPosition;
     private boolean collided;
-    private float moveDistanceXRemainder = 0;
-    private float moveDistanceZRemainder = 0;
+    private float moveDistanceRemainderX = 0;
+    private float moveDistanceRemainderZ = 0;
 
     public abstract UUID getId();
 
@@ -172,31 +172,31 @@ public abstract class Animate implements MapEntity {
 
         float playerTargetAngle = (float) toDegrees(asin(targetOtherPointDistance / targetPlayerPointDistance));
 
-        float xMoveDistance = (playerTargetAngle * finalMoveSpeed) / 90;
-        float zMoveDistance = finalMoveSpeed - xMoveDistance;
+        float distanceX = (playerTargetAngle * finalMoveSpeed) / 90;
+        float distanceZ = finalMoveSpeed - distanceX;
 
-        logger.trace("Animate {} calculated move distance ({}, {})", getInstanceId(), xMoveDistance, zMoveDistance);
+        logger.trace("Animate {} calculated move distance ({}, {})", getInstanceId(), distanceX, distanceZ);
 
-        float xRemainder = xMoveDistance % 1;
-        float zRemainder = zMoveDistance % 1;
+        float remainderX = distanceX % 1;
+        float remainderZ = distanceZ % 1;
 
-        int xMoveDistanceAsInt = (int) (xMoveDistance - xRemainder);
-        int zMoveDistanceAsInt = (int) (zMoveDistance - zRemainder);
+        int distanceXAsInt = (int) (distanceX - remainderX);
+        int distanceZAsInt = (int) (distanceZ - remainderZ);
 
-        moveDistanceXRemainder += xRemainder;
-        moveDistanceZRemainder += zRemainder;
+        moveDistanceRemainderX += remainderX;
+        moveDistanceRemainderZ += remainderZ;
 
-        if (moveDistanceXRemainder >= 1) {
-            xMoveDistanceAsInt++;
-            moveDistanceXRemainder -= 1;
+        if (moveDistanceRemainderX >= 1) {
+            distanceXAsInt++;
+            moveDistanceRemainderX -= 1;
         }
 
-        if (moveDistanceZRemainder >= 1) {
-            zMoveDistanceAsInt++;
-            moveDistanceZRemainder -= 1;
+        if (moveDistanceRemainderZ >= 1) {
+            distanceZAsInt++;
+            moveDistanceRemainderZ -= 1;
         }
 
-        return new Vertex(xMoveDistanceAsInt, zMoveDistanceAsInt);
+        return new Vertex(distanceXAsInt, distanceZAsInt);
     }
 
     private int moveX(Position current, Position target, int distance) {

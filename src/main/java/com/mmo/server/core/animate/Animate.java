@@ -1,6 +1,7 @@
 package com.mmo.server.core.animate;
 
 import static java.lang.Math.*;
+import static java.lang.System.*;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -97,7 +98,7 @@ public abstract class Animate implements MapEntity {
     public void attack(Animate target) {
         clearTargetPosition();
         targetAnimate = target;
-        lastAttackStartTime = System.currentTimeMillis();
+        lastAttackStartTime = currentTimeMillis();
     }
 
     private void attack() {
@@ -124,7 +125,7 @@ public abstract class Animate implements MapEntity {
             stopAttacking();
             target.onDie(this);
         } else {
-            lastAttackStartTime = System.currentTimeMillis();
+            lastAttackStartTime = currentTimeMillis();
         }
     }
 
@@ -132,7 +133,7 @@ public abstract class Animate implements MapEntity {
         clearTargetAnimate();
         collided = false;
         targetPosition = target;
-        lastMoveStartTime = System.currentTimeMillis();
+        lastMoveStartTime = currentTimeMillis();
     }
 
     private void move(Long lastMoveStartTime) {
@@ -157,7 +158,7 @@ public abstract class Animate implements MapEntity {
         if (hasFinishedMoving(current, target) && Objects.nonNull(lastMoveStartTime)) {
             stopMoving();
         } else {
-            lastMoveStartTime = System.currentTimeMillis();
+            lastMoveStartTime = currentTimeMillis();
         }
     }
 
@@ -166,11 +167,15 @@ public abstract class Animate implements MapEntity {
 
         float targetOtherPointDistance = abs(target.getX() - current.getX());
         float playerOtherPointDistance = abs(current.getZ() - target.getZ());
+        float targetPlayerPointDistance = (float) sqrt(
+                pow(targetOtherPointDistance, 2) + pow(playerOtherPointDistance, 2));
 
-        float playerTargetAngle = (float) toDegrees(atan(targetOtherPointDistance / playerOtherPointDistance));
+        float playerTargetAngle = (float) toDegrees(asin(targetOtherPointDistance / targetPlayerPointDistance));
 
         float xMoveDistance = (playerTargetAngle * finalMoveSpeed) / 90;
         float zMoveDistance = finalMoveSpeed - xMoveDistance;
+
+        logger.trace("Animate {} calculated move distance ({}, {})", getInstanceId(), xMoveDistance, zMoveDistance);
 
         float xRemainder = xMoveDistance % 1;
         float zRemainder = zMoveDistance % 1;

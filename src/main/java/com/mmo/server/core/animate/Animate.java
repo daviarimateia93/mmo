@@ -1,7 +1,6 @@
 package com.mmo.server.core.animate;
 
 import static java.lang.Math.*;
-import static java.lang.System.*;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -98,7 +97,7 @@ public abstract class Animate implements MapEntity {
     public void attack(Animate target) {
         clearTargetPosition();
         targetAnimate = target;
-        lastAttackStartTime = currentTimeMillis();
+        lastAttackStartTime = getNewTick();
     }
 
     private void attack() {
@@ -125,7 +124,7 @@ public abstract class Animate implements MapEntity {
             stopAttacking();
             target.onDie(this);
         } else {
-            lastAttackStartTime = currentTimeMillis();
+            lastAttackStartTime = getNewTick();
         }
     }
 
@@ -133,7 +132,7 @@ public abstract class Animate implements MapEntity {
         clearTargetAnimate();
         collided = false;
         targetPosition = target;
-        lastMoveStartTime = currentTimeMillis();
+        lastMoveStartTime = getNewTick();
     }
 
     private void move(Long lastMoveStartTime) {
@@ -158,7 +157,7 @@ public abstract class Animate implements MapEntity {
         if (hasFinishedMoving(current, target) && Objects.nonNull(lastMoveStartTime)) {
             stopMoving();
         } else {
-            lastMoveStartTime = currentTimeMillis();
+            lastMoveStartTime = getNewTick();
         }
     }
 
@@ -304,5 +303,9 @@ public abstract class Animate implements MapEntity {
                 .source(getInstanceId())
                 .killedBy(source.getInstanceId())
                 .build());
+    }
+
+    private static long getNewTick() {
+        return System.currentTimeMillis();
     }
 }

@@ -14,6 +14,7 @@ import com.mmo.server.core.attribute.AttributeModifier;
 import com.mmo.server.core.attribute.Attributes;
 import com.mmo.server.core.game.Game;
 import com.mmo.server.core.looper.LooperContext;
+import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.MapEntity;
 import com.mmo.server.core.map.Position;
 import com.mmo.server.core.math.Vertex;
@@ -98,6 +99,7 @@ public abstract class Animate implements MapEntity {
         clearTargetPosition();
         targetAnimate = target;
         lastAttackStartTime = getNewTick();
+        onBeginAttack();
     }
 
     private void attack() {
@@ -118,7 +120,7 @@ public abstract class Animate implements MapEntity {
 
         target.onDamage(damage, this);
 
-        onAttack(damage, target);
+        onAttack(damage);
 
         if (!target.isAlive() && Objects.nonNull(lastAttackStartTime)) {
             stopAttacking();
@@ -133,11 +135,13 @@ public abstract class Animate implements MapEntity {
         collided = false;
         targetPosition = target;
         lastMoveStartTime = getNewTick();
+        onBeginMove();
     }
 
     private void move(Long lastMoveStartTime) {
         collided = false;
         this.lastMoveStartTime = lastMoveStartTime;
+        onBeginMove();
     }
 
     private void move() {
@@ -270,34 +274,74 @@ public abstract class Animate implements MapEntity {
 
     public void stopMoving() {
         lastMoveStartTime = null;
+        onFinishMove();
     }
 
     public void stopAttacking() {
         lastAttackStartTime = null;
+        onFinishAttack();
     }
 
     protected void dispatch(Packet packet) {
-        Game.getInstance().getMap().dispatch(packet);
+        getMap().dispatch(packet);
     }
 
     protected void dispatch(Packet packet, UUID target) {
-        Game.getInstance().getMap().dispatch(packet, target);
+        getMap().dispatch(packet, target);
+    }
+
+    protected Map getMap() {
+        return Game.getInstance().getMap();
+    }
+
+    protected void onBeginMove() {
+        logger.info("Animate {} has began moving to {}",
+                getInstanceId(),
+                getTargetPosition().orElseThrow());
+    }
+
+    protected void onFinishMove() {
+        logger.info("Animate {} has finished moving to {}",
+                getInstanceId(),
+                getTargetPosition().orElseThrow());
     }
 
     protected void onMove(int distanceX, int distanceZ) {
-        logger.trace("Animate {} has moved to {}", getInstanceId(), getPosition());
+        logger.trace("Animate {} has moved to {}",
+                getInstanceId(),
+                getPosition());
+    }
+
+    protected void onBeginAttack() {
+        logger.info("Animate {} has began attacking {}",
+                getInstanceId(),
+                getTargetAnimate().orElseThrow().getInstanceId());
+    }
+
+    protected void onFinishAttack() {
+        logger.info("Animate {} has finished attacking {}",
+                getInstanceId(),
+                getTargetAnimate().orElseThrow().getInstanceId());
     }
 
     protected void onDamage(int damage, Animate source) {
-        logger.trace("Animate {} has suffered damage of {} by {}", getInstanceId(), damage, source.getInstanceId());
+        logger.trace("Animate {} has suffered damage of {} by {}",
+                getInstanceId(),
+                damage,
+                source.getInstanceId());
     }
 
-    protected void onAttack(int damage, Animate target) {
-        logger.trace("Animate {} has attacked {} with damage of {}", getInstanceId(), target.getInstanceId(), damage);
+    protected void onAttack(int damage) {
+        logger.trace("Animate {} has attacked {} with damage of {}",
+                getInstanceId(),
+                getTargetAnimate().orElseThrow().getInstanceId(),
+                damage);
     }
 
     protected void onDie(Animate source) {
-        logger.info("Animate {} has died by {}", getInstanceId(), source.getInstanceId());
+        logger.info("Animate {} has died by {}",
+                getInstanceId(),
+                source.getInstanceId());
 
         dispatch(AnimateDiePacket.builder()
                 .source(getInstanceId())

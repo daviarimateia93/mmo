@@ -94,12 +94,15 @@ public class AnimateTest {
 
         assertThat(animate.isMoving(), equalTo(true));
         assertThat(animate.isAttacking(), equalTo(true));
+        assertThat(animate.beganMove, equalTo(true));
         assertThat(animate.moved, equalTo(true));
 
         LooperContextMocker.update(animate, 3000);
 
+        assertThat(animate.finishedMove, equalTo(true));
         assertThat(animate.isMoving(), equalTo(false));
         assertThat(animate.isAttacking(), equalTo(true));
+        assertThat(animate.beganAttack, equalTo(true));
         assertThat(animate.attacked, equalTo(true));
         assertThat(target.damaged, equalTo(true));
 
@@ -107,6 +110,7 @@ public class AnimateTest {
 
         assertThat(animate.isMoving(), equalTo(false));
         assertThat(animate.isAttacking(), equalTo(false));
+        assertThat(animate.finishedAttack, equalTo(true));
         assertThat(target.died, equalTo(true));
 
         verify(map).dispatch(AnimateDiePacket.builder()
@@ -118,7 +122,7 @@ public class AnimateTest {
     @Test
     @Timeout(value = 3500, unit = TimeUnit.MILLISECONDS)
     public void move() throws InterruptedException {
-        Animate animate = new AnimateImpl(
+        AnimateImpl animate = new AnimateImpl(
                 Position.builder()
                         .x(10)
                         .z(15)
@@ -148,19 +152,22 @@ public class AnimateTest {
 
         assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
         assertThat(animate.isMoving(), equalTo(true));
+        assertThat(animate.beganMove, equalTo(true));
 
         LooperContextMocker.update(animate, 3000);
 
         Position result = animate.getPosition();
 
         assertThat(animate.isMoving(), equalTo(false));
+        assertThat(animate.moved, equalTo(true));
+        assertThat(animate.finishedMove, equalTo(true));
         assertThat(result, equalTo(expected));
     }
 
     @Test
     @Timeout(value = 3500, unit = TimeUnit.MILLISECONDS)
     public void moveStraightly() throws InterruptedException {
-        Animate animate = new AnimateImpl(
+        AnimateImpl animate = new AnimateImpl(
                 Position.builder()
                         .x(10)
                         .z(15)
@@ -190,12 +197,15 @@ public class AnimateTest {
 
         assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
         assertThat(animate.isMoving(), equalTo(true));
+        assertThat(animate.beganMove, equalTo(true));
 
         LooperContextMocker.update(animate, 3000);
 
         Position result = animate.getPosition();
 
         assertThat(animate.isMoving(), equalTo(false));
+        assertThat(animate.moved, equalTo(true));
+        assertThat(animate.finishedMove, equalTo(true));
         assertThat(result, equalTo(expected));
     }
 
@@ -204,7 +214,7 @@ public class AnimateTest {
     public void stopMovingWhenCollision() throws InterruptedException {
         when(map.getTerrain().isInsideForbiddenArea(19, 15)).thenReturn(true);
 
-        Animate animate = new AnimateImpl(
+        AnimateImpl animate = new AnimateImpl(
                 Position.builder()
                         .x(10)
                         .z(15)
@@ -237,19 +247,22 @@ public class AnimateTest {
 
         assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
         assertThat(animate.isMoving(), equalTo(true));
+        assertThat(animate.beganMove, equalTo(true));
 
         LooperContextMocker.update(animate, 2000);
 
         Position result = animate.getPosition();
 
         assertThat(animate.isMoving(), equalTo(false));
+        assertThat(animate.moved, equalTo(true));
+        assertThat(animate.finishedMove, equalTo(true));
         assertThat(result, equalTo(expected));
     }
 
     @Test
     @Timeout(value = 1500, unit = TimeUnit.MILLISECONDS)
     public void stopMoving() {
-        Animate animate = new AnimateImpl(
+        AnimateImpl animate = new AnimateImpl(
                 Position.builder()
                         .x(10)
                         .z(15)
@@ -282,12 +295,15 @@ public class AnimateTest {
 
         assertThat(animate.getTargetAnimate().isEmpty(), equalTo(true));
         assertThat(animate.isMoving(), equalTo(true));
+        assertThat(animate.beganMove, equalTo(true));
 
         LooperContextMocker.update(animate, 650);
 
         animate.stopMoving();
 
         assertThat(animate.isMoving(), equalTo(false));
+        assertThat(animate.moved, equalTo(true));
+        assertThat(animate.finishedMove, equalTo(true));
         assertThat(animate.getPosition(), not(equalTo(expected)));
     }
 
@@ -339,12 +355,15 @@ public class AnimateTest {
         animate.attack(target);
 
         assertThat(animate.isAttacking(), equalTo(true));
+        assertThat(animate.beganAttack, equalTo(true));
 
         LooperContextMocker.update(animate, 2100);
 
         animate.stopAttacking();
 
         assertThat(animate.isAttacking(), equalTo(false));
+        assertThat(animate.attacked, equalTo(true));
+        assertThat(animate.finishedAttack, equalTo(true));
         assertThat(target.damaged, equalTo(true));
         assertThat(target.isAlive(), equalTo(true));
     }
@@ -491,6 +510,10 @@ public class AnimateTest {
         String name = UUID.randomUUID().toString();
         Position position;
         Attributes attributes;
+        boolean beganMove = false;
+        boolean finishedMove = false;
+        boolean beganAttack = false;
+        boolean finishedAttack = false;
         boolean moved = false;
         boolean damaged = false;
         boolean attacked = false;
@@ -527,9 +550,33 @@ public class AnimateTest {
         }
 
         @Override
+        protected void onBeginMove() {
+            super.onBeginMove();
+            beganMove = true;
+        }
+
+        @Override
+        protected void onFinishMove() {
+            super.onFinishMove();
+            finishedMove = true;
+        }
+
+        @Override
         protected void onMove(int distanceX, int distanceZ) {
             super.onMove(distanceX, distanceZ);
             moved = true;
+        }
+
+        @Override
+        protected void onBeginAttack() {
+            super.onBeginAttack();
+            beganAttack = true;
+        }
+
+        @Override
+        protected void onFinishAttack() {
+            super.onFinishAttack();
+            finishedAttack = true;
         }
 
         @Override
@@ -539,8 +586,8 @@ public class AnimateTest {
         }
 
         @Override
-        protected void onAttack(int damage, Animate target) {
-            super.onAttack(damage, target);
+        protected void onAttack(int damage) {
+            super.onAttack(damage);
             attacked = true;
         }
 

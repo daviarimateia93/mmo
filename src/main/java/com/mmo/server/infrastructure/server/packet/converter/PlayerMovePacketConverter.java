@@ -2,7 +2,6 @@ package com.mmo.server.infrastructure.server.packet.converter;
 
 import java.util.UUID;
 
-import com.mmo.server.core.map.Position;
 import com.mmo.server.core.packet.PlayerMovePacket;
 import com.mmo.server.infrastructure.server.packet.PacketConverter;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
@@ -15,10 +14,7 @@ public class PlayerMovePacketConverter implements PacketConverter<PlayerMovePack
         try (PacketReader reader = new PacketReader(bytes)) {
             return PlayerMovePacket.builder()
                     .source(source)
-                    .target(Position.builder()
-                            .x(reader.readInt())
-                            .z(reader.readInt())
-                            .build())
+                    .target(PositionConverter.read(reader))
                     .build();
         }
     }
@@ -26,8 +22,7 @@ public class PlayerMovePacketConverter implements PacketConverter<PlayerMovePack
     @Override
     public byte[] toBytes(PlayerMovePacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
-            writer.writeInt(packet.getTarget().getX());
-            writer.writeInt(packet.getTarget().getZ());
+            PositionConverter.write(writer, packet.getTarget());
             return writer.toBytes();
         }
     }

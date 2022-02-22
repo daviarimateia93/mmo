@@ -12,6 +12,7 @@ import com.mmo.server.infrastructure.security.Decryptor;
 import com.mmo.server.infrastructure.security.Encryptor;
 import com.mmo.server.infrastructure.security.aes.AESDecryptor;
 import com.mmo.server.infrastructure.security.aes.AESEncryptor;
+import com.mmo.server.infrastructure.server.TestPacket.TestPacketConverter;
 import com.mmo.server.infrastructure.server.client.Client;
 import com.mmo.server.infrastructure.server.client.ClientPacketReceiveSubscriber;
 import com.mmo.server.infrastructure.server.client.ClientPacketSendSubscriber;
@@ -23,7 +24,11 @@ public class ServerClientTest {
 
     @Test
     public void successfully() throws InterruptedException {
-        PacketGateway.getInstance().bind(TestPacket.ALIAS, TestPacket.converter());
+        TestPacketConverter converter = TestPacket.converter();
+
+        PacketGateway.getInstance()
+                .bindReader(TestPacket.ALIAS, converter)
+                .bindWriter(TestPacket.ALIAS, converter);
 
         String cipherKey = "Bar12345Bar12345";
 

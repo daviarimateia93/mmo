@@ -3,7 +3,8 @@ package com.mmo.server.infrastructure.server;
 import java.util.UUID;
 
 import com.mmo.server.core.packet.NetworkPacket;
-import com.mmo.server.infrastructure.server.packet.PacketConverter;
+import com.mmo.server.infrastructure.server.packet.PacketReaderConverter;
+import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -42,7 +43,8 @@ public class TestPacket implements NetworkPacket {
         return new TestPacketConverter();
     }
 
-    public static class TestPacketConverter implements PacketConverter<TestPacket> {
+    public static class TestPacketConverter
+            implements PacketReaderConverter<TestPacket>, PacketWriterConverter<TestPacket> {
 
         @Override
         public TestPacket fromBytes(UUID source, byte[] bytes) {

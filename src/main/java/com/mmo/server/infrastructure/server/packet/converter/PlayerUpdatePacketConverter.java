@@ -1,23 +1,11 @@
 package com.mmo.server.infrastructure.server.packet.converter;
 
-import java.util.UUID;
-
 import com.mmo.server.core.packet.PlayerUpdatePacket;
 import com.mmo.server.core.player.Player;
-import com.mmo.server.infrastructure.server.packet.PacketConverter;
-import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
+import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 
-public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdatePacket> {
-
-    @Override
-    public PlayerUpdatePacket fromBytes(UUID source, byte[] bytes) {
-        try (PacketReader reader = new PacketReader(bytes)) {
-            return PlayerUpdatePacket.builder()
-                    .source(source)
-                    .build();
-        }
-    }
+public class PlayerUpdatePacketConverter implements PacketWriterConverter<PlayerUpdatePacket> {
 
     @Override
     public byte[] toBytes(PlayerUpdatePacket packet) {
@@ -26,11 +14,11 @@ public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdate
             return writer.toBytes();
         }
     }
-    
+
     private void write(PacketWriter writer, Player player) {
-        player.getName();
-        player.getPosition();
-        player.getStats();
-        player.getAttributes();
+        writer.writeUTF(player.getName());
+        PositionConverter.write(writer, player.getPosition());
+        StatsConverter.write(writer, player.getStats());
+        AttributesConverter.write(writer, player.getAttributes());
     }
 }

@@ -12,7 +12,8 @@ import com.mmo.server.core.packet.Packet;
 public class PacketGateway {
 
     private static PacketGateway instance;
-    private final Map<UUID, PacketConverter<? extends NetworkPacket>> converters = new LinkedHashMap<>();
+    private final Map<UUID, PacketReaderConverter<? extends NetworkPacket>> readerConverters = new LinkedHashMap<>();
+    private final Map<UUID, PacketWriterConverter<? extends NetworkPacket>> writerConverters = new LinkedHashMap<>();
 
     public static PacketGateway getInstance() {
         if (Objects.isNull(instance)) {
@@ -26,25 +27,49 @@ public class PacketGateway {
 
     }
 
-    public <T extends NetworkPacket> PacketConverter<T> getBuilder(UUID alias)
+    public <T extends NetworkPacket> PacketReaderConverter<T> getReader(UUID alias)
             throws PacketConverterCastException, PacketConverterNotBindedException {
 
-        return Optional.ofNullable(converters.get(alias))
+        return Optional.ofNullable(readerConverters.get(alias))
                 .map(converter -> this.<T>cast(converter))
                 .orElseThrow(
-                        () -> new PacketConverterNotBindedException("PacketBuilder not binded for alias %s", alias));
+                        () -> new PacketConverterNotBindedException("PacketReaderConverter not binded for alias %s",
+                                alias));
     }
 
-    public <T extends NetworkPacket> PacketGateway bind(Packet packet, PacketConverter<T> converter) {
-        return bind(packet.getAliasAsUUID(), converter);
+    public <T extends NetworkPacket> PacketWriterConverter<T> getWriter(UUID alias)
+            throws PacketConverterCastException, PacketConverterNotBindedException {
+
+        return Optional.ofNullable(writerConverters.get(alias))
+                .map(converter -> this.<T>cast(converter))
+                .orElseThrow(
+                        () -> new PacketConverterNotBindedException("PacketWriterConverter not binded for alias %s",
+                                alias));
     }
 
-    public <T extends NetworkPacket> PacketGateway bind(String alias, PacketConverter<T> converter) {
-        return bind(getAliasAsUUID(alias), converter);
+    public <T extends NetworkPacket> PacketGateway bindReader(Packet packet, PacketReaderConverter<T> converter) {
+        return bindReader(packet.getAliasAsUUID(), converter);
     }
 
-    public <T extends NetworkPacket> PacketGateway bind(UUID alias, PacketConverter<T> converter) {
-        converters.put(alias, converter);
+    public <T extends NetworkPacket> PacketGateway bindReader(String alias, PacketReaderConverter<T> converter) {
+        return bindReader(getAliasAsUUID(alias), converter);
+    }
+
+    public <T extends NetworkPacket> PacketGateway bindReader(UUID alias, PacketReaderConverter<T> converter) {
+        readerConverters.put(alias, converter);
+        return this;
+    }
+
+    public <T extends NetworkPacket> PacketGateway bindWriter(Packet packet, PacketWriterConverter<T> converter) {
+        return bindWriter(packet.getAliasAsUUID(), converter);
+    }
+
+    public <T extends NetworkPacket> PacketGateway bindWriter(String alias, PacketWriterConverter<T> converter) {
+        return bindWriter(getAliasAsUUID(alias), converter);
+    }
+
+    public <T extends NetworkPacket> PacketGateway bindWriter(UUID alias, PacketWriterConverter<T> converter) {
+        writerConverters.put(alias, converter);
         return this;
     }
 
@@ -53,21 +78,30 @@ public class PacketGateway {
     }
 
     public <T extends NetworkPacket> T in(UUID alias, UUID source, byte[] bytes) {
-        PacketConverter<T> converter = this.<T>getBuilder(alias);
+        PacketReaderConverter<T> converter = this.<T>getReader(alias);
 
         return converter.fromBytes(source, bytes);
     }
 
     public <T extends NetworkPacket> byte[] out(T packet) {
-        PacketConverter<T> converter = this.<T>getBuilder(getAliasAsUUID(packet.getAlias()));
+        PacketWriterConverter<T> converter = this.<T>getWriter(getAliasAsUUID(packet.getAlias()));
 
         return converter.toBytes(packet);
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends NetworkPacket> PacketConverter<T> cast(PacketConverter<?> converter) {
+    private <T extends NetworkPacket> PacketReaderConverter<T> cast(PacketReaderConverter<?> converter) {
         try {
-            return (PacketConverter<T>) converter;
+            return (PacketReaderConverter<T>) converter;
+        } catch (Exception exception) {
+            throw new PacketConverterCastException(exception, "Failed to cast converter");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends NetworkPacket> PacketWriterConverter<T> cast(PacketWriterConverter<?> converter) {
+        try {
+            return (PacketWriterConverter<T>) converter;
         } catch (Exception exception) {
             throw new PacketConverterCastException(exception, "Failed to cast converter");
         }

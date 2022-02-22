@@ -3,13 +3,14 @@ package com.mmo.server.infrastructure.server.packet.converter;
 import java.util.UUID;
 
 import com.mmo.server.core.packet.PlayerAttackPacket;
-import com.mmo.server.infrastructure.server.packet.PacketConverter;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
+import com.mmo.server.infrastructure.server.packet.PacketReaderConverter;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
+import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 
-public class PlayerAttackPacketConverter implements PacketConverter<PlayerAttackPacket> {
+public class PlayerAttackPacketConverter
+        implements PacketReaderConverter<PlayerAttackPacket>, PacketWriterConverter<PlayerAttackPacket> {
 
-    @Override
     public PlayerAttackPacket fromBytes(UUID source, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
             return PlayerAttackPacket.builder()

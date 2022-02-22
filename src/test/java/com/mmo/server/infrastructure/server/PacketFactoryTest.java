@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.server.core.packet.Packet;
+import com.mmo.server.infrastructure.server.TestPacket.TestPacketConverter;
 import com.mmo.server.infrastructure.server.packet.PacketGateway;
 
 public class PacketFactoryTest {
@@ -24,7 +25,11 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketGateway.getInstance().bind(expected.getAliasAsUUID(), TestPacket.converter());
+        TestPacketConverter converter = TestPacket.converter();
+
+        PacketGateway.getInstance()
+                .bindReader(expected.getAliasAsUUID(), converter)
+                .bindWriter(expected.getAliasAsUUID(), converter);
 
         byte[] expectedBytes = PacketGateway.getInstance().out(expected);
 
@@ -54,7 +59,11 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketGateway.getInstance().bind(expected.getAlias(), TestPacket.converter());
+        TestPacketConverter converter = TestPacket.converter();
+
+        PacketGateway.getInstance()
+                .bindReader(expected.getAlias(), converter)
+                .bindWriter(expected.getAlias(), converter);
 
         byte[] expectedBytes = PacketGateway.getInstance().out(expected);
 
@@ -84,7 +93,11 @@ public class PacketFactoryTest {
                 .property2(property2)
                 .build();
 
-        PacketGateway.getInstance().bind(expected, TestPacket.converter());
+        TestPacketConverter converter = TestPacket.converter();
+
+        PacketGateway.getInstance()
+                .bindReader(expected, converter)
+                .bindWriter(expected, converter);
 
         byte[] expectedBytes = PacketGateway.getInstance().out(expected);
 

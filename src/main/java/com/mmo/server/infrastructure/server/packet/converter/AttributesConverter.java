@@ -4,7 +4,11 @@ import com.mmo.server.core.attribute.Attributes;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
-public abstract class AttributesConverter {
+public final class AttributesConverter {
+
+    private AttributesConverter() {
+
+    }
 
     public static Attributes read(PacketReader reader) {
         return Attributes.builder()

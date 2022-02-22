@@ -4,7 +4,11 @@ import com.mmo.server.core.stat.Stats;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
-public abstract class StatsConverter {
+public final class StatsConverter {
+
+    private StatsConverter() {
+
+    }
 
     public static Stats read(PacketReader reader) {
         return Stats.builder()

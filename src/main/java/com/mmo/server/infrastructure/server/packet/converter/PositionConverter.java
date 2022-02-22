@@ -4,8 +4,12 @@ import com.mmo.server.core.map.Position;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
-public abstract class PositionConverter {
+public final class PositionConverter {
 
+    private PositionConverter() {
+
+    }
+    
     public static Position read(PacketReader reader) {
         return Position.builder()
                 .x(reader.readInt())

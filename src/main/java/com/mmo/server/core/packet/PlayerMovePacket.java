@@ -2,6 +2,8 @@ package com.mmo.server.core.packet;
 
 import java.util.UUID;
 
+import com.mmo.server.core.map.Position;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,17 +13,17 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class AnimateDiePacket implements NetworkPacket {
+public class PlayerMovePacket implements NetworkPacket {
 
-    public static final String ALIAS = "ANIMATE_DIE";
+    public static final String ALIAS = "PLAYER_MOVE";
 
     private final UUID source;
-    private final UUID killedBy;
+    private final Position target;
 
     @Builder
-    private AnimateDiePacket(@NonNull UUID source, @NonNull UUID killedBy) {
+    private PlayerMovePacket(@NonNull UUID source, @NonNull Position target) {
         this.source = source;
-        this.killedBy = killedBy;
+        this.target = target;
     }
 
     @Override

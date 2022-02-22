@@ -2,6 +2,8 @@ package com.mmo.server.core.packet;
 
 import java.util.UUID;
 
+import com.mmo.server.core.player.Player;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,17 +13,17 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class AnimateAttackPacket implements NetworkPacket {
+public class PlayerUpdatePacket implements NetworkPacket {
 
-    public static final String ALIAS = "ANIMATE_ATTACK";
+    public static final String ALIAS = "PLAYER_UPDATE";
 
     private final UUID source;
-    private final UUID target;
+    private final Player player;
 
     @Builder
-    private AnimateAttackPacket(@NonNull UUID source, @NonNull UUID target) {
+    private PlayerUpdatePacket(@NonNull UUID source, @NonNull Player player) {
         this.source = source;
-        this.target = target;
+        this.player = player;
     }
 
     @Override

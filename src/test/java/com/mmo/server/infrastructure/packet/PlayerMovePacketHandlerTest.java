@@ -8,23 +8,23 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.mmo.server.core.animate.Animate;
 import com.mmo.server.core.game.GameRunnerMapMocker;
 import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.Position;
-import com.mmo.server.core.packet.AnimateMovePacket;
+import com.mmo.server.core.packet.PlayerMovePacket;
+import com.mmo.server.core.player.Player;
 
-public class AnimateMovePacketHandlerTest {
+public class PlayerMovePacketHandlerTest {
 
     private static Map map;
-    private static AnimateMovePacket packet;
-    private static AnimateMovePacketHandler packetHandler;
-    private static Animate source;
+    private static PlayerMovePacket packet;
+    private static PlayerMovePacketHandler packetHandler;
+    private static Player source;
 
     @BeforeAll
     public static void setup() {
         map = GameRunnerMapMocker.run();
-        packet = AnimateMovePacket.builder()
+        packet = PlayerMovePacket.builder()
                 .source(UUID.randomUUID())
                 .target(Position.builder()
                         .x(10)
@@ -32,11 +32,11 @@ public class AnimateMovePacketHandlerTest {
                         .build())
                 .build();
 
-        packetHandler = new AnimateMovePacketHandler();
+        packetHandler = new PlayerMovePacketHandler();
 
-        source = mock(Animate.class);
+        source = mock(Player.class);
 
-        when(map.getEntity(packet.getSource(), Animate.class)).thenReturn(source);
+        when(map.getEntity(packet.getSource(), Player.class)).thenReturn(source);
     }
 
     @AfterAll

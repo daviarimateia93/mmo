@@ -2,27 +2,27 @@ package com.mmo.server.infrastructure.server.packet.converter;
 
 import java.util.UUID;
 
-import com.mmo.server.core.packet.AnimateDiePacket;
+import com.mmo.server.core.packet.PlayerAttackPacket;
 import com.mmo.server.infrastructure.server.packet.PacketConverter;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
-public class AnimateDiePacketConverter implements PacketConverter<AnimateDiePacket> {
+public class PlayerAttackPacketConverter implements PacketConverter<PlayerAttackPacket> {
 
     @Override
-    public AnimateDiePacket fromBytes(UUID source, byte[] bytes) {
+    public PlayerAttackPacket fromBytes(UUID source, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
-            return AnimateDiePacket.builder()
+            return PlayerAttackPacket.builder()
                     .source(source)
-                    .killedBy(reader.readUUID())
+                    .target(reader.readUUID())
                     .build();
         }
     }
 
     @Override
-    public byte[] toBytes(AnimateDiePacket packet) {
+    public byte[] toBytes(PlayerAttackPacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
-            writer.writeUUID(packet.getKilledBy());
+            writer.writeUUID(packet.getTarget());
             return writer.toBytes();
         }
     }

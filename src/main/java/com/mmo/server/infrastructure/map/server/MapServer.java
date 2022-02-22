@@ -17,9 +17,8 @@ import com.mmo.server.core.map.MapEntity;
 import com.mmo.server.core.map.Terrain;
 import com.mmo.server.core.math.Rectangle;
 import com.mmo.server.core.math.Vertex;
-import com.mmo.server.core.packet.AnimateAttackPacket;
-import com.mmo.server.core.packet.AnimateDiePacket;
-import com.mmo.server.core.packet.AnimateMovePacket;
+import com.mmo.server.core.packet.PlayerAttackPacket;
+import com.mmo.server.core.packet.PlayerMovePacket;
 import com.mmo.server.core.packet.GoodByePacket;
 import com.mmo.server.core.packet.HelloPacket;
 import com.mmo.server.core.packet.NetworkPacket;
@@ -31,8 +30,8 @@ import com.mmo.server.core.player.Player;
 import com.mmo.server.core.player.PlayerRepository;
 import com.mmo.server.core.user.UserRepository;
 import com.mmo.server.infrastructure.config.ConfigProvider;
-import com.mmo.server.infrastructure.packet.AnimateAttackPacketHandler;
-import com.mmo.server.infrastructure.packet.AnimateMovePacketHandler;
+import com.mmo.server.infrastructure.packet.PlayerAttackPacketHandler;
+import com.mmo.server.infrastructure.packet.PlayerMovePacketHandler;
 import com.mmo.server.infrastructure.packet.PlayerPersistPacketHandler;
 import com.mmo.server.infrastructure.player.MongoPlayerRepository;
 import com.mmo.server.infrastructure.security.Authenticator;
@@ -43,9 +42,8 @@ import com.mmo.server.infrastructure.security.aes.AESEncryptor;
 import com.mmo.server.infrastructure.server.Server;
 import com.mmo.server.infrastructure.server.client.Client;
 import com.mmo.server.infrastructure.server.packet.PacketGateway;
-import com.mmo.server.infrastructure.server.packet.converter.AnimateAttackPacketConverter;
-import com.mmo.server.infrastructure.server.packet.converter.AnimateDiePacketConverter;
-import com.mmo.server.infrastructure.server.packet.converter.AnimateMovePacketConverter;
+import com.mmo.server.infrastructure.server.packet.converter.PlayerAttackPacketConverter;
+import com.mmo.server.infrastructure.server.packet.converter.PlayerMovePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
 import com.mmo.server.infrastructure.setup.AdminSetupper;
@@ -111,15 +109,14 @@ public class MapServer {
         PacketGateway.getInstance()
                 .bind(HelloPacket.ALIAS, new HelloPacketConverter())
                 .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
-                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
-                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
+                .bind(PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter())
+                .bind(PlayerMovePacket.ALIAS, new PlayerMovePacketConverter());
     }
 
     private void bindHandlers() {
         PacketHandlerDelegator.getInstance()
-                .bind(AnimateAttackPacket.class, new AnimateAttackPacketHandler())
-                .bind(AnimateMovePacket.class, new AnimateMovePacketHandler())
+                .bind(PlayerAttackPacket.class, new PlayerAttackPacketHandler())
+                .bind(PlayerMovePacket.class, new PlayerMovePacketHandler())
                 .bind(PlayerPersistPacket.class, new PlayerPersistPacketHandler(playerRepository));
     }
 

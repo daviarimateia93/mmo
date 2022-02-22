@@ -7,15 +7,15 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-public class AnimateAttackPacketTest {
+public class PlayerAttackPacketTest {
 
     @Test
     public void getAlias() {
-        AnimateAttackPacket packet = AnimateAttackPacket.builder()
+        PlayerAttackPacket packet = PlayerAttackPacket.builder()
                 .source(UUID.randomUUID())
                 .target(UUID.randomUUID())
                 .build();
 
-        assertThat(packet.getAlias(), is("ANIMATE_ATTACK"));
+        assertThat(packet.getAlias(), is("PLAYER_ATTACK"));
     }
 }

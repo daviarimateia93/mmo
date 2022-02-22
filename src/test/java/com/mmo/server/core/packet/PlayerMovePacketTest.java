@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import com.mmo.server.core.map.Position;
 
-public class AnimateMovePacketTest {
+public class PlayerMovePacketTest {
 
     @Test
     public void getAlias() {
-        AnimateMovePacket packet = AnimateMovePacket.builder()
+        PlayerMovePacket packet = PlayerMovePacket.builder()
                 .source(UUID.randomUUID())
                 .target(Position.builder()
                         .x(10)
@@ -21,6 +21,6 @@ public class AnimateMovePacketTest {
                         .build())
                 .build();
 
-        assertThat(packet.getAlias(), is("ANIMATE_MOVE"));
+        assertThat(packet.getAlias(), is("PLAYER_MOVE"));
     }
 }

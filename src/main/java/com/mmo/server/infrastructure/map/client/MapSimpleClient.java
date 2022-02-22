@@ -7,9 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mmo.server.core.map.Position;
-import com.mmo.server.core.packet.AnimateAttackPacket;
-import com.mmo.server.core.packet.AnimateDiePacket;
-import com.mmo.server.core.packet.AnimateMovePacket;
+import com.mmo.server.core.packet.PlayerAttackPacket;
+import com.mmo.server.core.packet.PlayerMovePacket;
 import com.mmo.server.core.packet.GoodByePacket;
 import com.mmo.server.core.packet.HelloPacket;
 import com.mmo.server.core.packet.Packet;
@@ -20,9 +19,8 @@ import com.mmo.server.infrastructure.security.aes.AESDecryptor;
 import com.mmo.server.infrastructure.security.aes.AESEncryptor;
 import com.mmo.server.infrastructure.server.client.Client;
 import com.mmo.server.infrastructure.server.packet.PacketGateway;
-import com.mmo.server.infrastructure.server.packet.converter.AnimateAttackPacketConverter;
-import com.mmo.server.infrastructure.server.packet.converter.AnimateDiePacketConverter;
-import com.mmo.server.infrastructure.server.packet.converter.AnimateMovePacketConverter;
+import com.mmo.server.infrastructure.server.packet.converter.PlayerAttackPacketConverter;
+import com.mmo.server.infrastructure.server.packet.converter.PlayerMovePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
 
@@ -42,9 +40,8 @@ public class MapSimpleClient {
         PacketGateway.getInstance()
                 .bind(HelloPacket.ALIAS, new HelloPacketConverter())
                 .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bind(AnimateAttackPacket.ALIAS, new AnimateAttackPacketConverter())
-                .bind(AnimateMovePacket.ALIAS, new AnimateMovePacketConverter())
-                .bind(AnimateDiePacket.ALIAS, new AnimateDiePacketConverter());
+                .bind(PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter())
+                .bind(PlayerMovePacket.ALIAS, new PlayerMovePacketConverter());
 
         source = UUID.randomUUID();
         client = createClient();
@@ -102,7 +99,7 @@ public class MapSimpleClient {
         logger.info("Received packet {} from client {}", packet, client);
 
         if (packet instanceof HelloPacket) {
-            client.send(AnimateMovePacket.builder()
+            client.send(PlayerMovePacket.builder()
                     .source(source)
                     .target(Position.builder()
                             .x(200)

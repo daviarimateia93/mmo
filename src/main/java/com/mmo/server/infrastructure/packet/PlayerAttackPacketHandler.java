@@ -1,16 +1,17 @@
 package com.mmo.server.infrastructure.packet;
 
 import com.mmo.server.core.animate.Animate;
-import com.mmo.server.core.packet.AnimateAttackPacket;
 import com.mmo.server.core.packet.PacketHandler;
+import com.mmo.server.core.packet.PlayerAttackPacket;
+import com.mmo.server.core.player.Player;
 
-public class AnimateAttackPacketHandler
+public class PlayerAttackPacketHandler
         extends com.mmo.server.infrastructure.packet.PacketHandler
-        implements PacketHandler<AnimateAttackPacket> {
+        implements PacketHandler<PlayerAttackPacket> {
 
     @Override
-    public void handle(AnimateAttackPacket packet) {
-        Animate source = getMap().getEntity(packet.getSource(), Animate.class);
+    public void handle(PlayerAttackPacket packet) {
+        Player source = getMap().getEntity(packet.getSource(), Player.class);
         Animate target = getMap().getEntity(packet.getTarget(), Animate.class);
 
         source.attack(target);

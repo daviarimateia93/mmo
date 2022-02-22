@@ -18,7 +18,6 @@ import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.MapEntity;
 import com.mmo.server.core.map.Position;
 import com.mmo.server.core.math.Vertex;
-import com.mmo.server.core.packet.AnimateDiePacket;
 import com.mmo.server.core.packet.Packet;
 import com.mmo.server.core.property.PropertyModifierAction;
 
@@ -342,11 +341,6 @@ public abstract class Animate implements MapEntity {
         logger.info("Animate {} has died by {}",
                 getInstanceId(),
                 source.getInstanceId());
-
-        dispatch(AnimateDiePacket.builder()
-                .source(getInstanceId())
-                .killedBy(source.getInstanceId())
-                .build());
     }
 
     private static long getNewTick() {

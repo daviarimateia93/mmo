@@ -11,30 +11,31 @@ import org.junit.jupiter.api.Test;
 import com.mmo.server.core.animate.Animate;
 import com.mmo.server.core.game.GameRunnerMapMocker;
 import com.mmo.server.core.map.Map;
-import com.mmo.server.core.packet.AnimateAttackPacket;
+import com.mmo.server.core.packet.PlayerAttackPacket;
+import com.mmo.server.core.player.Player;
 
-public class AnimateAttackPacketHandlerTest {
+public class PlayerAttackPacketHandlerTest {
 
     private static Map map;
-    private static AnimateAttackPacket packet;
-    private static AnimateAttackPacketHandler packetHandler;
-    private static Animate source;
+    private static PlayerAttackPacket packet;
+    private static PlayerAttackPacketHandler packetHandler;
+    private static Player source;
     private static Animate target;
 
     @BeforeAll
     public static void setup() {
         map = GameRunnerMapMocker.run();
-        packet = AnimateAttackPacket.builder()
+        packet = PlayerAttackPacket.builder()
                 .source(UUID.randomUUID())
                 .target(UUID.randomUUID())
                 .build();
 
-        packetHandler = new AnimateAttackPacketHandler();
+        packetHandler = new PlayerAttackPacketHandler();
 
-        source = mock(Animate.class);
+        source = mock(Player.class);
         target = mock(Animate.class);
 
-        when(map.getEntity(packet.getSource(), Animate.class)).thenReturn(source);
+        when(map.getEntity(packet.getSource(), Player.class)).thenReturn(source);
         when(map.getEntity(packet.getTarget(), Animate.class)).thenReturn(target);
     }
 

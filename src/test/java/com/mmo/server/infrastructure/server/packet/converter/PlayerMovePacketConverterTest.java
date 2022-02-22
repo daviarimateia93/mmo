@@ -9,22 +9,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.server.core.map.Position;
-import com.mmo.server.core.packet.AnimateMovePacket;
+import com.mmo.server.core.packet.PlayerMovePacket;
 
-public class AnimateMovePacketConverterTest {
+public class PlayerMovePacketConverterTest {
 
-    public static AnimateMovePacketConverter converter;
+    public static PlayerMovePacketConverter converter;
 
     @BeforeAll
     public static void setup() {
-        converter = new AnimateMovePacketConverter();
+        converter = new PlayerMovePacketConverter();
     }
 
     @Test
     public void fromBytesAndToBytes() {
         UUID source = UUID.randomUUID();
 
-        AnimateMovePacket expected = AnimateMovePacket.builder()
+        PlayerMovePacket expected = PlayerMovePacket.builder()
                 .source(source)
                 .target(Position.builder()
                         .x(10)
@@ -32,7 +32,7 @@ public class AnimateMovePacketConverterTest {
                         .build())
                 .build();
 
-        AnimateMovePacket result = converter.fromBytes(source, converter.toBytes(expected));
+        PlayerMovePacket result = converter.fromBytes(source, converter.toBytes(expected));
 
         assertThat(result, equalTo(expected));
     }

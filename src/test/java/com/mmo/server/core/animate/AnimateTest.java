@@ -20,7 +20,6 @@ import com.mmo.server.core.looper.LooperContextMocker;
 import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.Position;
 import com.mmo.server.core.math.Vertex;
-import com.mmo.server.core.packet.AnimateDiePacket;
 
 public class AnimateTest {
 
@@ -112,11 +111,6 @@ public class AnimateTest {
         assertThat(animate.isAttacking(), equalTo(false));
         assertThat(animate.finishedAttack, equalTo(true));
         assertThat(target.died, equalTo(true));
-
-        verify(map).dispatch(AnimateDiePacket.builder()
-                .source(target.getInstanceId())
-                .killedBy(animate.getInstanceId())
-                .build());
     }
 
     @Test

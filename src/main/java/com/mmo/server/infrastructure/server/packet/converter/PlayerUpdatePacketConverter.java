@@ -10,15 +10,13 @@ public class PlayerUpdatePacketConverter implements PacketWriterConverter<Player
     @Override
     public byte[] write(PlayerUpdatePacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
-            write(writer, packet.getPlayer());
+            Player player = packet.getPlayer();
+            writer.writeUTF(player.getName());
+            PositionConverter.write(writer, player.getPosition());
+            StatsConverter.write(writer, player.getStats());
+            AttributesConverter.write(writer, player.getAttributes());
+            AnimateConverter.write(writer, player);
             return writer.toBytes();
         }
-    }
-
-    private void write(PacketWriter writer, Player player) {
-        writer.writeUTF(player.getName());
-        PositionConverter.write(writer, player.getPosition());
-        StatsConverter.write(writer, player.getStats());
-        AttributesConverter.write(writer, player.getAttributes());
     }
 }

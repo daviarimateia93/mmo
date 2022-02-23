@@ -198,7 +198,7 @@ public class Client {
     }
 
     private void sendPacket(NetworkPacket packet) throws IOException {
-        byte[] bytes = PacketGateway.getInstance().out(packet);
+        byte[] bytes = PacketGateway.getInstance().write(packet);
         UUID source = packet.getSource();
         UUID alias = packet.getAliasAsUUID();
         String token = encryptor.encrypt(TokenData.create(source).getToken());
@@ -230,7 +230,7 @@ public class Client {
         byte[] bytes = new byte[size];
         inputStream.readFully(bytes);
 
-        Packet packet = PacketGateway.getInstance().in(alias, source, bytes);
+        Packet packet = PacketGateway.getInstance().read(alias, source, bytes);
 
         getReceiveSubscriber().ifPresent(subscriber -> subscriber.onReceive(this, packet));
     }

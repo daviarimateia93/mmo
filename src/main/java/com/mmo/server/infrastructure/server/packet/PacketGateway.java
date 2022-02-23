@@ -73,17 +73,17 @@ public class PacketGateway {
         return this;
     }
 
-    public <T extends NetworkPacket> T in(String alias, UUID source, byte[] bytes) {
-        return in(getAliasAsUUID(alias), source, bytes);
+    public <T extends NetworkPacket> T read(String alias, UUID source, byte[] bytes) {
+        return read(getAliasAsUUID(alias), source, bytes);
     }
 
-    public <T extends NetworkPacket> T in(UUID alias, UUID source, byte[] bytes) {
+    public <T extends NetworkPacket> T read(UUID alias, UUID source, byte[] bytes) {
         PacketReaderConverter<T> converter = this.<T>getReader(alias);
 
         return converter.fromBytes(source, bytes);
     }
 
-    public <T extends NetworkPacket> byte[] out(T packet) {
+    public <T extends NetworkPacket> byte[] write(T packet) {
         PacketWriterConverter<T> converter = this.<T>getWriter(getAliasAsUUID(packet.getAlias()));
 
         return converter.toBytes(packet);

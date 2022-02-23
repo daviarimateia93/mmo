@@ -31,14 +31,14 @@ public class PacketFactoryTest {
                 .bindReader(expected.getAliasAsUUID(), converter)
                 .bindWriter(expected.getAliasAsUUID(), converter);
 
-        byte[] expectedBytes = PacketGateway.getInstance().out(expected);
+        byte[] expectedBytes = PacketGateway.getInstance().write(expected);
 
-        Packet result1 = PacketGateway.getInstance().in(
+        Packet result1 = PacketGateway.getInstance().read(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
                 expectedBytes);
 
-        Packet result2 = PacketGateway.getInstance().in(
+        Packet result2 = PacketGateway.getInstance().read(
                 expected.getAlias(),
                 expected.getSource(),
                 expectedBytes);
@@ -65,14 +65,14 @@ public class PacketFactoryTest {
                 .bindReader(expected.getAlias(), converter)
                 .bindWriter(expected.getAlias(), converter);
 
-        byte[] expectedBytes = PacketGateway.getInstance().out(expected);
+        byte[] expectedBytes = PacketGateway.getInstance().write(expected);
 
-        Packet result1 = PacketGateway.getInstance().in(
+        Packet result1 = PacketGateway.getInstance().read(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
                 expectedBytes);
 
-        Packet result2 = PacketGateway.getInstance().in(
+        Packet result2 = PacketGateway.getInstance().read(
                 expected.getAlias(),
                 expected.getSource(),
                 expectedBytes);
@@ -99,14 +99,14 @@ public class PacketFactoryTest {
                 .bindReader(expected, converter)
                 .bindWriter(expected, converter);
 
-        byte[] expectedBytes = PacketGateway.getInstance().out(expected);
+        byte[] expectedBytes = PacketGateway.getInstance().write(expected);
 
-        Packet result1 = PacketGateway.getInstance().in(
+        Packet result1 = PacketGateway.getInstance().read(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
                 expectedBytes);
 
-        Packet result2 = PacketGateway.getInstance().in(
+        Packet result2 = PacketGateway.getInstance().read(
                 expected.getAlias(),
                 expected.getSource(),
                 expectedBytes);

@@ -28,7 +28,7 @@ public class PlayerAttackPacketConverterTest {
                 .target(UUID.randomUUID())
                 .build();
 
-        PlayerAttackPacket result = converter.fromBytes(source, converter.toBytes(expected));
+        PlayerAttackPacket result = converter.read(source, converter.write(expected));
 
         assertThat(result, equalTo(expected));
     }

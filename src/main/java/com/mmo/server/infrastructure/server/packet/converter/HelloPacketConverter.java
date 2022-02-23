@@ -11,7 +11,7 @@ import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 public class HelloPacketConverter implements PacketReaderConverter<HelloPacket>, PacketWriterConverter<HelloPacket> {
 
     @Override
-    public HelloPacket fromBytes(UUID source, byte[] bytes) {
+    public HelloPacket read(UUID source, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
             return HelloPacket.builder()
                     .source(source)
@@ -22,7 +22,7 @@ public class HelloPacketConverter implements PacketReaderConverter<HelloPacket>,
     }
 
     @Override
-    public byte[] toBytes(HelloPacket packet) {
+    public byte[] write(HelloPacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
             writer.writeUTF(packet.getUserName());
             writer.writeUTF(packet.getUserPassword());

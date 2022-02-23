@@ -12,7 +12,7 @@ public class GoodByePacketConverter
         implements PacketReaderConverter<GoodByePacket>, PacketWriterConverter<GoodByePacket> {
 
     @Override
-    public GoodByePacket fromBytes(UUID source, byte[] bytes) {
+    public GoodByePacket read(UUID source, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
             return GoodByePacket.builder()
                     .source(source)
@@ -21,7 +21,7 @@ public class GoodByePacketConverter
     }
 
     @Override
-    public byte[] toBytes(GoodByePacket packet) {
+    public byte[] write(GoodByePacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
             return writer.toBytes();
         }

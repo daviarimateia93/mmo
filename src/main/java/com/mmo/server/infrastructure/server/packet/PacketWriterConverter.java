@@ -4,5 +4,5 @@ import com.mmo.server.core.packet.NetworkPacket;
 
 public interface PacketWriterConverter<T extends NetworkPacket> extends PacketConverter<T> {
 
-    byte[] toBytes(T packet);
+    byte[] write(T packet);
 }

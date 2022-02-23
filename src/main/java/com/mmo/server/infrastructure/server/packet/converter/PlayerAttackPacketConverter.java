@@ -11,7 +11,7 @@ import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 public class PlayerAttackPacketConverter
         implements PacketReaderConverter<PlayerAttackPacket>, PacketWriterConverter<PlayerAttackPacket> {
 
-    public PlayerAttackPacket fromBytes(UUID source, byte[] bytes) {
+    public PlayerAttackPacket read(UUID source, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
             return PlayerAttackPacket.builder()
                     .source(source)
@@ -21,7 +21,7 @@ public class PlayerAttackPacketConverter
     }
 
     @Override
-    public byte[] toBytes(PlayerAttackPacket packet) {
+    public byte[] write(PlayerAttackPacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
             writer.writeUUID(packet.getTarget());
             return writer.toBytes();

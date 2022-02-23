@@ -27,7 +27,7 @@ public class GoodByePacketConverterTest {
                 .source(source)
                 .build();
 
-        GoodByePacket result = converter.fromBytes(source, converter.toBytes(expected));
+        GoodByePacket result = converter.read(source, converter.write(expected));
 
         assertThat(result, equalTo(expected));
     }

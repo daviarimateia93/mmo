@@ -32,7 +32,7 @@ public class PlayerMovePacketConverterTest {
                         .build())
                 .build();
 
-        PlayerMovePacket result = converter.fromBytes(source, converter.toBytes(expected));
+        PlayerMovePacket result = converter.read(source, converter.write(expected));
 
         assertThat(result, equalTo(expected));
     }

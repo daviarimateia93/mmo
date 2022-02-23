@@ -12,7 +12,7 @@ public class PlayerMovePacketConverter
         implements PacketReaderConverter<PlayerMovePacket>, PacketWriterConverter<PlayerMovePacket> {
 
     @Override
-    public PlayerMovePacket fromBytes(UUID source, byte[] bytes) {
+    public PlayerMovePacket read(UUID source, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
             return PlayerMovePacket.builder()
                     .source(source)
@@ -22,7 +22,7 @@ public class PlayerMovePacketConverter
     }
 
     @Override
-    public byte[] toBytes(PlayerMovePacket packet) {
+    public byte[] write(PlayerMovePacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
             PositionConverter.write(writer, packet.getTarget());
             return writer.toBytes();

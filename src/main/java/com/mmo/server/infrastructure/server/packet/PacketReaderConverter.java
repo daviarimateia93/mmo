@@ -6,5 +6,5 @@ import com.mmo.server.core.packet.NetworkPacket;
 
 public interface PacketReaderConverter<T extends NetworkPacket> extends PacketConverter<T> {
 
-    T fromBytes(UUID source, byte[] bytes);
+    T read(UUID source, byte[] bytes);
 }

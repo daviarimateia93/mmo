@@ -47,7 +47,7 @@ public class TestPacket implements NetworkPacket {
             implements PacketReaderConverter<TestPacket>, PacketWriterConverter<TestPacket> {
 
         @Override
-        public TestPacket fromBytes(UUID source, byte[] bytes) {
+        public TestPacket read(UUID source, byte[] bytes) {
             String string = new String(bytes);
 
             String property1 = string.substring(0, string.length() - 1);
@@ -61,7 +61,7 @@ public class TestPacket implements NetworkPacket {
         }
 
         @Override
-        public byte[] toBytes(TestPacket packet) {
+        public byte[] write(TestPacket packet) {
             return String.format("%s%d", packet.getProperty1(), packet.getProperty2()).getBytes();
         }
     }

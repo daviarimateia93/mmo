@@ -8,7 +8,7 @@ import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 public class PlayerUpdatePacketConverter implements PacketWriterConverter<PlayerUpdatePacket> {
 
     @Override
-    public byte[] toBytes(PlayerUpdatePacket packet) {
+    public byte[] write(PlayerUpdatePacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
             write(writer, packet.getPlayer());
             return writer.toBytes();

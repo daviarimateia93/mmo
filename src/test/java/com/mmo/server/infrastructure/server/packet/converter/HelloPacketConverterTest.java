@@ -29,7 +29,7 @@ public class HelloPacketConverterTest {
                 .userPassword("userPassword")
                 .build();
 
-        HelloPacket result = converter.fromBytes(source, converter.toBytes(expected));
+        HelloPacket result = converter.read(source, converter.write(expected));
 
         assertThat(result, equalTo(expected));
     }

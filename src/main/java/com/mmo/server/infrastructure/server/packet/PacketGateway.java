@@ -80,13 +80,13 @@ public class PacketGateway {
     public <T extends NetworkPacket> T read(UUID alias, UUID source, byte[] bytes) {
         PacketReaderConverter<T> converter = this.<T>getReader(alias);
 
-        return converter.fromBytes(source, bytes);
+        return converter.read(source, bytes);
     }
 
     public <T extends NetworkPacket> byte[] write(T packet) {
         PacketWriterConverter<T> converter = this.<T>getWriter(getAliasAsUUID(packet.getAlias()));
 
-        return converter.toBytes(packet);
+        return converter.write(packet);
     }
 
     @SuppressWarnings("unchecked")

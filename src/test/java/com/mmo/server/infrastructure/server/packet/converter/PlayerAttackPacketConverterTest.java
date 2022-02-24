@@ -20,7 +20,7 @@ public class PlayerAttackPacketConverterTest {
     }
 
     @Test
-    public void fromBytesAndToBytes() {
+    public void readAndWrite() {
         UUID source = UUID.randomUUID();
 
         PlayerAttackPacket expected = PlayerAttackPacket.builder()

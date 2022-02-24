@@ -21,7 +21,7 @@ public class PlayerMovePacketConverterTest {
     }
 
     @Test
-    public void fromBytesAndToBytes() {
+    public void readAndWrite() {
         UUID source = UUID.randomUUID();
 
         PlayerMovePacket expected = PlayerMovePacket.builder()

@@ -20,7 +20,7 @@ public class HelloPacketConverterTest {
     }
 
     @Test
-    public void fromBytesAndToBytes() {
+    public void readAndWrite() {
         UUID source = UUID.randomUUID();
 
         HelloPacket expected = HelloPacket.builder()

@@ -8,9 +8,9 @@ import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
 public final class AnimateConverter {
 
-    private static final UUID UUID_NULL = UUID.fromString("9d84ce45-11bd-41cb-b16f-072863c03e9c");
+    public static final UUID UUID_NULL = UUID.fromString("9d84ce45-11bd-41cb-b16f-072863c03e9c");
 
-    private static final Position POSITION_NULL = Position.builder()
+    public static final Position POSITION_NULL = Position.builder()
             .x(Integer.MIN_VALUE)
             .z(Integer.MAX_VALUE)
             .build();

@@ -20,7 +20,7 @@ public class GoodByePacketConverterTest {
     }
 
     @Test
-    public void fromBytesAndToBytes() {
+    public void readAndWrite() {
         UUID source = UUID.randomUUID();
 
         GoodByePacket expected = GoodByePacket.builder()

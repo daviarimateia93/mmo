@@ -26,6 +26,7 @@ import com.mmo.server.core.packet.PersistencePacket;
 import com.mmo.server.core.packet.PlayerAttackPacket;
 import com.mmo.server.core.packet.PlayerMovePacket;
 import com.mmo.server.core.packet.PlayerPersistPacket;
+import com.mmo.server.core.packet.PlayerUpdatePacket;
 import com.mmo.server.core.player.Player;
 import com.mmo.server.core.player.PlayerRepository;
 import com.mmo.server.core.user.UserRepository;
@@ -41,7 +42,10 @@ import com.mmo.server.infrastructure.security.aes.AESDecryptor;
 import com.mmo.server.infrastructure.security.aes.AESEncryptor;
 import com.mmo.server.infrastructure.server.Server;
 import com.mmo.server.infrastructure.server.client.Client;
+import com.mmo.server.infrastructure.server.packet.PacketConverter;
 import com.mmo.server.infrastructure.server.packet.PacketGateway;
+import com.mmo.server.infrastructure.server.packet.PacketReaderConverter;
+import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.PlayerAttackPacketConverter;
@@ -59,6 +63,7 @@ public class MapServer {
 
     private final ConcurrentHashMap<Client, UUID> clients = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Client> instanceIds = new ConcurrentHashMap<>();
+    private final ConfigProvider configProvider;
     private final Map map;
     private final Authenticator authenticator;
     private final Server server;
@@ -66,6 +71,7 @@ public class MapServer {
     private final PlayerRepository playerRepository;
 
     private MapServer() {
+        configProvider = ConfigProvider.getInstance();
         userRepository = new MongoUserRepository();
         playerRepository = new MongoPlayerRepository();
 
@@ -106,17 +112,24 @@ public class MapServer {
     }
 
     private void bindConverters() {
-        PacketGateway.getInstance()
-                .bindReader(HelloPacket.ALIAS, new HelloPacketConverter())
-                .bindWriter(HelloPacket.ALIAS, new HelloPacketConverter())
-                .bindReader(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bindWriter(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bindReader(PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter())
-                .bindWriter(PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter())
-                .bindReader(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bindWriter(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bindReader(PlayerMovePacket.ALIAS, new PlayerMovePacketConverter())
-                .bindWriter(PlayerMovePacket.ALIAS, new PlayerMovePacketConverter());
+        java.util.Map.of(
+                HelloPacket.ALIAS, new HelloPacketConverter(),
+                GoodByePacket.ALIAS, new GoodByePacketConverter(),
+                PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter(),
+                GoodByePacket.ALIAS, new GoodByePacketConverter(),
+                PlayerMovePacket.ALIAS, new PlayerMovePacketConverter())
+                .entrySet()
+                .forEach(entry -> bindConverter(entry.getKey(), entry.getValue()));
+    }
+
+    private void bindConverter(String alias, PacketConverter<?> converter) {
+        if (converter instanceof PacketReaderConverter) {
+            PacketGateway.getInstance().bindReader(alias, (PacketReaderConverter<?>) converter);
+        }
+
+        if (converter instanceof PacketWriterConverter) {
+            PacketGateway.getInstance().bindWriter(alias, (PacketWriterConverter<?>) converter);
+        }
     }
 
     private void bindHandlers() {
@@ -154,15 +167,15 @@ public class MapServer {
 
     private Server newServer() {
         Encryptor encryptor = AESEncryptor.builder()
-                .key(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_CIPHER_KEY))
+                .key(configProvider.getString(CONFIG_MAP_SERVER_CIPHER_KEY))
                 .build();
 
         Decryptor decryptor = AESDecryptor.builder()
-                .key(ConfigProvider.getInstance().getString(CONFIG_MAP_SERVER_CIPHER_KEY))
+                .key(configProvider.getString(CONFIG_MAP_SERVER_CIPHER_KEY))
                 .build();
 
         return Server.builder()
-                .port(ConfigProvider.getInstance().getInt(CONFIG_MAP_SERVER_PORT))
+                .port(configProvider.getInt(CONFIG_MAP_SERVER_PORT))
                 .encryptor(encryptor)
                 .decryptor(decryptor)
                 .connectSubscriber(this::confirmClientConnected)
@@ -197,7 +210,7 @@ public class MapServer {
                         client.disconnect();
                     }
                 },
-                        ConfigProvider.getInstance().getLong(CONFIG_MAP_SERVER_HELLO_PACKET_WAITING_DELAY_IN_MINUTES),
+                        configProvider.getLong(CONFIG_MAP_SERVER_HELLO_PACKET_WAITING_DELAY_IN_MINUTES),
                         TimeUnit.MINUTES);
     }
 
@@ -270,10 +283,9 @@ public class MapServer {
 
                 logger.info("Client has sent HelloPacket, it is now connected");
 
-                send(HelloPacket.builder()
+                send(PlayerUpdatePacket.builder()
                         .source(helloPacket.getSource())
-                        .userName(helloPacket.getUserName())
-                        .userPassword(helloPacket.getUserPassword())
+                        .player(map.getEntity(helloPacket.getSource(), Player.class))
                         .build());
             } else {
                 logger.info("Client is not connected, forcing disconnect");

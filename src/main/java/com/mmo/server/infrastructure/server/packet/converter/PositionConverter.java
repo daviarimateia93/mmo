@@ -1,6 +1,6 @@
 package com.mmo.server.infrastructure.server.packet.converter;
 
-import com.mmo.server.core.map.Position;
+import com.mmo.server.infrastructure.map.PositionDTO;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
@@ -9,15 +9,16 @@ public final class PositionConverter {
     private PositionConverter() {
 
     }
-    
-    public static Position read(PacketReader reader) {
-        return Position.builder()
-                .x(reader.readInt())
-                .z(reader.readInt())
-                .build();
+
+    public static PositionDTO read(PacketReader reader) {
+        PositionDTO dto = new PositionDTO();
+        dto.setX(reader.readInt());
+        dto.setZ(reader.readInt());
+
+        return dto;
     }
 
-    public static void write(PacketWriter writer, Position position) {
+    public static void write(PacketWriter writer, PositionDTO position) {
         writer.writeInt(position.getX());
         writer.writeInt(position.getZ());
     }

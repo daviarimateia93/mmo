@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.server.core.stat.Stats;
+import com.mmo.server.infrastructure.animate.StatsDTO;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
@@ -14,16 +15,16 @@ public class StatsConverterTest {
 
     @Test
     public void readAndWrite() {
-        Stats expected = Stats.builder()
+        StatsDTO expected = StatsDTO.of(Stats.builder()
                 .strength(10)
                 .dexterity(10)
                 .intelligence(10)
                 .concentration(10)
                 .sense(10)
                 .charm(10)
-                .build();
+                .build());
 
-        Stats result = null;
+        StatsDTO result = null;
 
         try (PacketWriter writer = new PacketWriter()) {
             write(writer, expected);

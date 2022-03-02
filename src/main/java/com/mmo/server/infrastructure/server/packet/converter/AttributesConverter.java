@@ -1,6 +1,6 @@
 package com.mmo.server.infrastructure.server.packet.converter;
 
-import com.mmo.server.core.attribute.Attributes;
+import com.mmo.server.infrastructure.animate.AttributesDTO;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
@@ -10,25 +10,26 @@ public final class AttributesConverter {
 
     }
 
-    public static Attributes read(PacketReader reader) {
-        return Attributes.builder()
-                .hp(reader.readInt())
-                .mp(reader.readInt())
-                .attack(reader.readInt())
-                .defense(reader.readInt())
-                .magicDefense(reader.readInt())
-                .hitRate(reader.readInt())
-                .critical(reader.readInt())
-                .dodgeRate(reader.readInt())
-                .attackSpeed(reader.readInt())
-                .moveSpeed(reader.readInt())
-                .hpRecovery(reader.readInt())
-                .mpRecovery(reader.readInt())
-                .attackRange(reader.readInt())
-                .build();
+    public static AttributesDTO read(PacketReader reader) {
+        AttributesDTO dto = new AttributesDTO();
+        dto.setHP(reader.readInt());
+        dto.setMP(reader.readInt());
+        dto.setAttack(reader.readInt());
+        dto.setDefense(reader.readInt());
+        dto.setMagicDefense(reader.readInt());
+        dto.setHitRate(reader.readInt());
+        dto.setCritical(reader.readInt());
+        dto.setDodgeRate(reader.readInt());
+        dto.setAttackSpeed(reader.readInt());
+        dto.setMoveSpeed(reader.readInt());
+        dto.setHPRecovery(reader.readInt());
+        dto.setMPRecovery(reader.readInt());
+        dto.setAttackRange(reader.readInt());
+
+        return dto;
     }
 
-    public static void write(PacketWriter writer, Attributes attributes) {
+    public static void write(PacketWriter writer, AttributesDTO attributes) {
         writer.writeInt(attributes.getHP());
         writer.writeInt(attributes.getMP());
         writer.writeInt(attributes.getAttack());

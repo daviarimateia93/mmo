@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.server.core.map.Position;
+import com.mmo.server.infrastructure.map.PositionDTO;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
@@ -14,12 +15,12 @@ public class PositionConverterTest {
 
     @Test
     public void readAndWrite() {
-        Position expected = Position.builder()
+        PositionDTO expected = PositionDTO.of(Position.builder()
                 .x(10)
                 .z(15)
-                .build();
+                .build());
 
-        Position result = null;
+        PositionDTO result = null;
 
         try (PacketWriter writer = new PacketWriter()) {
             write(writer, expected);

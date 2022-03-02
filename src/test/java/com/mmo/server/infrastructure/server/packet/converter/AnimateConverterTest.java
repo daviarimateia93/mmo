@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import com.mmo.server.core.animate.Animate;
 import com.mmo.server.core.attribute.Attributes;
 import com.mmo.server.core.map.Position;
+import com.mmo.server.infrastructure.animate.AnimateDTO;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
@@ -18,18 +19,17 @@ public class AnimateConverterTest {
 
     @Test
     public void readAndWrite() {
-        Animate expected = new AnimateImpl();
+        AnimateDTO expected = AnimateDTO.of(new AnimateImpl());
+        AnimateDTO result = null;
 
         try (PacketWriter writer = new PacketWriter()) {
             write(writer, expected);
             try (PacketReader reader = new PacketReader(writer.toBytes())) {
-                assertThat(reader.readBoolean(), equalTo(expected.isAlive()));
-                assertThat(reader.readBoolean(), equalTo(expected.isMoving()));
-                assertThat(PositionConverter.read(reader), equalTo(AnimateConverter.POSITION_NULL));
-                assertThat(reader.readBoolean(), equalTo(expected.isAttacking()));
-                assertThat(reader.readUUID(), equalTo(AnimateConverter.UUID_NULL));
+                result = read(reader);
             }
         }
+
+        assertThat(result, equalTo(expected));
     }
 
     private class AnimateImpl extends Animate {

@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.Test;
 
 import com.mmo.server.core.attribute.Attributes;
+import com.mmo.server.infrastructure.animate.AttributesDTO;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
 
@@ -14,7 +15,7 @@ public class AttributesConverterTest {
 
     @Test
     public void readAndWrite() {
-        Attributes expected = Attributes.builder()
+        AttributesDTO expected = AttributesDTO.of(Attributes.builder()
                 .hp(30)
                 .mp(31)
                 .attack(42)
@@ -28,9 +29,9 @@ public class AttributesConverterTest {
                 .hpRecovery(40)
                 .mpRecovery(41)
                 .attackRange(3)
-                .build();
+                .build());
 
-        Attributes result = null;
+        AttributesDTO result = null;
 
         try (PacketWriter writer = new PacketWriter()) {
             write(writer, expected);

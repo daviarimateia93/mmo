@@ -16,6 +16,8 @@ public class AnimateDTO {
     private PositionDTO targetPosition;
     private boolean attacking;
     private UUID targetAnimate;
+    private Long lastAttackStartTime;
+    private Long lastMoveStartTime;
 
     public Optional<PositionDTO> getTargetPosition() {
         return Optional.ofNullable(targetPosition);
@@ -23,6 +25,14 @@ public class AnimateDTO {
 
     public Optional<UUID> getTargetAnimate() {
         return Optional.ofNullable(targetAnimate);
+    }
+
+    public Optional<Long> getLastAttackStartTime() {
+        return Optional.ofNullable(lastAttackStartTime);
+    }
+
+    public Optional<Long> getLastMoveStartTime() {
+        return Optional.ofNullable(lastMoveStartTime);
     }
 
     public static AnimateDTO of(Animate animate) {
@@ -39,6 +49,12 @@ public class AnimateDTO {
         animate.getTargetAnimate()
                 .map(Animate::getInstanceId)
                 .ifPresent(dto::setTargetAnimate);
+
+        animate.getLastAttackStartTime()
+                .ifPresent(dto::setLastAttackStartTime);
+
+        animate.getLastMoveStartTime()
+                .ifPresent(dto::setLastMoveStartTime);
 
         return dto;
     }

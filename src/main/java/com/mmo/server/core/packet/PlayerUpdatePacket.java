@@ -49,6 +49,8 @@ public class PlayerUpdatePacket implements NetworkPacket {
     private final Integer targetPositionZ;
     private final boolean attacking;
     private final UUID targetAnimate;
+    private final Long lastAttackStartTime;
+    private final Long lastMoveStartTime;
 
     @Builder
     private PlayerUpdatePacket(@NonNull UUID source, @NonNull Player player) {
@@ -81,7 +83,9 @@ public class PlayerUpdatePacket implements NetworkPacket {
                 player.getTargetPosition().map(Position::getX).orElse(null),
                 player.getTargetPosition().map(Position::getZ).orElse(null),
                 player.isAttacking(),
-                player.getTargetAnimate().map(Animate::getInstanceId).orElse(null));
+                player.getTargetAnimate().map(Animate::getInstanceId).orElse(null),
+                player.getLastAttackStartTime().orElse(null),
+                player.getLastMoveStartTime().orElse(null));
     }
 
     @Builder(builderMethodName = "dtoBuilder", buildMethodName = "buildDTO")
@@ -114,7 +118,9 @@ public class PlayerUpdatePacket implements NetworkPacket {
             Integer targetPositionX,
             Integer targetPositionZ,
             boolean attacking,
-            UUID targetAnimate) {
+            UUID targetAnimate,
+            Long lastAttackStartTime,
+            Long lastMoveStartTime) {
 
         this.source = source;
         this.name = name;
@@ -145,6 +151,8 @@ public class PlayerUpdatePacket implements NetworkPacket {
         this.targetPositionZ = targetPositionZ;
         this.attacking = attacking;
         this.targetAnimate = targetAnimate;
+        this.lastAttackStartTime = lastAttackStartTime;
+        this.lastMoveStartTime = lastMoveStartTime;
     }
 
     @Override
@@ -162,5 +170,13 @@ public class PlayerUpdatePacket implements NetworkPacket {
 
     public Optional<UUID> getTargetAnimate() {
         return Optional.ofNullable(targetAnimate);
+    }
+
+    public Optional<Long> getLastAttackStartTime() {
+        return Optional.ofNullable(lastAttackStartTime);
+    }
+
+    public Optional<Long> getLastMoveStartTime() {
+        return Optional.ofNullable(lastMoveStartTime);
     }
 }

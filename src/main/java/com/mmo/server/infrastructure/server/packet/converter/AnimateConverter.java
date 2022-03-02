@@ -11,10 +11,10 @@ import com.mmo.server.infrastructure.server.packet.PacketWriter;
 public final class AnimateConverter {
 
     public static final UUID UUID_NULL = UUID.fromString("9d84ce45-11bd-41cb-b16f-072863c03e9c");
-
+    public static final Long LONG_NULL = Long.MIN_VALUE;
     public static final PositionDTO POSITION_NULL = PositionDTO.of(Position.builder()
             .x(Integer.MIN_VALUE)
-            .z(Integer.MAX_VALUE)
+            .z(Integer.MIN_VALUE)
             .build());
 
     private AnimateConverter() {
@@ -38,6 +38,16 @@ public final class AnimateConverter {
             dto.setTargetAnimate(targetAnimate);
         }
 
+        Long lastAttackStartTime = reader.readLong();
+        if (!LONG_NULL.equals(lastAttackStartTime)) {
+            dto.setLastAttackStartTime(lastAttackStartTime);
+        }
+
+        Long lastMoveStartTime = reader.readLong();
+        if (!LONG_NULL.equals(lastMoveStartTime)) {
+            dto.setLastMoveStartTime(lastMoveStartTime);
+        }
+
         return dto;
     }
 
@@ -53,5 +63,8 @@ public final class AnimateConverter {
         writer.writeBoolean(animate.isAttacking());
         writer.writeUUID(animate.getTargetAnimate()
                 .orElse(UUID_NULL));
+
+        writer.writeLong(animate.getLastAttackStartTime().orElse(LONG_NULL));
+        writer.writeLong(animate.getLastMoveStartTime().orElse(LONG_NULL));
     }
 }

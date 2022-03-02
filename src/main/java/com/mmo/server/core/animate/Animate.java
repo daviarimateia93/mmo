@@ -73,6 +73,14 @@ public abstract class Animate implements MapEntity {
         return Optional.ofNullable(targetAnimate);
     }
 
+    public Optional<Long> getLastAttackStartTime() {
+        return Optional.ofNullable(lastAttackStartTime);
+    }
+
+    public Optional<Long> getLastMoveStartTime() {
+        return Optional.ofNullable(lastMoveStartTime);
+    }
+
     /*
      * (attackSpeed / 100) by second
      * (attackSpeed / 100 / 1000) by millis

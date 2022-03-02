@@ -3,12 +3,11 @@ package com.mmo.server.infrastructure.server.packet.converter;
 import java.util.UUID;
 
 import com.mmo.server.core.packet.HelloPacket;
+import com.mmo.server.infrastructure.server.packet.PacketConverter;
 import com.mmo.server.infrastructure.server.packet.PacketReader;
-import com.mmo.server.infrastructure.server.packet.PacketReaderConverter;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
-import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 
-public class HelloPacketConverter implements PacketReaderConverter<HelloPacket>, PacketWriterConverter<HelloPacket> {
+public class HelloPacketConverter implements PacketConverter<HelloPacket> {
 
     @Override
     public HelloPacket read(UUID source, byte[] bytes) {

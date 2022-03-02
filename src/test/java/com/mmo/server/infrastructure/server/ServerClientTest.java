@@ -26,9 +26,7 @@ public class ServerClientTest {
     public void successfully() throws InterruptedException {
         TestPacketConverter converter = TestPacket.converter();
 
-        PacketGateway.getInstance()
-                .bindReader(TestPacket.ALIAS, converter)
-                .bindWriter(TestPacket.ALIAS, converter);
+        PacketGateway.getInstance().bind(TestPacket.ALIAS, converter);
 
         String cipherKey = "Bar12345Bar12345";
 

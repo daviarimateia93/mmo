@@ -1,11 +1,19 @@
 package com.mmo.server.infrastructure.server.packet.converter;
 
+import java.util.UUID;
+
 import com.mmo.server.core.packet.PlayerUpdatePacket;
 import com.mmo.server.core.player.Player;
+import com.mmo.server.infrastructure.server.packet.PacketConverter;
 import com.mmo.server.infrastructure.server.packet.PacketWriter;
-import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 
-public class PlayerUpdatePacketConverter implements PacketWriterConverter<PlayerUpdatePacket> {
+public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdatePacket> {
+
+    @Override
+    public PlayerUpdatePacket read(UUID source, byte[] bytes) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     public byte[] write(PlayerUpdatePacket packet) {

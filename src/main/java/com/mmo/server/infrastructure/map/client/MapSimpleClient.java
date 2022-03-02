@@ -12,6 +12,7 @@ import com.mmo.server.core.packet.HelloPacket;
 import com.mmo.server.core.packet.Packet;
 import com.mmo.server.core.packet.PlayerAttackPacket;
 import com.mmo.server.core.packet.PlayerMovePacket;
+import com.mmo.server.core.packet.PlayerUpdatePacket;
 import com.mmo.server.infrastructure.config.ConfigProvider;
 import com.mmo.server.infrastructure.security.Decryptor;
 import com.mmo.server.infrastructure.security.Encryptor;
@@ -23,6 +24,7 @@ import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConver
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.PlayerAttackPacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.PlayerMovePacketConverter;
+import com.mmo.server.infrastructure.server.packet.converter.PlayerUpdatePacketConverter;
 
 public class MapSimpleClient {
 
@@ -37,17 +39,15 @@ public class MapSimpleClient {
     private boolean exit;
 
     public MapSimpleClient() {
-        PacketGateway.getInstance()
-                .bindReader(HelloPacket.ALIAS, new HelloPacketConverter())
-                .bindWriter(HelloPacket.ALIAS, new HelloPacketConverter())
-                .bindReader(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bindWriter(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bindReader(PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter())
-                .bindWriter(PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter())
-                .bindReader(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bindWriter(GoodByePacket.ALIAS, new GoodByePacketConverter())
-                .bindReader(PlayerMovePacket.ALIAS, new PlayerMovePacketConverter())
-                .bindWriter(PlayerMovePacket.ALIAS, new PlayerMovePacketConverter());
+        java.util.Map.of(
+                HelloPacket.ALIAS, new HelloPacketConverter(),
+                GoodByePacket.ALIAS, new GoodByePacketConverter(),
+                PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter(),
+                GoodByePacket.ALIAS, new GoodByePacketConverter(),
+                PlayerMovePacket.ALIAS, new PlayerMovePacketConverter(),
+                PlayerUpdatePacket.ALIAS, new PlayerUpdatePacketConverter())
+                .entrySet()
+                .forEach(entry -> PacketGateway.getInstance().bind(entry.getKey(), entry.getValue()));
 
         source = UUID.randomUUID();
         client = createClient();

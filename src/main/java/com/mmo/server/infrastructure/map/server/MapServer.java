@@ -42,10 +42,7 @@ import com.mmo.server.infrastructure.security.aes.AESDecryptor;
 import com.mmo.server.infrastructure.security.aes.AESEncryptor;
 import com.mmo.server.infrastructure.server.Server;
 import com.mmo.server.infrastructure.server.client.Client;
-import com.mmo.server.infrastructure.server.packet.PacketConverter;
 import com.mmo.server.infrastructure.server.packet.PacketGateway;
-import com.mmo.server.infrastructure.server.packet.PacketReaderConverter;
-import com.mmo.server.infrastructure.server.packet.PacketWriterConverter;
 import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.PlayerAttackPacketConverter;
@@ -121,19 +118,7 @@ public class MapServer {
                 PlayerMovePacket.ALIAS, new PlayerMovePacketConverter(),
                 PlayerUpdatePacket.ALIAS, new PlayerUpdatePacketConverter())
                 .entrySet()
-                .forEach(entry -> bindConverter(entry.getKey(), entry.getValue()));
-    }
-
-    private void bindConverter(String alias, PacketConverter<?> converter) {
-        PacketGateway gateway = PacketGateway.getInstance();
-        
-        if (converter instanceof PacketReaderConverter) {
-            gateway.bindReader(alias, (PacketReaderConverter<?>) converter);
-        }
-
-        if (converter instanceof PacketWriterConverter) {
-            gateway.bindWriter(alias, (PacketWriterConverter<?>) converter);
-        }
+                .forEach(entry -> PacketGateway.getInstance().bind(entry.getKey(), entry.getValue()));
     }
 
     private void bindHandlers() {

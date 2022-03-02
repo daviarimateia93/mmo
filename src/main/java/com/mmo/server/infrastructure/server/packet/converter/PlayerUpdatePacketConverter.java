@@ -1,5 +1,6 @@
 package com.mmo.server.infrastructure.server.packet.converter;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import com.mmo.server.core.attribute.Attributes;
@@ -17,7 +18,7 @@ import com.mmo.server.infrastructure.server.packet.PacketWriter;
 public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdatePacket> {
 
     @Override
-    public PlayerUpdatePacket read(UUID source, byte[] bytes) {
+    public PlayerUpdatePacket read(UUID source, OffsetDateTime creation, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
             String name = reader.readUTF();
             PositionDTO position = PositionConverter.read(reader);

@@ -92,7 +92,7 @@ public class MapSimpleClient {
                 .decryptor(decryptor)
                 .sendSubscriber(this::onSend)
                 .receiveSubscriber(this::onReceive)
-                .clientBuild();
+                .buildClient();
 
         return client;
     }

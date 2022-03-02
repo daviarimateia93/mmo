@@ -1,5 +1,6 @@
 package com.mmo.server.infrastructure.server;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import com.mmo.server.core.packet.NetworkPacket;
@@ -45,7 +46,7 @@ public class TestPacket implements NetworkPacket {
     public static class TestPacketConverter implements PacketConverter<TestPacket> {
 
         @Override
-        public TestPacket read(UUID source, byte[] bytes) {
+        public TestPacket read(UUID source, OffsetDateTime creation, byte[] bytes) {
             String string = new String(bytes);
 
             String property1 = string.substring(0, string.length() - 1);

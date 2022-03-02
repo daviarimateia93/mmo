@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -45,9 +46,10 @@ public class Client {
     private final BlockingQueue<NetworkPacket> sendingQueue = new LinkedBlockingQueue<>();
     private final ExecutorService sendingPool = Executors.newSingleThreadExecutor();
     private final ExecutorService receivingPool = Executors.newSingleThreadExecutor();
+    private final PacketGateway packetGateway;
     private boolean connected;
 
-    @Builder(builderMethodName = "serverBuilder", buildMethodName = "serverBuild")
+    @Builder(builderMethodName = "serverBuilder", buildMethodName = "buildServer")
     private Client(
             @NonNull Socket socket,
             @NonNull Encryptor encryptor,
@@ -64,12 +66,13 @@ public class Client {
         this.disconnectSubscriber = disconnectSubscriber;
         this.sendSubscriber = sendSubscriber;
         this.receiveSubscriber = receiveSubscriber;
+        this.packetGateway = PacketGateway.getInstance();
         this.connected = true;
 
         startPools();
     }
 
-    @Builder(builderMethodName = "clientBuilder", buildMethodName = "clientBuild")
+    @Builder(builderMethodName = "clientBuilder", buildMethodName = "buildClient")
     private Client(
             @NonNull String host,
             @NonNull Integer port,
@@ -87,6 +90,7 @@ public class Client {
         this.disconnectSubscriber = disconnectSubscriber;
         this.sendSubscriber = sendSubscriber;
         this.receiveSubscriber = receiveSubscriber;
+        this.packetGateway = PacketGateway.getInstance();
         this.connected = true;
 
         startPools();
@@ -198,7 +202,7 @@ public class Client {
     }
 
     private void sendPacket(NetworkPacket packet) throws IOException {
-        byte[] bytes = PacketGateway.getInstance().write(packet);
+        byte[] bytes = packetGateway.write(packet);
         UUID source = packet.getSource();
         UUID alias = packet.getAliasAsUUID();
         String token = encryptor.encrypt(TokenData.create(source).getToken());
@@ -225,12 +229,13 @@ public class Client {
         }
 
         UUID source = tokenData.getSource();
+        OffsetDateTime creation = tokenData.getCreation();
         UUID alias = new UUID(aliasHigh, aliasLow);
 
         byte[] bytes = new byte[size];
         inputStream.readFully(bytes);
 
-        Packet packet = PacketGateway.getInstance().read(alias, source, bytes);
+        Packet packet = packetGateway.read(alias, source, creation, bytes);
 
         getReceiveSubscriber().ifPresent(subscriber -> subscriber.onReceive(this, packet));
     }

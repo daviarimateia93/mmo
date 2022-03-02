@@ -3,6 +3,7 @@ package com.mmo.server.infrastructure.server;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -26,16 +27,20 @@ public class PacketFactoryTest {
 
         PacketGateway.getInstance().bind(expected.getAliasAsUUID(), TestPacket.converter());
 
+        OffsetDateTime creation = OffsetDateTime.now();
+
         byte[] expectedBytes = PacketGateway.getInstance().write(expected);
 
         Packet result1 = PacketGateway.getInstance().read(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
+                creation,
                 expectedBytes);
 
         Packet result2 = PacketGateway.getInstance().read(
                 expected.getAlias(),
                 expected.getSource(),
+                creation,
                 expectedBytes);
 
         assertThat(result1, equalTo(expected));
@@ -56,16 +61,20 @@ public class PacketFactoryTest {
 
         PacketGateway.getInstance().bind(expected.getAlias(), TestPacket.converter());
 
+        OffsetDateTime creation = OffsetDateTime.now();
+
         byte[] expectedBytes = PacketGateway.getInstance().write(expected);
 
         Packet result1 = PacketGateway.getInstance().read(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
+                creation,
                 expectedBytes);
 
         Packet result2 = PacketGateway.getInstance().read(
                 expected.getAlias(),
                 expected.getSource(),
+                creation,
                 expectedBytes);
 
         assertThat(result1, equalTo(expected));
@@ -86,16 +95,20 @@ public class PacketFactoryTest {
 
         PacketGateway.getInstance().bind(expected, TestPacket.converter());
 
+        OffsetDateTime creation = OffsetDateTime.now();
+
         byte[] expectedBytes = PacketGateway.getInstance().write(expected);
 
         Packet result1 = PacketGateway.getInstance().read(
                 expected.getAliasAsUUID(),
                 expected.getSource(),
+                creation,
                 expectedBytes);
 
         Packet result2 = PacketGateway.getInstance().read(
                 expected.getAlias(),
                 expected.getSource(),
+                creation,
                 expectedBytes);
 
         assertThat(result1, equalTo(expected));

@@ -1,5 +1,6 @@
 package com.mmo.server.infrastructure.server.packet;
 
+import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -49,14 +50,14 @@ public class PacketGateway {
         return this;
     }
 
-    public <T extends NetworkPacket> T read(String alias, UUID source, byte[] bytes) {
-        return read(getAliasAsUUID(alias), source, bytes);
+    public <T extends NetworkPacket> T read(String alias, UUID source, OffsetDateTime creation, byte[] bytes) {
+        return read(getAliasAsUUID(alias), source, creation, bytes);
     }
 
-    public <T extends NetworkPacket> T read(UUID alias, UUID source, byte[] bytes) {
+    public <T extends NetworkPacket> T read(UUID alias, UUID source, OffsetDateTime creation, byte[] bytes) {
         PacketConverter<T> converter = this.<T>getConverter(alias);
 
-        return converter.read(source, bytes);
+        return converter.read(source, creation, bytes);
     }
 
     public <T extends NetworkPacket> byte[] write(T packet) {

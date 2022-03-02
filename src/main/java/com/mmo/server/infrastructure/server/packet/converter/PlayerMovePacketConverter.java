@@ -1,5 +1,6 @@
 package com.mmo.server.infrastructure.server.packet.converter;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import com.mmo.server.core.packet.PlayerMovePacket;
@@ -11,7 +12,7 @@ import com.mmo.server.infrastructure.server.packet.PacketWriter;
 public class PlayerMovePacketConverter implements PacketConverter<PlayerMovePacket> {
 
     @Override
-    public PlayerMovePacket read(UUID source, byte[] bytes) {
+    public PlayerMovePacket read(UUID source, OffsetDateTime creation, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
             return PlayerMovePacket.builder()
                     .source(source)

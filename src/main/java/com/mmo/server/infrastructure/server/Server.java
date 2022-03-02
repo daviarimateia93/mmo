@@ -105,7 +105,7 @@ public class Server {
                 .disconnectSubscriber(this::removeClient)
                 .sendSubscriber(sendSubscriber)
                 .receiveSubscriber(receiveSubscriber)
-                .serverBuild();
+                .buildServer();
     }
 
     private void removeClient(Client client) {

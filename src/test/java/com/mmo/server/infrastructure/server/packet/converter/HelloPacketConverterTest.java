@@ -3,6 +3,7 @@ package com.mmo.server.infrastructure.server.packet.converter;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -29,7 +30,7 @@ public class HelloPacketConverterTest {
                 .userPassword("userPassword")
                 .build();
 
-        HelloPacket result = converter.read(source, converter.write(expected));
+        HelloPacket result = converter.read(source, OffsetDateTime.now(), converter.write(expected));
 
         assertThat(result, equalTo(expected));
     }

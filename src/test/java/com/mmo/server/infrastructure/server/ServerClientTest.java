@@ -76,7 +76,7 @@ public class ServerClientTest {
                 .decryptor(decryptor)
                 .sendSubscriber(clientSendSubscriber)
                 .receiveSubscriber(clientReceiveSubscriber)
-                .clientBuild();
+                .buildClient();
 
         Thread.sleep(1000);
 

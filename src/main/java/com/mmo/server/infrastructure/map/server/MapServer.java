@@ -50,6 +50,7 @@ import com.mmo.server.infrastructure.server.packet.converter.GoodByePacketConver
 import com.mmo.server.infrastructure.server.packet.converter.HelloPacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.PlayerAttackPacketConverter;
 import com.mmo.server.infrastructure.server.packet.converter.PlayerMovePacketConverter;
+import com.mmo.server.infrastructure.server.packet.converter.PlayerUpdatePacketConverter;
 import com.mmo.server.infrastructure.setup.AdminSetupper;
 import com.mmo.server.infrastructure.user.MongoUserRepository;
 
@@ -117,18 +118,21 @@ public class MapServer {
                 GoodByePacket.ALIAS, new GoodByePacketConverter(),
                 PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter(),
                 GoodByePacket.ALIAS, new GoodByePacketConverter(),
-                PlayerMovePacket.ALIAS, new PlayerMovePacketConverter())
+                PlayerMovePacket.ALIAS, new PlayerMovePacketConverter(),
+                PlayerUpdatePacket.ALIAS, new PlayerUpdatePacketConverter())
                 .entrySet()
                 .forEach(entry -> bindConverter(entry.getKey(), entry.getValue()));
     }
 
     private void bindConverter(String alias, PacketConverter<?> converter) {
+        PacketGateway gateway = PacketGateway.getInstance();
+        
         if (converter instanceof PacketReaderConverter) {
-            PacketGateway.getInstance().bindReader(alias, (PacketReaderConverter<?>) converter);
+            gateway.bindReader(alias, (PacketReaderConverter<?>) converter);
         }
 
         if (converter instanceof PacketWriterConverter) {
-            PacketGateway.getInstance().bindWriter(alias, (PacketWriterConverter<?>) converter);
+            gateway.bindWriter(alias, (PacketWriterConverter<?>) converter);
         }
     }
 

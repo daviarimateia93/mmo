@@ -51,7 +51,7 @@ import com.mmo.server.infrastructure.server.packet.converter.PlayerUpdatePacketC
 import com.mmo.server.infrastructure.setup.AdminSetupper;
 import com.mmo.server.infrastructure.user.MongoUserRepository;
 
-public class MapServer {
+public final class MapServer {
 
     private static final String CONFIG_MAP_SERVER_HELLO_PACKET_WAITING_DELAY_IN_MINUTES = "map.server.hello.packet.waiting.delay.in.minutes";
     private static final String CONFIG_MAP_SERVER_PORT = "map.server.port";
@@ -64,11 +64,12 @@ public class MapServer {
     private final ConfigProvider configProvider;
     private final Map map;
     private final Authenticator authenticator;
+    private final Game game;
     private final Server server;
     private final UserRepository userRepository;
     private final PlayerRepository playerRepository;
 
-    private MapServer() {
+    public MapServer() {
         configProvider = ConfigProvider.getInstance();
         userRepository = new MongoUserRepository();
         playerRepository = new MongoPlayerRepository();
@@ -91,14 +92,24 @@ public class MapServer {
 
         authenticator = newAuthenticator();
 
-        logger.info("Running game");
-
-        runGame();
-
-        logger.info("Starting server");
+        game = Game.getInstance();
 
         server = newServer();
-        server.run();
+    }
+
+    public void start() {
+        logger.info("Running game");
+        Executors.newSingleThreadScheduledExecutor()
+                .execute(() -> game.run(map));
+
+        logger.info("Starting server");
+        Executors.newSingleThreadScheduledExecutor()
+                .execute(() -> server.run());
+    }
+
+    public void stop() {
+        game.stop();
+        server.stop();
     }
 
     private void setup() {
@@ -114,7 +125,6 @@ public class MapServer {
                 HelloPacket.ALIAS, new HelloPacketConverter(),
                 GoodByePacket.ALIAS, new GoodByePacketConverter(),
                 PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter(),
-                GoodByePacket.ALIAS, new GoodByePacketConverter(),
                 PlayerMovePacket.ALIAS, new PlayerMovePacketConverter(),
                 PlayerUpdatePacket.ALIAS, new PlayerUpdatePacketConverter())
                 .entrySet()
@@ -172,11 +182,6 @@ public class MapServer {
                 .sendSubscriber(this::onSend)
                 .receiveSubscriber(this::onReceive)
                 .build();
-    }
-
-    private void runGame() {
-        Executors.newSingleThreadScheduledExecutor()
-                .execute(() -> Game.getInstance().run(map));
     }
 
     private Authenticator newAuthenticator() {
@@ -321,6 +326,6 @@ public class MapServer {
     }
 
     public static void main(String... args) {
-        new MapServer();
+        new MapServer().start();
     }
 }

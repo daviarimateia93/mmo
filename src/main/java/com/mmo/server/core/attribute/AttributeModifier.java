@@ -15,11 +15,11 @@ import lombok.ToString;
 @ToString
 public class AttributeModifier {
 
-    private PropertyModifierAction action;
-    private Attribute attribute;
-    private Integer value;
-    private OffsetDateTime expiration;
-    private boolean persisted;
+    private final PropertyModifierAction action;
+    private final Attribute attribute;
+    private final Integer value;
+    private final OffsetDateTime expiration;
+    private final boolean persisted;
 
     @Builder
     private AttributeModifier(

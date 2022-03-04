@@ -6,6 +6,7 @@ import com.mmo.server.core.animate.Animate;
 import com.mmo.server.core.attribute.Attributes;
 import com.mmo.server.core.map.Position;
 import com.mmo.server.core.packet.PlayerPersistPacket;
+import com.mmo.server.core.packet.PlayerUpdatePacket;
 import com.mmo.server.core.stat.Stats;
 
 import lombok.Builder;
@@ -49,9 +50,31 @@ public class Player extends Animate {
     }
 
     @Override
+    public void move(Position target) {
+        super.move(target);
+        dispatchUpdate();
+    }
+
+    @Override
+    public void attack(Animate target) {
+        super.attack(target);
+        dispatchUpdate();
+    }
+
+    @Override
     protected void onDie(Animate source) {
         super.onDie(source);
+        dispatchPersist();
+    }
 
+    private void dispatchUpdate() {
+        dispatch(PlayerUpdatePacket.builder()
+                .source(instanceId)
+                .player(this)
+                .build());
+    }
+
+    private void dispatchPersist() {
         dispatch(PlayerPersistPacket.builder()
                 .source(instanceId)
                 .player(this)

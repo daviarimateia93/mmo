@@ -1,4 +1,6 @@
-package com.mmo.server.core.map;
+package com.mmo.server.core.math;
+
+import com.mmo.server.core.map.MapException;
 
 public class InvalidRectangleException extends MapException {
 

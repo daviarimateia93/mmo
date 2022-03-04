@@ -5,8 +5,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mmo.server.core.map.InvalidRectangleException;
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

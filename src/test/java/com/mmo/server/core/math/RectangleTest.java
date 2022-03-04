@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.mmo.server.core.map.InvalidRectangleException;
-
 public class RectangleTest {
 
     private static Rectangle rectangle;

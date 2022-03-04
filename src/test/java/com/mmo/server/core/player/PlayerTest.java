@@ -15,6 +15,7 @@ import com.mmo.server.core.attribute.Attributes;
 import com.mmo.server.core.game.GameRunnerMapMocker;
 import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.Position;
+import com.mmo.server.core.packet.PlayerPersistPacket;
 import com.mmo.server.core.packet.PlayerUpdatePacket;
 import com.mmo.server.core.stat.Stats;
 
@@ -86,5 +87,12 @@ public class PlayerTest {
         player.attack(mock(Animate.class));
 
         verify(map).dispatch(any(PlayerUpdatePacket.class));
+    }
+
+    @Test
+    public void onDieDispatchPersistPacket() {
+        player.onDie(mock(Animate.class));
+
+        verify(map).dispatch(any(PlayerPersistPacket.class));
     }
 }

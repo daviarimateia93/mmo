@@ -1,6 +1,6 @@
 package com.mmo.server.infrastructure.server;
 
-import com.mmo.server.core.utils.RuntimeException;
+import com.mmo.server.core.exception.RuntimeException;
 
 public abstract class ServerException extends RuntimeException {
 

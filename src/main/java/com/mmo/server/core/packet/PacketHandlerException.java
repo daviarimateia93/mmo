@@ -1,6 +1,6 @@
 package com.mmo.server.core.packet;
 
-import com.mmo.server.core.utils.RuntimeException;
+import com.mmo.server.core.exception.RuntimeException;
 
 public abstract class PacketHandlerException extends RuntimeException {
 

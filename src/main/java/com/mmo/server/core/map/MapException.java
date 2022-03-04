@@ -1,6 +1,6 @@
 package com.mmo.server.core.map;
 
-import com.mmo.server.core.utils.RuntimeException;
+import com.mmo.server.core.exception.RuntimeException;
 
 public abstract class MapException extends RuntimeException {
 

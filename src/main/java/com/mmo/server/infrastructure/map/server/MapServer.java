@@ -121,14 +121,13 @@ public final class MapServer {
     }
 
     private void bindConverters() {
-        java.util.Map.of(
-                HelloPacket.ALIAS, new HelloPacketConverter(),
-                GoodByePacket.ALIAS, new GoodByePacketConverter(),
-                PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter(),
-                PlayerMovePacket.ALIAS, new PlayerMovePacketConverter(),
-                PlayerUpdatePacket.ALIAS, new PlayerUpdatePacketConverter())
-                .entrySet()
-                .forEach(entry -> PacketGateway.getInstance().bind(entry.getKey(), entry.getValue()));
+        PacketGateway.getInstance()
+                .bind(HelloPacket.ALIAS, new HelloPacketConverter())
+                .bind(GoodByePacket.ALIAS, new GoodByePacketConverter())
+                .bind(PlayerAttackPacket.ALIAS, new PlayerAttackPacketConverter())
+                .bind(PlayerMovePacket.ALIAS, new PlayerMovePacketConverter())
+                .bind(PlayerUpdatePacket.ALIAS, new PlayerUpdatePacketConverter());
+
     }
 
     private void bindHandlers() {

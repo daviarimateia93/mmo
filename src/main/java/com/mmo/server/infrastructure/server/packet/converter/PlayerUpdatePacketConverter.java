@@ -20,6 +20,7 @@ public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdate
     @Override
     public PlayerUpdatePacket read(UUID source, OffsetDateTime creation, byte[] bytes) {
         try (PacketReader reader = new PacketReader(bytes)) {
+            UUID userId = reader.readUUID();
             String name = reader.readUTF();
             PositionDTO position = PositionConverter.read(reader);
             StatsDTO stats = StatsConverter.read(reader);
@@ -28,6 +29,7 @@ public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdate
 
             return PlayerUpdatePacket.dtoBuilder()
                     .source(source)
+                    .userId(userId)
                     .name(name)
                     .positionX(position.getX())
                     .positionZ(position.getZ())
@@ -63,12 +65,14 @@ public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdate
     @Override
     public byte[] write(PlayerUpdatePacket packet) {
         try (PacketWriter writer = new PacketWriter()) {
+            UUID userId = packet.getUserId();
             String name = packet.getName();
             PositionDTO position = getPosition(packet);
             StatsDTO stats = getStats(packet);
             AttributesDTO attributes = getAttributes(packet);
             AnimateDTO animate = getAnimate(packet);
 
+            writer.writeUUID(userId);
             writer.writeUTF(name);
             PositionConverter.write(writer, position);
             StatsConverter.write(writer, stats);

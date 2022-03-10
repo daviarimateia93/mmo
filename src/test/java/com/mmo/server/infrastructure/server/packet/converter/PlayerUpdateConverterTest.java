@@ -27,13 +27,14 @@ public class PlayerUpdateConverterTest {
     @Test
     public void readAndWrite() {
         UUID source = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
 
         PlayerUpdatePacket expected = PlayerUpdatePacket.builder()
                 .source(source)
                 .player(Player.builder()
-                        .userId(UUID.randomUUID())
-                        .instanceId(UUID.randomUUID())
-                        .name("PlayerName-" + UUID.randomUUID())
+                        .userId(userId)
+                        .instanceId(source)
+                        .name("PlayerName-" + source)
                         .position(Position.builder()
                                 .x(50)
                                 .z(10)

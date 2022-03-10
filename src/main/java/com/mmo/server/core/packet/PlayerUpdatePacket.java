@@ -21,6 +21,7 @@ public class PlayerUpdatePacket implements NetworkPacket {
     public static final String ALIAS = "PLAYER_UPDATE";
 
     private final UUID source;
+    private final UUID userId;
     private final String name;
     private final Integer positionX;
     private final Integer positionZ;
@@ -56,6 +57,7 @@ public class PlayerUpdatePacket implements NetworkPacket {
     private PlayerUpdatePacket(@NonNull UUID source, @NonNull Player player) {
         this(
                 source,
+                player.getUserId(),
                 player.getName(),
                 player.getPosition().getX(),
                 player.getPosition().getZ(),
@@ -86,11 +88,13 @@ public class PlayerUpdatePacket implements NetworkPacket {
                 player.getTargetAnimate().map(Animate::getInstanceId).orElse(null),
                 player.getLastAttackStartTime().orElse(null),
                 player.getLastMoveStartTime().orElse(null));
+
     }
 
     @Builder(builderMethodName = "dtoBuilder", buildMethodName = "buildDTO")
     private PlayerUpdatePacket(
             @NonNull UUID source,
+            @NonNull UUID userId,
             @NonNull String name,
             @NonNull Integer positionX,
             @NonNull Integer positionZ,
@@ -123,6 +127,7 @@ public class PlayerUpdatePacket implements NetworkPacket {
             Long lastMoveStartTime) {
 
         this.source = source;
+        this.userId = userId;
         this.name = name;
         this.positionX = positionX;
         this.positionZ = positionZ;

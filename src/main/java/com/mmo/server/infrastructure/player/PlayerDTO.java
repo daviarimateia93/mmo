@@ -32,10 +32,10 @@ public class PlayerDTO {
 
         return dto;
     }
-    
+
     public Player toPlayer() {
         return Player.builder()
-                .userId(userId)
+                .userId(getUserId())
                 .instanceId(getInstanceId())
                 .name(getName())
                 .position(getPosition().toPosition())

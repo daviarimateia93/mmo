@@ -18,6 +18,7 @@ public class PlayerUpdatePacketTest {
     public void getAlias() {
         PlayerUpdatePacket packet = PlayerUpdatePacket.builder()
                 .source(UUID.randomUUID())
+                .userId(UUID.randomUUID())
                 .player(Player.builder()
                         .userId(UUID.randomUUID())
                         .instanceId(UUID.randomUUID())

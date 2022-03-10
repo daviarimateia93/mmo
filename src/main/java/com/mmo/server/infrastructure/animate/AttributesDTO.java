@@ -74,21 +74,21 @@ public class AttributesDTO {
         return mpRecovery;
     }
 
-    public static AttributesDTO of(Attributes stats) {
+    public static AttributesDTO of(Attributes attributes) {
         AttributesDTO dto = new AttributesDTO();
-        dto.setHP(stats.getHP());
-        dto.setMP(stats.getMP());
-        dto.setAttack(stats.getAttack());
-        dto.setDefense(stats.getDefense());
-        dto.setMagicDefense(stats.getMagicDefense());
-        dto.setHitRate(stats.getHitRate());
-        dto.setCritical(stats.getCritical());
-        dto.setDodgeRate(stats.getDodgeRate());
-        dto.setAttackSpeed(stats.getAttackSpeed());
-        dto.setMoveSpeed(stats.getMoveSpeed());
-        dto.setHPRecovery(stats.getHPRecovery());
-        dto.setMPRecovery(stats.getMPRecovery());
-        dto.setAttackRange(stats.getAttackRange());
+        dto.setHP(attributes.getHP());
+        dto.setMP(attributes.getMP());
+        dto.setAttack(attributes.getAttack());
+        dto.setDefense(attributes.getDefense());
+        dto.setMagicDefense(attributes.getMagicDefense());
+        dto.setHitRate(attributes.getHitRate());
+        dto.setCritical(attributes.getCritical());
+        dto.setDodgeRate(attributes.getDodgeRate());
+        dto.setAttackSpeed(attributes.getAttackSpeed());
+        dto.setMoveSpeed(attributes.getMoveSpeed());
+        dto.setHPRecovery(attributes.getHPRecovery());
+        dto.setMPRecovery(attributes.getMPRecovery());
+        dto.setAttackRange(attributes.getAttackRange());
 
         return dto;
     }

@@ -15,7 +15,7 @@ import com.mmo.server.core.packet.PlayerUpdatePacket;
 import com.mmo.server.core.player.Player;
 import com.mmo.server.core.stat.Stats;
 
-public class PlayerUpdateConverterTest {
+public class PlayerUpdatePacketConverterTest {
 
     public static PlayerUpdatePacketConverter converter;
 

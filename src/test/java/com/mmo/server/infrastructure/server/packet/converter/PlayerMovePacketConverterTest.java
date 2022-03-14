@@ -14,7 +14,7 @@ import com.mmo.server.core.packet.PlayerMovePacket;
 
 public class PlayerMovePacketConverterTest {
 
-    public static PlayerMovePacketConverter converter;
+    private static PlayerMovePacketConverter converter;
 
     @BeforeAll
     public static void setup() {

@@ -55,9 +55,11 @@ public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdate
                     .alive(animate.isAlive())
                     .moving(animate.isMoving())
                     .targetPositionX(animate.getTargetPosition().map(PositionDTO::getX).orElse(null))
-                    .targetPositionX(animate.getTargetPosition().map(PositionDTO::getZ).orElse(null))
+                    .targetPositionZ(animate.getTargetPosition().map(PositionDTO::getZ).orElse(null))
                     .attacking(animate.isAttacking())
                     .targetAnimate(animate.getTargetAnimate().orElse(null))
+                    .lastAttackStartTime(animate.getLastAttackStartTime().orElse(null))
+                    .lastMoveStartTime(animate.getLastMoveStartTime().orElse(null))
                     .buildDTO();
         }
     }
@@ -137,6 +139,9 @@ public class PlayerUpdatePacketConverter implements PacketConverter<PlayerUpdate
         dto.setAttacking(packet.isAttacking());
 
         packet.getTargetAnimate().ifPresent(dto::setTargetAnimate);
+
+        packet.getLastAttackStartTime().ifPresent(dto::setLastAttackStartTime);
+        packet.getLastMoveStartTime().ifPresent(dto::setLastMoveStartTime);
 
         return dto;
     }

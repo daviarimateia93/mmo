@@ -32,6 +32,45 @@ public class AnimateConverterTest {
         assertThat(result, equalTo(expected));
     }
 
+    @Test
+    public void readAndWriteWhenAttacking() {
+        AnimateImpl animate = new AnimateImpl();
+        animate.attack(new AnimateImpl());
+
+        AnimateDTO expected = AnimateDTO.of(animate);
+        AnimateDTO result = null;
+
+        try (PacketWriter writer = new PacketWriter()) {
+            write(writer, expected);
+            try (PacketReader reader = new PacketReader(writer.toBytes())) {
+                result = read(reader);
+            }
+        }
+
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    public void readAndWriteWhenMoving() {
+        AnimateImpl animate = new AnimateImpl();
+        animate.move(Position.builder()
+                .x(40)
+                .z(15)
+                .build());
+
+        AnimateDTO expected = AnimateDTO.of(animate);
+        AnimateDTO result = null;
+
+        try (PacketWriter writer = new PacketWriter()) {
+            write(writer, expected);
+            try (PacketReader reader = new PacketReader(writer.toBytes())) {
+                result = read(reader);
+            }
+        }
+
+        assertThat(result, equalTo(expected));
+    }
+
     private class AnimateImpl extends Animate {
         UUID id = UUID.randomUUID();
         UUID instanceId = UUID.randomUUID();

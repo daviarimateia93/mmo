@@ -13,7 +13,7 @@ import com.mmo.server.core.packet.HelloPacket;
 
 public class HelloPacketConverterTest {
 
-    public static HelloPacketConverter converter;
+    private static HelloPacketConverter converter;
 
     @BeforeAll
     public static void setup() {

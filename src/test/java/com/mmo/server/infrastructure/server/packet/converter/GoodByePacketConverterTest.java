@@ -13,7 +13,7 @@ import com.mmo.server.core.packet.GoodByePacket;
 
 public class GoodByePacketConverterTest {
 
-    public static GoodByePacketConverter converter;
+    private static GoodByePacketConverter converter;
 
     @BeforeAll
     public static void setup() {

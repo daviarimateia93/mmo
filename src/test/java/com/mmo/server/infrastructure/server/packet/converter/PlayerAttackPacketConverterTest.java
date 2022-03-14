@@ -13,7 +13,7 @@ import com.mmo.server.core.packet.PlayerAttackPacket;
 
 public class PlayerAttackPacketConverterTest {
 
-    public static PlayerAttackPacketConverter converter;
+    private static PlayerAttackPacketConverter converter;
 
     @BeforeAll
     public static void setup() {

@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -68,6 +69,7 @@ public final class MapServer {
     private final Server server;
     private final UserRepository userRepository;
     private final PlayerRepository playerRepository;
+    private final ScheduledExecutorService clientConfirmPool = Executors.newSingleThreadScheduledExecutor();
 
     public MapServer() {
         configProvider = ConfigProvider.getInstance();
@@ -193,18 +195,17 @@ public final class MapServer {
     private void confirmClientConnected(Client client) {
         logger.info("Client bound {}, waiting for HelloPacket", client);
 
-        Executors.newSingleThreadScheduledExecutor()
-                .schedule(() -> {
-                    if (isConnected(client)) {
-                        logger.info("Client sent HelloPacket");
-                    } else {
-                        logger.info("Client did not send HelloPacket, it will disconnect", client);
+        clientConfirmPool.schedule(() -> {
+            if (isConnected(client)) {
+                logger.info("Client sent HelloPacket");
+            } else {
+                logger.info("Client did not send HelloPacket, it will disconnect", client);
 
-                        client.disconnect();
-                    }
-                },
-                        configProvider.getLong(CONFIG_MAP_SERVER_HELLO_PACKET_WAITING_DELAY_IN_MINUTES),
-                        TimeUnit.MINUTES);
+                client.disconnect();
+            }
+        },
+                configProvider.getLong(CONFIG_MAP_SERVER_HELLO_PACKET_WAITING_DELAY_IN_MINUTES),
+                TimeUnit.MINUTES);
     }
 
     private boolean validateClientAndInstanceId(Client client, UUID instanceId) {

@@ -28,12 +28,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class Client {
 
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
 
+    @EqualsAndHashCode.Include
     private final UUID id = UUID.randomUUID();
     private final Socket socket;
     private final Encryptor encryptor;

@@ -226,13 +226,14 @@ public final class MapServer {
         if (isConnected(client)) {
             UUID instanceId = clients.remove(client);
             instanceIds.remove(instanceId);
-            map.removeEntity(instanceId);
 
             logger.info("Client has disconnected {}", client);
 
             send(GoodByePacket.builder()
                     .source(instanceId)
                     .build());
+
+            map.removeEntity(instanceId);
         }
     }
 
@@ -319,6 +320,7 @@ public final class MapServer {
 
     private void send(NetworkPacket packet, Set<? extends MapEntity> targets) {
         targets.parallelStream()
+                .filter(target -> !target.getInstanceId().equals(packet.getSource()))
                 .map(MapEntity::getInstanceId)
                 .map(instanceIds::get)
                 .filter(this::isConnected)

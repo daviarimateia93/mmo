@@ -18,6 +18,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.MapRepository;
 import com.mmo.server.core.map.Terrain;
+import com.mmo.server.infrastructure.map.MapDTO;
 
 public class SparkMapControllerTest {
 
@@ -34,7 +35,7 @@ public class SparkMapControllerTest {
 
     @Test
     public void getById() throws UnirestException {
-        Map expected = Map.builder()
+        Map map = Map.builder()
                 .id(UUID.randomUUID())
                 .name("name")
                 .description("description")
@@ -44,11 +45,12 @@ public class SparkMapControllerTest {
                         .build())
                 .build();
 
-        when(repository.find(expected.getId())).thenReturn(Optional.of(expected));
+        when(repository.find(map.getId())).thenReturn(Optional.of(map));
 
-        Map result = fromJson(get("http://localhost:4567/maps/" + expected.getId())
+        MapDTO expected = MapDTO.of(map);
+        MapDTO result = fromJson(get("http://localhost:4567/maps/" + map.getId())
                 .asString()
-                .getBody(), Map.class);
+                .getBody(), MapDTO.class);
 
         assertThat(result, equalTo(expected));
     }

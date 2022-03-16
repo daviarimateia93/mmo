@@ -4,8 +4,8 @@ import static com.mmo.server.infrastructure.api.Spark.*;
 
 import java.util.UUID;
 
-import com.mmo.server.core.map.Map;
 import com.mmo.server.core.map.MapRepository;
+import com.mmo.server.infrastructure.map.MapDTO;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -23,10 +23,11 @@ public class SparkMapController {
         get("/maps/:id", this::getById);
     }
 
-    private Map getById(Request request, Response response) {
+    private MapDTO getById(Request request, Response response) {
         UUID id = getUUIDParam("id", request, response);
 
         return repository.find(id)
+                .map(MapDTO::of)
                 .orElseGet(() -> setStatus(404, response));
     }
 }

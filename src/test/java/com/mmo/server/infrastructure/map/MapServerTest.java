@@ -63,7 +63,7 @@ public class MapServerTest {
         Thread.sleep(1 * 1000); // wait for server answer
 
         assertThat(sentPacket, not(nullValue()));
-        assertThat(receivedPacket, not(nullValue()));
+        assertThat(receivedPacket, nullValue());
 
         server.stop();
     }
